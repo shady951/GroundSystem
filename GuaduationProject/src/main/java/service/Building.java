@@ -13,7 +13,7 @@ import util.manual.Doubledeckground;
 import util.manual.Groundmat;
 
 @Service
-public class Architecture {
+public class Building {
 
 	private final double pi = Math.PI;
 	// 埋深
@@ -23,7 +23,7 @@ public class Architecture {
 	// 垂直接地体等效直径
 	private final double br = 0.05;
 
-	public Architecture() {
+	public Building() {
 	}
 
 	// @Autowired
@@ -358,8 +358,8 @@ public class Architecture {
 //				4d, 0.05, 0.05));
 		
 		System.out.println("----------1----------------------------------------------");
-		System.out.println(new Architecture().design(2500d, 2d, 1700d, 4000d, 10d, 3, true));
+		System.out.println(new Building().design(2500d, 2d, 1700d, 4000d, 10d, 3, true));
 		System.out.println("----------2----------------------------------------------");
-		System.out.println(new Architecture().design(2500d, 2d, 1500d, 4000d, 10d, 2, false));
+		System.out.println(new Building().design(2500d, 2d, 1500d, 4000d, 10d, 2, false));
 	}
 }
