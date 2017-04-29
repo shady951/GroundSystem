@@ -17,17 +17,17 @@ public class Groundmat {
 	public Groundmat() {
 	}
 	
-	/**
-	 * 计算基础接地网电阻(简化计算)
-	 * @param p	土壤电阻率
-	 * @param S	建筑面积
-	 * @return R	接地电阻
-	 */
-	public double generalmat (Double p, Double S) {
-		Double R = null;
-		R = 0.44 * p / Math.sqrt(S);
-		return R;
-	}
+//	/**
+//	 * 计算基础接地网电阻(简化计算)
+//	 * @param p	土壤电阻率
+//	 * @param S	建筑面积
+//	 * @return R	接地电阻
+//	 */
+//	public double generalmat (Double p, Double S) {
+//		Double R = null;
+//		R = 0.44 * p / Math.sqrt(S);
+//		return R;
+//	}
 	
 	/**
 	 * 计算水平接地电阻
@@ -209,11 +209,11 @@ public class Groundmat {
 		System.out.println(new Groundmat().verticalmat(250d, 3040d, 50d, 640d, 25600d, 0.6, 0.01, 0.025, 1d));
 		System.out.println(new Groundmat().verticalmat(800d, 1500d, 2.5d, 280d, 4800d, 0.8, 0.02, 0.05, 62d));
 		System.out.println(new Groundmat().gorizontalmat(1300d,144d, 0d, 72d, 324d, 0.8d, 0.05, 0d));
-		System.out.println(new Groundmat().generalmat(1300d, 324d));
+//		System.out.println(new Groundmat().generalmat(1300d, 324d));
 		System.out.println(new Groundmat().gorizontalmat(1300d,600d, 0d, 200d, 2500d, 0.8d, 0.05, 0d));
-		System.out.println(new Groundmat().generalmat(1300d, 2500d));
+//		System.out.println(new Groundmat().generalmat(1300d, 2500d));
 		System.out.println("//////////////////////////");
-		System.out.println(new Groundmat().generalmat(1000d, 400d));
+//		System.out.println(new Groundmat().generalmat(1000d, 400d));
 		System.out.println(new Groundmat().gorizontal(1000d, 0.05, 20d, 0.5, 1));
 		System.out.println(new Groundmat().emissivitygorizontal(1000d, 20d, 80d, 22.0, 72.24318203));
 		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 2d));
@@ -221,9 +221,9 @@ public class Groundmat {
 		System.out.println(new Groundmat().verticalmat(1000d, 120d, 0d, 80d, 400d, 0.5, 0.05, 0d, 0d));
 		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
 		System.out.println(new Groundmat().verticalmat(1000d, 120d, 3d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
-		System.out.println(new Groundmat().generalmat(1000d, 750d));
-		double a = Math.sqrt(750d);
-		System.out.println(new Groundmat().gorizontalmat(1000d, Totallengthofmat.totallenth(a), 0d, Totallengthofmat.singlelength(a), 750d, 0.5, 0.05, 0d));
+//		System.out.println(new Groundmat().generalmat(1000d, 750d));
+		double a = Math.sqrt(2728d);
+		System.out.println(new Groundmat().gorizontalmat(320d, Totallengthofmat.totallenth(a), 0d, 4 * a, 2728d, 0.5, 0.05, 0d));
 	}
 	
 }

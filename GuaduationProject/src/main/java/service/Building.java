@@ -17,7 +17,7 @@ public class Building {
 
 	private final double pi = Math.PI;
 	// 埋深
-	private final double h = 0.5;
+	private final double h = 0.7;
 	// 水平接地体等效直径
 	private final double bc = 0.05;
 	// 垂直接地体等效直径
@@ -31,7 +31,6 @@ public class Building {
 
 	/**
 	 * 普通建筑接地设计
-	 * 
 	 * @param p		(上层)土壤电阻率
 	 * @param H		上层土壤深度(0为单层)
 	 * @param p1		下层土壤电阻率(0为单层)

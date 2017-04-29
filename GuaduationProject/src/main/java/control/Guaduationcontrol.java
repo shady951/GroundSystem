@@ -55,10 +55,10 @@ public class Guaduationcontrol {
 		switch(type) {
 		case "1":	R = vertical.vertical(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h));
 			break;
-		case "2":	R = vertical.straightverticals(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Double.valueOf(s), Integer.parseInt(n));
+		case "2":	R = vertical.straightverticals(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Double.valueOf(s), Double.valueOf(n));
 			break;
-		case "3":	R = vertical.linkverticals(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Double.valueOf(s), Integer.parseInt(n));
-			break;
+//		case "3":	R = vertical.linkverticals(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Double.valueOf(s), Double.valueOf(n));
+//			break;
 		}
 		return new Countresult(R);
 	}

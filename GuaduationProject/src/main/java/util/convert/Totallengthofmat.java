@@ -1,7 +1,7 @@
 package util.convert;
 
 /**
- * 地网总长度计算模块
+ * 地网参数计算模块
  * @author tc
  *
  */

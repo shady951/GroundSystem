@@ -38,16 +38,17 @@ public class Impulseconversion {
 		return k;
 	}
 	
-//	public static void main(String[] args) {
-//		System.out.println(new Impulseconversion().convert(500d, 0.5, 1d));//1.375
-//		System.out.println(new Impulseconversion().convert(700d, 0.5, 1d));//1.475
-//		System.out.println(new Impulseconversion().convert(1000d, 0.5, 1d));//1.625
-//		System.out.println(new Impulseconversion().convert(1300d, 0.5, 1d));//1.775
-//		System.out.println(new Impulseconversion().convert(1500d, 0.5, 1d));//1.875
-//		System.out.println(new Impulseconversion().convert(1700d, 0.5, 1d));//1.975
-//		System.out.println(new Impulseconversion().convert(2000d, 0.5, 1d));//2.125
-//		System.out.println(new Impulseconversion().convert(3001d, 0.5, 1d));//2.125
-//	}
+	public static void main(String[] args) {
+		System.out.println(new Impulseconversion().convert(500d, 0.5, 1d));//1.375
+		System.out.println(new Impulseconversion().convert(700d, 0.5, 1d));//1.475
+		System.out.println(new Impulseconversion().convert(1000d, 0.5, 1d));//1.625
+		System.out.println(new Impulseconversion().convert(1300d, 0.5, 1d));//1.775
+		System.out.println(new Impulseconversion().convert(1500d, 0.5, 1d));//1.875
+		System.out.println(new Impulseconversion().convert(1700d, 0.5, 1d));//1.975
+		System.out.println(new Impulseconversion().convert(2000d, 0.5, 1d));//2.125
+		System.out.println(new Impulseconversion().convert(3001d, 0.5, 1d));//2.125
+		System.out.println(new Impulseconversion().convert(2500d, 0.38, 85d));
+	}
 	
 	
 }

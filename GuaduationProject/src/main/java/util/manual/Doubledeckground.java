@@ -73,7 +73,7 @@ public class Doubledeckground {
 	 * @param H	上层土壤深度
 	 * @param h	棒顶埋深
 	 * @param l	单根垂直接地棒平均长度(Lr)
-	 * @param d	垂直接地棒总根数
+	 * @param d	垂直接地体等效直径
 	 * @return R	接地电阻阻值
 	 */
 	public double gorizontalDoubledeckvertical(Double p1, Double p2, Double H, Double h, Double l, Double d) {
@@ -98,7 +98,7 @@ public class Doubledeckground {
 	 * @param h	棒顶埋深
 	 * @param L0	面积S的外缘周长
 	 * @param l	单根垂直接地棒平均长度(Lr)
-	 * @param n	接地体等效直径
+	 * @param n	垂直接地体总根数
 	 * @param d	接地体等效直径
 	 * @return
 	 */
