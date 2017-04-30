@@ -64,6 +64,8 @@ public class Vertical {
 	 * 计算多根垂直接地极等距直线排列的接地电阻
 	 * 参考文献：王洪泽,等. 直线排列多根垂直地极接地电阻通用公式. 广西电力,2004(4)
 	 * @param p	土壤电阻率
+	 * @param p1	下层土壤电阻率
+	 * @param H  上层土壤深度
 	 * @param d	接地极等效直径
 	 * @param l	接地极长度
 	 * @param h	埋深
@@ -71,11 +73,15 @@ public class Vertical {
 	 * @param n	垂直接地极数量
 	 * @return R	接地电阻阻值
 	 */
-	public double straightverticals(Double p, Double d, Double l, Double h, Double s, Double n){
+	public double straightverticals(Double p,Double p1, Double H, Double d, Double l, Double h, Double s, Double n){
 		Double R = null;
 		Double R0 = vertical(p, d, l, h);
 		Double D = (n - 1 + 0.001) * s;
 		R = R0 / n + 1.3 * p * Math.pow(Math.sqrt(n) - 1, 2) / (n * D);
+		if(H != 0d) {
+			Double R1 = Doubledeckvertical(p, p1, H, h, l, d);
+			R = R1 * R / R0;
+		}
 		return R;
 	}
 	
@@ -83,6 +89,8 @@ public class Vertical {
 	 * 计算多根垂直接地极等距环形排列的接地电阻
 	 * 参考文献：马晓红,等. 实用的多根接地电极的接地电阻计算. 电工技术,2004(11)
 	 * @param p	土壤电阻率
+	 * @param p1	下层土壤电阻率
+	 * @param H  上层土壤深度
 	 * @param d	接地极等效直径
 	 * @param l	接地极长度
 	 * @param h	埋深
@@ -132,7 +140,7 @@ public class Vertical {
 	/**
 	 * @return HM 判断计算并储存上下层土壤内的棒长l1，l2的值
 	 */
-	private HashMap<String, Double> getl(Double H, Double h, Double l) {
+	public HashMap<String, Double> getl(Double H, Double h, Double l) {
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 		Double l1 = null;
 		Double l2 = null;
@@ -283,67 +291,36 @@ public class Vertical {
 //		System.out.println(new Vertical().vertical(100d, 0.02, 10d, 0.5d));//结果：12.0972， 论文数据为12.0972
 //		System.out.println(new Vertical().straightverticals(100d, 0.02, 10d, 0d, 14.142, 2d));//结果：6.836， 论文数据为6.837
 //		System.out.println(new Vertical().linkverticals(100d, 0.2, 60d, 1d, 10d, 100d));//结果：0.0091，论文结论数据为0.0090
-//		double p = 210d;
-//		double a = 100;
-//		double le = 2 * Math.sqrt(p);
-//		double l = 3;
-//		double s = 1;
-//		double d = 1;
-//		double l1 = 1;
-//		double s1 = 1;
-//		double d1 = 1;
-//		int i  = 0;
-//		double R = 0;
-//		double Ri = new Impulseconversion().convert(p, (d+l) / le, new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-//		for(; l < (60d < le? 60d : le); l++) {
-//			for(s = l  ; s <= (le - l); s++) {
-//				for(d = s; d <= (le - l); d++) {
-//					i++;
-//					if(Ri > new Impulseconversion().convert(p, (d+l) / le, new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d /s? Math.ceil(d / s) + 1 : Math.ceil(d / s)))) {
-//						Ri = new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-//						l1 = l;
-//						s1 = s;
-//						d1 = d;
-//						System.out.println(Ri+"i:"+i);
-//					}
-//				}
-//			}
-//		}
-//		System.out.println(i);
-//		System.out.println("---------------------------------------------");
-//		System.out.println("le:"+ le);
-//		System.out.println("l1:"+l1);
-//		System.out.println("s1:"+s1) ;
-//		System.out.println("d1:"+d1) ;
-//		System.out.println("n:"+ (Math.ceil(d1 / s1) == d1 / s1? Math.ceil(d1 / s1) + 1 : Math.ceil(d1 / s1)));
-//		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-//		System.out.println("R:"+ R);
-//		System.out.println("Ri:"+Ri);
-		System.out.println("==============================================");
-		double p = 3000d;
-		double p1 = 210d;
-		double H = 2d;
+		double p =3000d;
+		double p1 = 800d;
+		double H = 0.9d;
 		double a = 100;
-		double n = 3d;
 		double le = 2 * Math.sqrt(p);
-		double l = 3;
+		double l = 3d;
+		HashMap<String, Double> hm;
+		hm = new Vertical().getl(H, 0.8, l);
+		Double ll1 = hm.get("l1");
+		Double ll2 = hm.get("l2");
 		double s = 1;
-		double r = s * 0.5 / Math.sin((2 * pi / n) / 2);
+		double d = 1;
 		double l1 = 1;
 		double s1 = 1;
-		double n1 = 1;
+		double d1 = 1;
 		int i  = 0;
 		double R = 0;
-		double Ri = new Impulseconversion().convert(p, (r+l) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
-		for(; l < 60d; l++) {
-			for(s = l  ; s < le; s++) {
-				for(n = 3; n < (2 * pi * (le - l) / s > 10? 10 : 2 * pi * (le - l) / s); n++) {
+		double Ri = new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
+		for(; l < (60d < le? 60d : le); l++) {
+			hm = new Vertical().getl(H, 0.8, l);
+			ll1 = hm.get("l1");
+			ll2 = hm.get("l2");
+			for(s = l  ; s <= (le - l); s++) {
+				for(d = s; d <= (le - l); d++) {
 					i++;
-					if(Ri > new Impulseconversion().convert(p, (s * 0.5 / Math.sin((2 * pi / n) / 2)+ l ) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n))) {
-						Ri = new Impulseconversion().convert(p, (s * 0.5 / Math.sin((2 * pi / n) / 2)+l) / le,R = new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
+					if(Ri > new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d /s? Math.ceil(d / s) + 1 : Math.ceil(d / s)))) {
+						Ri = new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, R = new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
 						l1 = l;
 						s1 = s;
-						n1 = n;
+						d1 = d;
 						System.out.println(Ri+"i:"+i);
 					}
 				}
@@ -354,10 +331,49 @@ public class Vertical {
 		System.out.println("le:"+ le);
 		System.out.println("l1:"+l1);
 		System.out.println("s1:"+s1) ;
-		System.out.println("n:"+ n1);
-//		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-		System.out.println("R:"+  R);
+		System.out.println("d1:"+d1) ;
+		System.out.println("n:"+ (Math.ceil(d1 / s1) == d1 / s1? Math.ceil(d1 / s1) + 1 : Math.ceil(d1 / s1)));
+		System.out.println("R:"+ R);
 		System.out.println("Ri:"+Ri);
+//		System.out.println("==============================================");
+//		double p = 3000d;
+//		double p1 = 210d;
+//		double H = 2d;
+//		double a = 100;
+//		double n = 3d;
+//		double le = 2 * Math.sqrt(p);
+//		double l = 3;
+//		double s = 1;
+//		double r = s * 0.5 / Math.sin((2 * pi / n) / 2);
+//		double l1 = 1;
+//		double s1 = 1;
+//		double n1 = 1;
+//		int i  = 0;
+//		double R = 0;
+//		double Ri = new Impulseconversion().convert(p, (r+l) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
+//		for(; l < 60d; l++) {
+//			for(s = l  ; s < le - l; s++) {
+//				for(n = 3; n < (2 * pi * (le - l) / s > 10? 10 : 2 * pi * (le - l) / s); n++) {
+//					i++;
+//					if(Ri > new Impulseconversion().convert(p, (s * 0.5 / Math.sin(pi / n)+ l ) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n))) {
+//						Ri = new Impulseconversion().convert(p, (s * 0.5 / Math.sin(pi / n)+l) / le,R = new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
+//						l1 = l;
+//						s1 = s;
+//						n1 = n;
+//						System.out.println(Ri+"i:"+i);
+//					}
+//				}
+//			}
+//		}
+//		System.out.println(i);
+//		System.out.println("---------------------------------------------");
+//		System.out.println("le:"+ le);
+//		System.out.println("l1:"+l1);
+//		System.out.println("s1:"+s1) ;
+//		System.out.println("n:"+ n1);
+////		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
+//		System.out.println("R:"+  R);
+//		System.out.println("Ri:"+Ri);
 	}
 	
 }
