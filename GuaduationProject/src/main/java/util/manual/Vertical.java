@@ -342,44 +342,44 @@ public class Vertical {
 //		System.out.println("R:"+ R);
 //		System.out.println("Ri:"+Ri);
 //		System.out.println("==============================================");
-//		double p = 3000d;
-//		double p1 = 210d;
-//		double H = 2d;
-//		double a = 100;
-//		double n = 3d;
-//		double le = 2 * Math.sqrt(p);
-//		double l = 3;
-//		double s = 1;
-//		double r = s * 0.5 / Math.sin((2 * pi / n) / 2);
-//		double l1 = 1;
-//		double s1 = 1;
-//		double n1 = 1;
-//		int i  = 0;
-//		double R = 0;
-//		double Ri = new Impulseconversion().convert(p, (r+l) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
-//		for(; l < 60d; l++) {
-//			for(s = l  ; s < le - l; s++) {
-//				for(n = 3; n < (2 * pi * (le - l) / s > 10? 10 : 2 * pi * (le - l) / s); n++) {
-//					i++;
-//					if(Ri > new Impulseconversion().convert(p, (s * 0.5 / Math.sin(pi / n)+ l ) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n))) {
-//						Ri = new Impulseconversion().convert(p, (s * 0.5 / Math.sin(pi / n)+l) / le,R = new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
-//						l1 = l;
-//						s1 = s;
-//						n1 = n;
-//						System.out.println(Ri+"i:"+i);
-//					}
-//				}
-//			}
-//		}
-//		System.out.println(i);
-//		System.out.println("---------------------------------------------");
-//		System.out.println("le:"+ le);
-//		System.out.println("l1:"+l1);
-//		System.out.println("s1:"+s1) ;
-//		System.out.println("n:"+ n1);
-////		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-//		System.out.println("R:"+  R);
-//		System.out.println("Ri:"+Ri);
+		double p = 3000d;
+		double p1 = 210d;
+		double H = 2d;
+		double a = 100;
+		double n = 3d;
+		double le = 2 * Math.sqrt(p);
+		double l = 3;
+		double s = 1;
+		double r = s * 0.5 / Math.sin((2 * pi / n) / 2);
+		double l1 = 1;
+		double s1 = 1;
+		double n1 = 1;
+		int i  = 0;
+		double R = 0;
+		double Ri = new Impulseconversion().convert(p, (r+l) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
+		for(; l < 60d; l++) {
+			for(s = l  ; s < le - l; s++) {
+				for(n = 3; n < (2 * pi * (le - l) / s > 10? 10 : 2 * pi * (le - l) / s); n++) {
+					i++;
+					if(Ri > new Impulseconversion().convert(p, (s * 0.5 / Math.sin(pi / n)+ l ) / le, new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n))) {
+						Ri = new Impulseconversion().convert(p, (s * 0.5 / Math.sin(pi / n)+l) / le,R = new Vertical().linkverticals(p, p1, H, 0.05, l, 0.8, s, n));
+						l1 = l;
+						s1 = s;
+						n1 = n;
+						System.out.println(Ri+"i:"+i);
+					}
+				}
+			}
+		}
+		System.out.println(i);
+		System.out.println("---------------------------------------------");
+		System.out.println("le:"+ le);
+		System.out.println("l1:"+l1);
+		System.out.println("s1:"+s1) ;
+		System.out.println("n:"+ n1);
+//		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
+		System.out.println("R:"+  R);
+		System.out.println("Ri:"+Ri);
 		System.out.println(new Vertical().linkverticals(2000d, 1000d, 2d, 0.05, 4d, 0.8, 8d, 20d));
 	}
 	
