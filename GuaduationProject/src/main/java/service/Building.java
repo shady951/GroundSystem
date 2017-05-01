@@ -302,11 +302,11 @@ public class Building {
 							0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(p, bc, lrv, h, 1) / 4);
 				} else {
 					if(H == 0d) {
-						System.out.println("Ri按单层土壤计算");
+						System.out.println("冲击接地电阻Ri按单层土壤计算");
 						Ri = new Groundmat().verticalmat(p, Totallengthofmat.totallenth(a), lrv, a * 4, S, h, bc, br,
 								Totallengthofmat.amount(a));
 					} else {
-						System.out.println("Ri按双层土壤计算");
+						System.out.println("冲击接地电阻Ri按双层土壤计算");
 							Ri = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Totallengthofmat.totallenth(a),
 										a * 4, lrv,n = lv < 3d ? n : N, bc, br);
 //						Ri = new Groundmat().verticalmat(p, Totallengthofmat.totallenth(a), lrv, a * 4, S, h, bc, br,

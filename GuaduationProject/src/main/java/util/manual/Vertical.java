@@ -104,13 +104,15 @@ public class Vertical {
 		Double R = null;
 		Double k = 1 / l;
 		Double w = s / l;
+		Double R0 = vertical(p1, d, l, h);
 		Double R1 = vertical(p, d * k, 1d, h);
 		Double K = getK(p, w, n);
-		if(H == 0d) {
-			R = k * (R1 + K) / n;
-		} else {
+		R = k * (R1 + K) / n;
+//		System.out.println("K:"+K);
+		if(H != 0d) {
 			Double R2 = Doubledeckvertical(p, p1, H, h, l, d);
-			R = (R2 + R2 / (R1 / K)) / n;
+//			R = (R2 + R2 / (R1 / K)) / n;
+			R = R2 * R / R0;
 		}
 		return R;
 	}
@@ -221,6 +223,7 @@ public class Vertical {
 		Double R21 = null; 
 		Double Rm = getRm(w * b);
 		R21 = p * Rm;
+//		System.out.println("R21:"+R21);
 		return R21;
 	}
 	
@@ -230,6 +233,7 @@ public class Vertical {
 	private Double getb(Double a){
 		Double b = null;
 		b = Math.sqrt(2 * Math.pow(radius, 2)  * (1 - Math.cos(a)));
+//		System.out.println("b:"+ b);
 		return b;
 	}
 	
@@ -246,14 +250,16 @@ public class Vertical {
 	 * @return Rm 耦合电阻
 	 */
 	private Double getRm(double w) {
+//		System.out.println("w:"+w);
 		Double Rm = null;
 		//当s/l大于10时或小于0.1时，忽略耦合电阻的影响
 		if(w > 10 || w < 0.1) return 0d;
 		if(w >= 1.5) {
-			Rm = 1 / 17 - w / 170;
+			Rm = 1.0 / 17 - w / 170;
 		} else {
 			Rm = 0.29645 - w * 0.1643;
 		}
+//		System.out.println("Rm:"+Rm);
 		return Rm;
 	}
 	
@@ -288,53 +294,53 @@ public class Vertical {
 	
 	
 	public static void main(String[] args) {
-//		System.out.println(new Vertical().vertical(100d, 0.02, 10d, 0.5d));//结果：12.0972， 论文数据为12.0972
-//		System.out.println(new Vertical().straightverticals(100d, 0.02, 10d, 0d, 14.142, 2d));//结果：6.836， 论文数据为6.837
-//		System.out.println(new Vertical().linkverticals(100d, 0.2, 60d, 1d, 10d, 100d));//结果：0.0091，论文结论数据为0.0090
-		double p =3000d;
-		double p1 = 800d;
-		double H = 0.9d;
-		double a = 100;
-		double le = 2 * Math.sqrt(p);
-		double l = 3d;
-		HashMap<String, Double> hm;
-		hm = new Vertical().getl(H, 0.8, l);
-		Double ll1 = hm.get("l1");
-		Double ll2 = hm.get("l2");
-		double s = 1;
-		double d = 1;
-		double l1 = 1;
-		double s1 = 1;
-		double d1 = 1;
-		int i  = 0;
-		double R = 0;
-		double Ri = new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-		for(; l < (60d < le? 60d : le); l++) {
-			hm = new Vertical().getl(H, 0.8, l);
-			ll1 = hm.get("l1");
-			ll2 = hm.get("l2");
-			for(s = l  ; s <= (le - l); s++) {
-				for(d = s; d <= (le - l); d++) {
-					i++;
-					if(Ri > new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d /s? Math.ceil(d / s) + 1 : Math.ceil(d / s)))) {
-						Ri = new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, R = new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-						l1 = l;
-						s1 = s;
-						d1 = d;
-						System.out.println(Ri+"i:"+i);
-					}
-				}
-			}
-		}
-		System.out.println(i);
-		System.out.println("---------------------------------------------");
-		System.out.println("le:"+ le);
-		System.out.println("l1:"+l1);
-		System.out.println("s1:"+s1) ;
-		System.out.println("d1:"+d1) ;
-		System.out.println("n:"+ (Math.ceil(d1 / s1) == d1 / s1? Math.ceil(d1 / s1) + 1 : Math.ceil(d1 / s1)));
-		System.out.println("R:"+ R);
-		System.out.println("Ri:"+Ri);
+////		System.out.println(new Vertical().vertical(100d, 0.02, 10d, 0.5d));//结果：12.0972， 论文数据为12.0972
+////		System.out.println(new Vertical().straightverticals(100d, 0.02, 10d, 0d, 14.142, 2d));//结果：6.836， 论文数据为6.837
+////		System.out.println(new Vertical().linkverticals(100d, 0.2, 60d, 1d, 10d, 100d));//结果：0.0091，论文结论数据为0.0090
+//		double p =3000d;
+//		double p1 = 800d;
+//		double H = 0.9d;
+//		double a = 100;
+//		double le = 2 * Math.sqrt(p);
+//		double l = 3d;
+//		HashMap<String, Double> hm;
+//		hm = new Vertical().getl(H, 0.8, l);
+//		Double ll1 = hm.get("l1");
+//		Double ll2 = hm.get("l2");
+//		double s = 1;
+//		double d = 1;
+//		double l1 = 1;
+//		double s1 = 1;
+//		double d1 = 1;
+//		int i  = 0;
+//		double R = 0;
+//		double Ri = new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
+//		for(; l < (60d < le? 60d : le); l++) {
+//			hm = new Vertical().getl(H, 0.8, l);
+//			ll1 = hm.get("l1");
+//			ll2 = hm.get("l2");
+//			for(s = l  ; s <= (le - l); s++) {
+//				for(d = s; d <= (le - l); d++) {
+//					i++;
+//					if(Ri > new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d /s? Math.ceil(d / s) + 1 : Math.ceil(d / s)))) {
+//						Ri = new Impulseconversion().convert(new Vertical().getpa(p, p1, l, ll1, ll2), (d+l) / le, R = new Vertical().straightverticals(p, p1, H, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
+//						l1 = l;
+//						s1 = s;
+//						d1 = d;
+//						System.out.println(Ri+"i:"+i);
+//					}
+//				}
+//			}
+//		}
+//		System.out.println(i);
+//		System.out.println("---------------------------------------------");
+//		System.out.println("le:"+ le);
+//		System.out.println("l1:"+l1);
+//		System.out.println("s1:"+s1) ;
+//		System.out.println("d1:"+d1) ;
+//		System.out.println("n:"+ (Math.ceil(d1 / s1) == d1 / s1? Math.ceil(d1 / s1) + 1 : Math.ceil(d1 / s1)));
+//		System.out.println("R:"+ R);
+//		System.out.println("Ri:"+Ri);
 //		System.out.println("==============================================");
 //		double p = 3000d;
 //		double p1 = 210d;
@@ -374,6 +380,7 @@ public class Vertical {
 ////		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
 //		System.out.println("R:"+  R);
 //		System.out.println("Ri:"+Ri);
+		System.out.println(new Vertical().linkverticals(2000d, 1000d, 2d, 0.05, 4d, 0.8, 8d, 20d));
 	}
 	
 }

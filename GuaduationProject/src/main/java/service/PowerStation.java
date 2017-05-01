@@ -67,12 +67,68 @@ public class PowerStation {
 		return null;// TODO
 	}
 	
-	private double linkscheme() {
-		
+	private double linkscheme(Double p, Double p1, Double H, Double S) {
+		double l = 2.5d;
+		double s = l;
+		double n = 3d;
+		double le = getle(p, p1, H, l);
+		double r = s * 0.5 / Math.sin(pi / n);
+		double li = l;
+		double si = s;
+		double ni = n;
+		double Ra;
+		int i  = 0;
+		double R = 0;
+		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (r+l) / le, new Vertical().linkverticals(p, p1, H, bc, l, h, s, n));
+		for(; (l = l == 3.5? 3d : l ) < (getle(p, p1, H, l) < 60d? getle(p, p1, H, l) : 60d); l++) {
+			for(s = l * 2; s <= 2 * (le - l) * Math.sin(pi / 3); s++) {
+				for(n = 3; Math.pow(s * 0.5 / Math.sin(pi / n), 2) * pi <= S && s * 0.5 / Math.sin(pi / n) <= le - l; n++) {
+					i++;
+					if(Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (s * 0.5 / Math.sin(pi / n)+ l ) / le,
+							R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n)))) {
+						if(Ri >= 10d) {
+							Ri = Ra;
+							li = l;
+							si = s;
+							ni = n;
+							System.out.println("一Ri:"+Ri+"i:"+i);
+						} else if(Ra < 10d && ni * (li + si) > n * (l + s)) {
+							Ri = Ra;
+							li = l;
+							si = s;
+							ni = n;
+							System.out.println("二Ri:"+Ri+"i:"+i);
+						}
+//						Ri = Ra;
+//						li = l;
+//						si = s;
+//						ni = n;
+//						System.out.println("Ri:"+Ri+"i:"+i);
+					}
+				}
+			}
+		}
+		System.out.println(i);
+		System.out.println("---------------------------------------------");
+		System.out.println("le:"+ le);
+		System.out.println("l1:"+li);
+		System.out.println("s1:"+si) ;
+		System.out.println("n:"+ ni);
+//		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
+		System.out.println("R:"+  R);
+		System.out.println("Ri:"+Ri);
+//		System.out.println(new Impulseconversion().convert(getpa(p, p1, H, h, l1), (s1 * 0.5 / Math.sin(pi / 31d)+ l ) / le,new Vertical().linkverticals(p, p1, H, bc, l1, h, s1, 31d)));
 		return 0d; //TODO
 	}
 	
+	public static void main(String[] args) {
+//		new PowerStation().straightscheme(800d, 500d, 3d, 2000d);
+		new PowerStation().linkscheme(800d, 500d, 2d, 5000d);
+	}
+	
 	private double getpa(Double p, Double p1, Double H, Double h, Double l) {
+		// H为0时按单层土壤计算
+		if(H == 0d) return p;
 		Double l1 = null;
 		Double l2 = null;
 		Double N = null;
@@ -117,7 +173,7 @@ public class PowerStation {
 					i++;
 					if(Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le, 
 							R = new Vertical().straightverticals(p, p1, H, br, l, h,s,n = Math.ceil(d / s) == d /s? Math.ceil(d / s) + 1 : Math.ceil(d / s))))) {
-						if(n < 20) {
+						if(n <= 10) {
 							Ri = Ra;
 							l1 = l;
 							s1 = s;
@@ -143,9 +199,6 @@ public class PowerStation {
 
 	private Double getS(Double S, Double m) {
 		return S + 2 * m * Math.sqrt(S) + Math.pow(m, 2);
-	}
-	public static void main(String[] args) {
-		new PowerStation().straightscheme(800d, 500d, 3d, 2000d);
 	}
 	
 	

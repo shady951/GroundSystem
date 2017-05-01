@@ -2,7 +2,7 @@ package enums;
 
 /**
  * 杆塔接地形状系数枚举
- * @author 陶创
+ * @author tc
  *
  */
 public enum Towergroundingshape {
