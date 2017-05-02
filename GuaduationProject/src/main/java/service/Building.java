@@ -10,7 +10,6 @@ import util.convert.Totallengthofmat;
 import util.manual.Doubledeckground;
 import util.manual.Groundmat;
 
-//@Service
 public class Building{
 
 	public final double pi;
@@ -24,8 +23,6 @@ public class Building{
 		this.bc = 0.05;
 		this.br = 0.05;
 	}
-	// @Autowired
-	// private Groundmat groundmat;
 
 	/**
 	 * 普通建筑接地设计
@@ -85,13 +82,14 @@ public class Building{
 			System.out.println("不在城市，可扩大地网面积");
 			System.out.println("最大面积S:"+2 * S);
 		}
+		Double Sp = getsinglep(p, H, p1);
 		Double R = null;
 		Map<String, Double> map;
 		// 外延环形接地体距离，最小1米
 		Double m = 2d;
 		// 建筑一米布置接环形接地体
-		if (new Groundmat().gorizontalmat(p, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))), 0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk && !city) {
-			for (; getS(S, m) < 2 * S && new Groundmat().gorizontalmat(p, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))),
+		if (new Groundmat().gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))), 0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk && !city) {
+			for (; getS(S, m) < 2 * S && new Groundmat().gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))),
 					0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk; m++);
 		}
 		S = getS(S, m);
@@ -103,7 +101,7 @@ public class Building{
 		System.out.println("等效方形边长a:" + a);
 		Double Ls = Totallengthofmat.totallenth(a);
 		Double n = Totallengthofmat.amount(a);
-		R = new Groundmat().gorizontalmat(p, Ls, 0d, a * 4, S, h, bc, 0d);
+		R = new Groundmat().gorizontalmat(Sp, Ls, 0d, a * 4, S, h, bc, 0d);
 		System.out.println("外延距离:" + m/2);
 		System.out.println("最终地网面积S:" + S);
 		System.out.println("工频接地电阻R:" + R);
@@ -111,7 +109,7 @@ public class Building{
 		Double lr = null;
 		Double lv = null;
 		// 防雷规范2.5，是否补加接地体
-		map = getl(p, r, type);
+		map = getl(Sp, r, type);
 		if (!map.isEmpty()) {
 			System.out.println("--------------按规范补加接地体:----------------------");
 			// 补加水平接地体总长
@@ -130,8 +128,8 @@ public class Building{
 			}
 			if (!city) {
 				System.out.println("未在城市,比较水平接地体与垂直接地体");
-				double Rr = new Groundmat().emissivitygorizontal(p, a, lr, new Groundmat().gorizontalmat(p, Ls,
-						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(p, bc, lr / 4, h, 1) / 4);
+				double Rr = new Groundmat().emissivitygorizontal(Sp, a, lr, new Groundmat().gorizontalmat(Sp, Ls,
+						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, lr / 4, h, 1) / 4);
 				System.out.println("lr:"+lr);
 				System.out.println("Rr:"+Rr+"  Rv:"+Rv);
 				if (Rr > Rv) {
@@ -186,27 +184,33 @@ public class Building{
 				}
 				if(f) {
 				System.out.println("长垂直接地体最大有效长度：" + (2 * Math.sqrt(getpa(p, p1, H + r, h, lv + r)) - r));
-				System.out.println("补加"+lv+"米长垂直接地体个数N:" + N+"个");
+				System.out.println("补加"+lv+"米长垂直接地体个数n:" + n+"个");
 				System.out.println("补加长垂直接地体后的接地电阻Rv1:"+ Rv1);
 				} else {
 					System.out.println("经计算补加长垂直接地体不可行");
 				}
 			}
 			if (!city) {
+				System.out.println("未在城市，可补加水平接地体");
 				double ir = 1d;
 				if (lr != null) ir = Math.ceil(lr);
 				Double Rr = null;
-				for (; (Rr = new Groundmat().emissivitygorizontal(p, a, ir, new Groundmat().gorizontalmat(p, Ls,
-						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(p, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++);
-				System.out.println("未在城市，可补加"+ir+"米水平接地体电阻Rr:"+Rr);
-				if (Rr > Rv1) {
-					flag = 2;
-					R = Rv1;
+				for (; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, new Groundmat().gorizontalmat(Sp, Ls,
+						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++);
+				System.out.println("可补加"+ir+"米水平接地体电阻Rr:"+Rr);
+				if(Rr > Rk) {
+					for (; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, Rv1,
+							new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++);
+					flag = 3;
+					System.out.println("单纯补加水平接地体不可行，选择复合地网并补加接地体");
+					System.out.println("补加"+lv+"米垂直接地体"+n+"个，再补加总长度"+ir+"米水平接地体之后");
+					System.out.println("接地电阻R:"+Rr);
 				} else {
 					flag = 1;
-					R = Rr;
-					lr = ir;
+					System.out.println("补加总长度"+ir+"米水平接地体及可达到要求，接地电阻R:"+Rr);
 				}
+				R = Rr;
+				lr = ir;
 			} else {
 				flag = 2;
 				R = Rv1;
@@ -228,12 +232,21 @@ public class Building{
 	}
 	
 	/**
+	 * @param p 双层土壤下的单层土壤选择
+	 * @return
+	 */
+	protected Double getsinglep(Double p, Double H, Double p1) {
+		return H == 0d? p : (H > h? p : p1);
+	}
+	
+	/**
 	 * (防雷规范2.5)
 	 * 
 	 * @return map 补加接地体
 	 */
 	protected Map<String, Double> getl(Double p, Double r, Integer type) {
 		Map<String, Double> map = new HashMap<String, Double>();
+		if(type == 0) return map;
 		Double lr = null;
 		Double lv = null;
 		double k1 = (11 * p - 3600) / 380;
@@ -278,6 +291,7 @@ public class Building{
 	 */
 	protected Double getRi(Double p,Double H, Double p1, Double S, Double lr, Double lv, Integer flag, Double R, Double n) {
 		System.out.println("-----------------计算冲击接地电阻-------------------------");
+		Double Sp = getsinglep(p, H, p1);
 		Double Ri = null;
 		//a:地网的等效方形边长
 		Double a = Math.sqrt(S);
@@ -286,7 +300,7 @@ public class Building{
 		//Ls:地网总长度
 		Double Ls = Totallengthofmat.totallenth(a);
 		//le:接地体冲击有效长度
-		Double le = 2 * Math.sqrt(H == 0d? p : (H > h? p : p1));
+		Double le = 2 * Math.sqrt(Sp);
 		Double lb = r;
 		Double l = lb;
 		if (flag != null) {
@@ -296,7 +310,7 @@ public class Building{
 			if (flag == 2) {
 				l += lv;
 				if(H > h) {
-					le = 2 * Math.sqrt(getpa(p, p1, H + r, h, lv + r));
+					le = 2 * Math.sqrt(getpa(p, p1, H + l, h, l));
 				}
 			}
 		}
@@ -305,7 +319,7 @@ public class Building{
 		System.out.println("接地等效长度le:" + le);
 		if (l > le) {
 			if (le <= lb) {
-				Ri = new Groundmat().gorizontalmat(H == 0d? p : (H > h? p : p1), Ls, 0d, 2 * pi * le, Math.pow(le, 2) * pi, h, bc, 0d);
+				Ri = new Groundmat().gorizontalmat(Sp, Ls, 0d, 2 * pi * le, Math.pow(le, 2) * pi, h, bc, 0d);
 				System.out.println("接地等效长度小于等于地网水平等效半径，冲击接地电阻Ri按水平地网计算");
 			} else {
 				//lrv:补加接地体的冲击有效长度
@@ -313,7 +327,7 @@ public class Building{
 				System.out.println("接地等效半径在地网水平等效半径与地网最大长度之间，冲击接地电阻Ri按复合地网计算");
 				System.out.println("lrv:"+lrv);
 				if (flag == 1) {
-					Ri = new Groundmat().emissivitygorizontal(p, a, 4 * lrv, new Groundmat().gorizontalmat(p, Ls,
+					Ri = new Groundmat().emissivitygorizontal(Sp, a, 4 * lrv, new Groundmat().gorizontalmat(Sp, Ls,
 							0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(p, bc, lrv, h, 1) / 4);
 				} else {
 					if(H == 0d) {
@@ -327,7 +341,11 @@ public class Building{
 				}
 			}
 		} else {
-			Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), l / le, R);
+			if(flag != null && flag == 2 && H > h) {
+				Ri = new Impulseconversion().convert(getpa(p, p1, H + l, h, l), l / le, R);
+			} else {
+				Ri = new Impulseconversion().convert(Sp, l / le, R);
+			}
 			System.out.println("接地等效半径大于地网最大长度");
 		}
 		System.out.println("冲击接地电阻Ri:"+Ri);
@@ -383,10 +401,6 @@ public class Building{
 		
 //		System.out.println(new Doubledeckground().gorizontalDoubledeckMat(2500d, 2000d, 4257d, 2d, 0.5, Totallengthofmat.totallenth(63.2), 63.2 * 4, 28d,
 //				4d, 0.05, 0.05));
-		
-		System.out.println("----------1----------------------------------------------");
-		System.out.println(new Building().design(2500d, 2d, 1700d, 4000d, 10d, 3, false));
-		System.out.println("----------2----------------------------------------------");
-		System.out.println(new Building().design(2400d, 2d, 1500d, 4000d, 10d, 2, true));
+		System.out.println(new Building().design(3000d, 2d, 2400d, 4000d, 8d, 1, false));
 	}
 }

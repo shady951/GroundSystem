@@ -17,6 +17,8 @@ public class Countresult {
 	private Double s;
 	private Double ni;
 	
+	public Countresult() {
+	}
 
 	public Countresult(Double R, Integer flag, Double lr, Double lv, Double S, Double m, Double n) {
 		this.R = R;

@@ -11,23 +11,22 @@ import enums.Gorizontalshape;
  */
 public class Groundmat {
 
-//	private static final double e = Math.E;
 	private static final double pi = Math.PI;
 	
 	public Groundmat() {
 	}
 	
-//	/**
-//	 * 计算基础接地网电阻(简化计算)
-//	 * @param p	土壤电阻率
-//	 * @param S	建筑面积
-//	 * @return R	接地电阻
-//	 */
-//	public double generalmat (Double p, Double S) {
-//		Double R = null;
-//		R = 0.44 * p / Math.sqrt(S);
-//		return R;
-//	}
+	/**
+	 * 计算基础接地网电阻(简化计算)
+	 * @param p	土壤电阻率
+	 * @param S	建筑面积
+	 * @return R	接地电阻
+	 */
+	public double generalmat (Double p, Double S) {
+		Double R = null;
+		R = 0.44 * p / Math.sqrt(S);
+		return R;
+	}
 	
 	/**
 	 * 计算水平接地电阻

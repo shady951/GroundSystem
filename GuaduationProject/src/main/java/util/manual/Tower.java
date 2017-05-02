@@ -53,6 +53,14 @@ public class Tower {
 		return L;
 	}
 	
+	/**
+	 * @return R 杆塔工频电阻要求值
+	 */
+	public Double getR(Double p) {
+		if(p <= 100) return 10d;
+		return 0.01 * p + 10d;
+	}
+	
 	
 	public static void main(String[] args) {
 		System.out.println(new Tower().gorizontal(1000d, 40d, 12d, 0.8, 0.05, 1));

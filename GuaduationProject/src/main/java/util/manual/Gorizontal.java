@@ -33,6 +33,6 @@ public class Gorizontal {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(new Gorizontal().gorizontal(100d, 0.02, 10d, 0d, 1));
+		System.out.println(new Gorizontal().gorizontal(500d, 0.05, 10d, 0.8d, 1));
 	}
 }
