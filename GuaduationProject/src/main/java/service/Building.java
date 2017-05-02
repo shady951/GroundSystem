@@ -12,9 +12,13 @@ import util.manual.Groundmat;
 
 public class Building{
 
+	//圆周率
 	public final double pi;
+	//地网或垂直接地体顶部埋深
 	public final double h;
+	//接地体水平等效直径
 	public final double bc;
+	//接地体垂直等效直径
 	public final double br;
 	
 	public Building() {
@@ -29,10 +33,10 @@ public class Building{
 	 * @param p		(上层)土壤电阻率
 	 * @param H		上层土壤深度(0为单层)
 	 * @param p1		下层土壤电阻率(0为单层)
-	 * @param S		 占地面积
+	 * @param S		占地面积
 	 * @param Rk		工频电阻要求值
-	 * @param type  防雷建筑分类
-	 * @param city	 土地资源是否受限
+	 * @param type	防雷建筑分类
+	 * @param city	土地资源是否受限
 	 * @return
 	 */
 	public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
@@ -197,13 +201,15 @@ public class Building{
 				Double Rr = null;
 				for (; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, new Groundmat().gorizontalmat(Sp, Ls,
 						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++);
-				System.out.println("可补加"+ir+"米水平接地体电阻Rr:"+Rr);
+//				System.out.println("可补加"+ir+"米水平接地体电阻Rr:"+Rr);
+				System.out.println("可补加4根"+ir/4+"米水平接地体电阻Rr:"+Rr);
 				if(Rr > Rk) {
 					for (; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, Rv1,
 							new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++);
 					flag = 3;
-					System.out.println("单纯补加水平接地体不可行，选择复合地网并补加接地体");
-					System.out.println("补加"+lv+"米垂直接地体"+n+"个，再补加总长度"+ir+"米水平接地体之后");
+					System.out.println("以水平为主的地网补加水平接地体的电阻未达要求,则以复合地网为基础补加水平接地体");
+//					System.out.println("补加"+lv+"米垂直接地体"+n+"个，再补加总长度"+ir+"米水平接地体之后");
+					System.out.println("补加"+lv+"米垂直接地体"+n+"个，再补加4根"+ir/4+"米水平接地体之后");
 					System.out.println("接地电阻R:"+Rr);
 				} else {
 					flag = 1;
@@ -401,6 +407,7 @@ public class Building{
 		
 //		System.out.println(new Doubledeckground().gorizontalDoubledeckMat(2500d, 2000d, 4257d, 2d, 0.5, Totallengthofmat.totallenth(63.2), 63.2 * 4, 28d,
 //				4d, 0.05, 0.05));
+//------------------------------------------------------------------p--,--H--,--p1--,---S---,--Rk--,-type-,-city
 		System.out.println(new Building().design(3000d, 2d, 2400d, 4000d, 8d, 1, false));
 	}
 }

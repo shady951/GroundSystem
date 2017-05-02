@@ -41,10 +41,10 @@ public class PowerStation extends Building {
 			System.out.println("-------------------按DL/T 620-1997. 7.16-7.17需增设集中接地装置-----------------------");
 			//变电站/所集中接地装置冲击电阻需小于10欧姆
 			// 优先补加直线型集中接地装置，因为占地少
-			Ri = straightscheme(p, p1, H, S, cs);
+			Ri = straightscheme(p, p1, H, S, cs, true);
 			// 当Ri位于10—12之间，补加接地模块比替换成环形接地装置更优
 			if (Ri > 12d)
-				Ri = linkscheme(p, p1, H, S, cs);
+				Ri = linkscheme(p, p1, H, S, cs, true);
 			if (cs.getindependent() == 1) {
 				System.out.println("加装直线型等距垂直接地");
 			} else {
@@ -85,7 +85,7 @@ public class PowerStation extends Building {
 		R = R * K;
 		cs.setR(R);
 		cs.setRi(Ri);
-		System.out.println("-----------为工频接地加装接地模块-------------------:");
+		System.out.println("-----------为地网加装接地模块-------------------:");
 		System.out.println("接地模块数量modulecount:" + modulecount);
 		System.out.println("接地模块降阻率:" + K);
 		System.out.println("R:" + R);
@@ -97,7 +97,7 @@ public class PowerStation extends Building {
 	}
 
 	/**
-	 * (DL/T 620-1997. 7.16-7.17)
+	 * (DL/T 620-1997 7.16-7.17)
 	 * 
 	 * @return 是否设置独立防雷接地装置
 	 */
@@ -132,7 +132,7 @@ public class PowerStation extends Building {
 		return 2 * Math.sqrt(getpa(p, p1, H, h, l));
 	}
 
-	private double straightscheme(Double p, Double p1, Double H, Double S, Countresult cs) {
+	protected double straightscheme(Double p, Double p1, Double H, Double S, Countresult cs, boolean needRi) {
 		// dr:地网等效直径，作为集中接地装置的最大布设距离
 		double dr = Math.sqrt(S / pi) * 2;
 		// l:接地体长度
@@ -151,11 +151,10 @@ public class PowerStation extends Building {
 		double ni = n;
 		// i:方案计数
 		int i = 0;
-		double R = 0;
+		double R = new Vertical().straightverticals(p, p1, H, br, l, h, s, n);
 		double Ra = 0;
 		// Ri:冲击接地电阻
-		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le,
-				new Vertical().straightverticals(p, p1, H, br, l, h, s, n));
+		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le, R);
 		// l最大不能超过地网等效直径或者60米
 		for (; (l = l == 3.5 ? 3d : l) < (le = getle(p, p1, H, l) < 60d ? getle(p, p1, H, l) : 60d); l++) {
 			// s的最大值需满足在有效长度之内
@@ -166,14 +165,24 @@ public class PowerStation extends Building {
 					// 遍历所有可行方案，选择Ri最小且垂直接地体数量小于15个的方案
 					if (Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le,
 							R = new Vertical().straightverticals(p, p1, H, br, l, h, s, n = getni(d, s))))) {
-						if (n <= 15) {
-							Ri = Ra;
-							li = l;
-							si = s;
-							di = d;
-							ni = n;
+						if(needRi) {
+							if (n <= 15) {
+								Ri = Ra;
+								li = l;
+								si = s;
+								di = d;
+								ni = n;
+								// System.out.println(Ri+"i:"+i);
+							}
+						} else {
+							if(R > (Ra = new Vertical().straightverticals(p, p1, H, br, l, h, s, n = getni(d, s)))) {
+								R = Ra;
+								li = l;
+								si = s;
+								di = d;
+								ni = n;
+							}
 						}
-						// System.out.println(Ri+"i:"+i);
 					}
 				}
 			}
@@ -189,15 +198,19 @@ public class PowerStation extends Building {
 		System.out.println("R:" + R);
 		System.out.println("Ri:" + Ri);
 		System.out.println("---------------------------------------------");
-		cs.setRi(Ri);
+		if(needRi) {
+			cs.setRi(Ri);
+		} else {
+			cs.setR(R);
+		}
 		cs.setindependent(1d);
 		cs.setl(li);
 		cs.sets(si);
 		cs.setni(ni);
-		return Ri;
+		return needRi? Ri : R;
 	}
 
-	private double linkscheme(Double p, Double p1, Double H, Double S, Countresult cs) {
+	protected double linkscheme(Double p, Double p1, Double H, Double S, Countresult cs, boolean needRi) {
 		// l:接地体长度
 		double l = 2.5d;
 		// s:接地体间距
@@ -211,10 +224,9 @@ public class PowerStation extends Building {
 		double ni = n;
 		double Ra;
 		int i = 0;
-		double R = 0;
+		double R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n);
 		// Ri:冲击接地电阻
-		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le,
-				new Vertical().linkverticals(p, p1, H, bc, l, h, s, n));
+		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le, R);
 		//l取2.5及大于2.5的正整数，小于接地体有效长度或60米
 		for (; (l = l == 3.5 ? 3d : l) < (getle(p, p1, H, l) < 60d ? getle(p, p1, H, l) : 60d); l++) {
 			//s需大于l的两倍，小于当n为3个时，s可达到最大值，s最大值构成的圆半径
@@ -222,22 +234,31 @@ public class PowerStation extends Building {
 				//为构成最基本的环形，n最小为3，最大值所构成的圆半径需小于建筑面积的等效圆半径和接地等效半径需且数量小于50个
 				for (n = 3; getr(s, n) <=  (Math.sqrt(S / pi) < le - l? Math.sqrt(S / pi) : le - l) && n <= 50d; n++) {
 					i++;
-					if (Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le,
-							R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n)))) {
-						//若没有小于10欧姆的，则选择Ri最小的方案
-						if (Ri >= 10d) {
-							Ri = Ra;
+					if(needRi) {
+						if (Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le,
+								R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n)))) {
+							//若没有小于10欧姆的，则选择Ri最小的方案
+							if (Ri >= 10d) {
+								Ri = Ra;
+								li = l;
+								si = s;
+								ni = n;
+								// System.out.println("一Ri:"+Ri+"i:"+i);
+								//若有小于10欧姆的，则在小于10欧的方案中选择耗材最小的
+							} else if (Ra < 10d && si * ni > s * n) {
+								Ri = Ra;
+								li = l;
+								si = s;
+								ni = n;
+								// System.out.println("二Ri:"+Ri+"i:"+i);
+							}
+						}
+					} else {
+						if(R > (Ra = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n))) {
+							R = Ra;
 							li = l;
 							si = s;
 							ni = n;
-							// System.out.println("一Ri:"+Ri+"i:"+i);
-							//若有小于10欧姆的，则在小于10欧的方案中选择耗材最小的
-						} else if (Ra < 10d && si * ni > s * n) {
-							Ri = Ra;
-							li = l;
-							si = s;
-							ni = n;
-							// System.out.println("二Ri:"+Ri+"i:"+i);
 						}
 					}
 				}
@@ -253,17 +274,22 @@ public class PowerStation extends Building {
 		System.out.println("R:" + R);
 		System.out.println("Ri:" + Ri);
 		System.out.println("---------------------------------------------");
-		cs.setRi(Ri);
+		if(needRi) {
+			cs.setRi(Ri);
+		} else {
+			cs.setR(R);
+		}
 		cs.setindependent(2d);
 		cs.setl(li);
 		cs.sets(si);
 		cs.setni(ni);
-		return Ri;
+		return needRi? Ri : R;
 	}
 
 	public static void main(String[] args) {
 		// new PowerStation().straightscheme(2500d, 1500d, 4d, 6000d);
-		System.out.println(new PowerStation().design(2400d, 2d, 1500d, 4000d, 10d, 110, true));
+		//-----------------------------------------------------------------p-----,--H--,--p1--,---S---,--Rk--,-type-,-city
+		System.out.println(new PowerStation().design(2400d, 2d, 1500d, 4000d, 8d, 110, true));
 	}
 
 }
