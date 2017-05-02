@@ -49,9 +49,9 @@ public class Doubledeckground {
 			Double h, Double L, Double L0, Double l, Double N, Double d, Double d0) {
 		Double R = null;
 		HashMap<String, Double> hm = getl(H, h, l);
-		Double l1 = hm.get("l1");
-		Double l2 = hm.get("l2");
-		Double k = getk(p1, p2);
+		Double l1 = hm.get("l1") + 0.001;
+ 		Double l2 = hm.get("l2") + 0.001;
+ 		Double k = getk(p1, p2);
 		Double Rhor = getRhor(p1, S, k, H, h, L, L0, d);
 		Double Rrod = getRrod(p1, p2, S, k, H, h, l, N, d0, l1, l2);
 		Double Rm = null;

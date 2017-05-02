@@ -28,6 +28,13 @@ public class Countresult {
 		this.n = n;
 	}
 
+	@Override
+	public String toString() {
+		return "Countresult [R=" + R + ", Ri=" + Ri + ", S=" + S + ", m=" + m + ", flag=" + flag + ", lr=" + lr + ", lv=" + lv + ", n=" + n
+				+ ", modulecount=" + modulecount + ", modulecounti=" + modulecounti + ", independent=" + independent + ", l=" + l + ", s="
+				+ s + ", ni=" + ni + "]";
+	}
+
 	public double getR() {
 		return R;
 	}

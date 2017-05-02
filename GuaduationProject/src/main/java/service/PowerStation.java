@@ -25,10 +25,9 @@ public class PowerStation extends Building{
 	public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
 		Countresult cs = getR(p, H, p1, S, Rk, 1, city);
 		double R = cs.getR();
-		double modulecount;
+		double modulecount = 0;
 		double K = 1d;
 		if (R > Rk) {
-			System.out.println("-----------为工频接地加装接地模块-------------------:");
 			double Rt = R;
 			modulecount = GroundModule.getcount(p, Rt, Rk);
 			K = GroundModule.getR(p, Rt, modulecount) / Rt;
@@ -37,11 +36,22 @@ public class PowerStation extends Building{
 		Double Ri;
 		//判断是否设置独立集中接地装置
 		if(isindependent(p, type)) {
+			System.out.println("-------------------按DL/T 620-1997. 7.16-7.17需增设集中接地装置-----------------------");
 			//优先补加直线型集中接地装置，因为占地少
 			Ri = straightscheme(p, p1, H, S, cs);
 			//当Ri位于10—12之间，补加接地模块比替换成环形接地装置更优
 			if(Ri > 12d) Ri = linkscheme(p, p1, H, S, cs);
 			//Ri大于10补加接地模块
+			if(cs.getindependent() == 1) {
+				System.out.println("加装直线型等距垂直接地");
+			} else {
+				System.out.println("加装环型等距垂直接地");
+			}
+			System.out.println("垂直接地体长度l:"+cs.getl());
+			System.out.println("垂直接地体间距s:"+cs.gets());
+			System.out.println("垂直接地体数量ni:"+cs.getni());
+			System.out.println("集中接地装置冲击接地电阻Ri:"+cs.getRi());
+			System.out.println("////////////////////////////////////////");
 			if(Ri > 10d) {
 				System.out.println("-----------为集中接地装置加装接地模块-------------------:");
 				double Rit = Ri;
@@ -49,28 +59,33 @@ public class PowerStation extends Building{
 				double Ki = GroundModule.getR(p, Rit, modulecounti) / Rit;
 				Ri = Ri * Ki;
 				cs.setmodulecounti(modulecounti);
+				cs.setRi(Ri);
+				System.out.println("接地模块数量modulecounti:" + modulecounti);
+				System.out.println("接地模块降阻率:" + Ki);
+				System.out.println("集中接地装置冲击接地电阻Ri:" + Ri);
+				System.out.println("////////////////////////////////////////");
 			}
 		} else {
 			Ri = getRi(p,H, p1, cs);
 			if (Ri * K > 10d) {
-				System.out.println("-----------为冲击接地加装接地模块-------------------:");
 				if(R > Rk) {
 					double Rit = Ri;
 					modulecount = GroundModule.getcount(p, Rit, 10d);
 					K = GroundModule.getR(p, Rit, modulecount) / Rit;
 					cs.setmodulecount(modulecount);
 				}
-//				System.out.println("接地模块数量modulecount:" + modulecount);
-//				System.out.println("接地模块降阻率:" + K);
-//				System.out.println("R:" + R);
-//				System.out.println("Ri:" + Ri);
-//				System.out.println("////////////////////////////////////////");
 			}
 			Ri = Ri * K;
 		}
 		R = R * K;
 		cs.setR(R);
 		cs.setRi(Ri);
+		System.out.println("-----------为工频接地加装接地模块-------------------:");
+		System.out.println("接地模块数量modulecount:" + modulecount);
+		System.out.println("接地模块降阻率:" + K);
+		System.out.println("R:" + R);
+		System.out.println("Ri:" + Ri);
+		System.out.println("////////////////////////////////////////");
 		System.out.println("最终R:"+R);
 		System.out.println("最终Ri:"+Ri);
 		return cs;
@@ -87,118 +102,123 @@ public class PowerStation extends Building{
 		return false;
 	}
 
-	private double linkscheme(Double p, Double p1, Double H, Double S, Countresult cs) {
-		double l = 2.5d;
-		double s = l;
-		double n = 3d;
-		double le = getle(p, p1, H, l);
-		double r = s * 0.5 / Math.sin(pi / n);
-		double li = l;
-		double si = s;
-		double ni = n;
-		double Ra;
-		int i  = 0;
-		double R = 0;
-		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (r+l) / le, new Vertical().linkverticals(p, p1, H, bc, l, h, s, n));
-		for(; (l = l == 3.5? 3d : l) < (getle(p, p1, H, l) < 60d? getle(p, p1, H, l) : 60d); l++) {
-			for(s = l * 2; s <= 2 * (le - l) * Math.sin(pi / 3); s++) {
-				for(n = 3; Math.pow(s * 0.5 / Math.sin(pi / n), 2) * pi <= S && s * 0.5 / Math.sin(pi / n) <= le - l && n <= 50d; n++) {
-					i++;
-					if(Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (s * 0.5 / Math.sin(pi / n)+ l ) / le,
-							R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n)))) {
-						if(Ri >= 10d) {
-							Ri = Ra;
-							li = l;
-							si = s;
-							ni = n;
-							System.out.println("一Ri:"+Ri+"i:"+i);
-						} else if(Ra < 10d && si * ni > s * n) {
-							Ri = Ra;
-							li = l;
-							si = s;
-							ni = n;
-							System.out.println("二Ri:"+Ri+"i:"+i);
-						}
-//						Ri = Ra;
-//						li = l;
-//						si = s;
-//						ni = n;
-//						System.out.println("Ri:"+Ri+"i:"+i);
-					}
-				}
-			}
-		}
-		System.out.println(i);
-		System.out.println("---------------------------------------------");
-		System.out.println("le:"+ le);
-		System.out.println("li:"+li);
-		System.out.println("si:"+si) ;
-		System.out.println("n:"+ ni);
-//		System.out.println(new Impulseconversion().convert(p, (d+l) / le, R = new Vertical().straightverticals(p, 0.05, l, 0.8,s, Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
-		System.out.println("R:"+  R);
-		System.out.println("Ri:"+Ri);
-//		System.out.println(new Impulseconversion().convert(getpa(p, p1, H, h, l1), (s1 * 0.5 / Math.sin(pi / 31d)+ l ) / le,new Vertical().linkverticals(p, p1, H, bc, l1, h, s1, 31d)));
-		cs.setRi(Ri);
-		cs.setindependent(2d);
-		cs.setl(li);
-		cs.sets(si);
-		cs.setni(ni);
-		return Ri; 
+	/**
+	 * @return 环形接地间距为s，数量为n所构成的圆的半径
+	 */
+	private double getr(Double s, Double n) {
+		return s * 0.5 / Math.sin(pi / n);
 	}
 	
-	public static void main(String[] args) {
-//		new PowerStation().straightscheme(2500d, 1500d, 4d, 6000d);
-//		new PowerStation().linkscheme(2500d, 1500d, 4d, 6000d);
+	/**
+	 * @return 由直线距离与接地体间距得出的最大接地体数量
+	 */
+	private double getni(Double d, Double s) {
+		return Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s);
 	}
 	
-	
+	/**
+	 * @return 双层土壤视在电阻率下的接地体有效长度
+	 */
 	private double getle(Double p, Double p1, Double H, Double l) {
 		return 2 * Math.sqrt(getpa(p, p1, H, h, l));
 	}
 	
-	
+	private double linkscheme(Double p, Double p1, Double H, Double S, Countresult cs) {
+			double l = 2.5d;
+			double s = l;
+			double n = 3d;
+			double le = getle(p, p1, H, l);
+			double li = l;
+			double si = s;
+			double ni = n;
+			double Ra;
+			int i  = 0;
+			double R = 0;
+			double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n)+l) / le, new Vertical().linkverticals(p, p1, H, bc, l, h, s, n));
+			for(; (l = l == 3.5? 3d : l) < (getle(p, p1, H, l) < 60d? getle(p, p1, H, l) : 60d); l++) {
+				for(s = l * 2; s <= 2 * (le - l) * Math.sin(pi / 3); s++) {
+					for(n = 3; Math.pow(getr(s, n), 2) * pi <= S && getr(s, n) <= le - l && n <= 50d; n++) {
+						i++;
+						if(Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n)+ l ) / le,
+								R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n)))) {
+							if(Ri >= 10d) {
+								Ri = Ra;
+								li = l;
+								si = s;
+								ni = n;
+	//							System.out.println("一Ri:"+Ri+"i:"+i);
+							} else if(Ra < 10d && si * ni > s * n) {
+								Ri = Ra;
+								li = l;
+								si = s;
+								ni = n;
+	//							System.out.println("二Ri:"+Ri+"i:"+i);
+							}
+						}
+					}
+				}
+			}
+			System.out.println("---------------------------------------------");
+			System.out.println("环形排列的有效方案一共i:"+i+"个");
+			System.out.println("接地体有效长度le:"+ getle(p, p1, H, li));
+			System.out.println("接地体实际最大长度:"+ getr(si, ni) + li);
+			System.out.println("l:"+li);
+			System.out.println("s:"+si) ;
+			System.out.println("n:"+ ni);
+			System.out.println("R:"+  R);
+			System.out.println("Ri:"+Ri);
+			System.out.println("---------------------------------------------");
+			cs.setRi(Ri);
+			cs.setindependent(2d);
+			cs.setl(li);
+			cs.sets(si);
+			cs.setni(ni);
+			return Ri; 
+		}
+
 	private double straightscheme(Double p, Double p1, Double H, Double S, Countresult cs) {
-		double r2 = Math.sqrt(S / pi) * 2;
+		double dr = Math.sqrt(S / pi) * 2;
 		double l = 2.5d;
 		double le = getle(p, p1, H, l);
 		double s = l;
 		double d = s;
 		double li = l;
 		double si = s;
-		double d1 = d;
+		double di = d;
 		int i  = 0;
 		double R = 0;
 		double Ra;
 		double ni;
 		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l) , (d / 2 +l) / le, 
-				new Vertical().straightverticals(p, p1, H, br, l, h,s,ni = Math.ceil(d / s) == d / s? Math.ceil(d / s) + 1 : Math.ceil(d / s)));
+				new Vertical().straightverticals(p, p1, H, br, l, h,s,ni = getni(d, s)));
 		for(; (l = l == 3.5? 3d : l) < (le = getle(p, p1, H, l) < 60d? getle(p, p1, H, l) : 60d); l++) {
 			for(s = l  ; s <= (le - l) * 2; s++) {
-				for(d = s; d <= ((le - l) * 2 < r2?  (le - l) * 2 : r2); d++) {
+				for(d = s; d <= ((le - l) * 2 < dr?  (le - l) * 2 : dr); d++) {
 					i++;
 					if(Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le, 
-							R = new Vertical().straightverticals(p, p1, H, br, l, h,s,ni = Math.ceil(d / s) == d /s? Math.ceil(d / s) + 1 : Math.ceil(d / s))))) {
+							R = new Vertical().straightverticals(p, p1, H, br, l, h,s,ni = getni(d, s))))) {
 						if(ni <= 10) {
 							Ri = Ra;
 							li = l;
 							si = s;
-							d1 = d;
+							di = d;
 						}
-						System.out.println(Ri+"i:"+i);
+//						System.out.println(Ri+"i:"+i);
 					}
 				}
 			}
 		}
-		System.out.println("i:"+i);
 		System.out.println("---------------------------------------------");
-		System.out.println("r2:"+r2);
-		System.out.println("le:"+ getle(p, p1, H, li));
-		System.out.println("l1:"+li);
-		System.out.println("s1:"+si) ;
-		System.out.println("d1:"+d1) ;
-		System.out.println("n:"+ (Math.ceil(d1 / si) == d1 / si? Math.ceil(d1 / si) + 1 : Math.ceil(d1 / si)));
+		System.out.println("直线排列的有效方案一共i:"+i+"个");
+		System.out.println("接地体最大排列长度dr:"+dr);
+		System.out.println("接地体有效长度le:"+ getle(p, p1, H, li));
+		System.out.println("接地体实际最大长度:"+ di);
+		System.out.println("l:"+li);
+		System.out.println("s:"+si) ;
+		System.out.println("n:"+ getni(di, si));
 		System.out.println("R:"+ R);
 		System.out.println("Ri:"+Ri);
+		System.out.println("---------------------------------------------");
 		cs.setRi(Ri);
 		cs.setindependent(1d);
 		cs.setl(li);
@@ -207,5 +227,9 @@ public class PowerStation extends Building{
 		return Ri;
 	}
 
+	public static void main(String[] args) {
+//		new PowerStation().straightscheme(2500d, 1500d, 4d, 6000d);
+		System.out.println(new PowerStation().design(2400d, 2d, 1500d, 4000d, 10d, 110, true));
+	}
 	
 }
