@@ -196,7 +196,7 @@ public class PowerStation extends Building {
 		System.out.println("s:" + si);
 		System.out.println("n:" + ni);
 		System.out.println("R:" + R);
-		System.out.println("Ri:" + Ri);
+		if(needRi) System.out.println("Ri:" + Ri);
 		System.out.println("---------------------------------------------");
 		if(needRi) {
 			cs.setRi(Ri);
@@ -272,7 +272,7 @@ public class PowerStation extends Building {
 		System.out.println("s:" + si);
 		System.out.println("n:" + ni);
 		System.out.println("R:" + R);
-		System.out.println("Ri:" + Ri);
+		if(needRi) System.out.println("Ri:" + Ri);
 		System.out.println("---------------------------------------------");
 		if(needRi) {
 			cs.setRi(Ri);

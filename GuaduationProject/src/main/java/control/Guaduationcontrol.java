@@ -14,11 +14,14 @@ import util.manual.Gorizontal;
 import util.manual.Groundmat;
 import util.manual.Tower;
 import util.manual.Vertical;
-
+/**
+ * (此类目前作废)
+ * @author tc
+ *
+ */
 @Controller
 @RequestMapping
 public class Guaduationcontrol {
-	
 	@Autowired
 	private Groundmat groundmat;
 	@Autowired
@@ -55,12 +58,12 @@ public class Guaduationcontrol {
 		switch(type) {
 		case "1":	R = vertical.vertical(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h));
 			break;
-		case "2":	R = vertical.straightverticals(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Double.valueOf(s), Double.valueOf(n));
-			break;
+//		case "2":	R = vertical.straightverticals(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Double.valueOf(s), Double.valueOf(n));
+//			break;
 //		case "3":	R = vertical.linkverticals(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Double.valueOf(s), Double.valueOf(n));
 //			break;
 		}
-		return new Countresult(R);
+		return new Countresult();
 	}
 	
 	/**
@@ -80,7 +83,7 @@ public class Guaduationcontrol {
 			@RequestParam() String l, @RequestParam() String h, @RequestParam() String index, @RequestParam() String indexG) {
 		Double d = getd(index, b0, b1);
 		Double R = gorizontal.gorizontal(Double.valueOf(p), d, Double.valueOf(l), Double.valueOf(h), Integer.valueOf(indexG));
-		return new Countresult(R);
+		return new Countresult();
 	}
 	
 	/**
@@ -119,7 +122,7 @@ public class Guaduationcontrol {
 			groundmat.verticalmat(Double.valueOf(p), Double.valueOf(Lc), Double.valueOf(Lr), Double.valueOf(L0), Double.valueOf(S),
 					Double.valueOf(h), bc, br, Double.valueOf(n));
 		}
-		return new Countresult(R);
+		return new Countresult();
 	}
 	
 	/**
@@ -142,7 +145,7 @@ public class Guaduationcontrol {
 		Double d = getd(index, b0, b1);
 		Double R = tower.gorizontal(Double.valueOf(p), Double.valueOf(L1), Double.valueOf(L2), Double.valueOf(h), d,
 									Integer.valueOf(indexT));
-		return new Countresult(R);
+		return new Countresult();
 	}
 	
 	/**
@@ -158,7 +161,7 @@ public class Guaduationcontrol {
 	public Countresult verticalDoubledeckMat(@RequestParam() String p1, @RequestParam() String p2, @RequestParam() String A1, 
 			@RequestParam() String S) {
 		Double R = doubledeckground.verticalDoubledeckMat(Double.valueOf(p1), Double.valueOf(p2), Double.valueOf(A1), Double.valueOf(S));
-		return new Countresult(R);
+		return new Countresult();
 	}
 	
 	/**
@@ -201,7 +204,7 @@ public class Guaduationcontrol {
 		case "3":	R = doubledeckground.gorizontalDoubledeckverticals(Double.valueOf(p1), Double.valueOf(p2), Double.valueOf(S), 
 				Double.valueOf(H), Double.valueOf(h), Double.valueOf(L0), Double.valueOf(Lr), Double.valueOf(n), d0);
 		}
-		return new Countresult(R);
+		return new Countresult();
 	}
 	
 	/**
@@ -224,5 +227,4 @@ public class Guaduationcontrol {
 		}
 		return d;
 	}
-	
 }

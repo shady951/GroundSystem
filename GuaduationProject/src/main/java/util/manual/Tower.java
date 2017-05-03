@@ -34,7 +34,7 @@ public class Tower {
 	}
 	
 	public double gorizontal(Double p, Double L, Double h, Double d) {
-		return gorizontal(p, L/ 2, L/ 2, h, d, 3);
+		return gorizontal(p, L/ 4, L/ 4, h, d, 4);
 	}
 
 	/**
