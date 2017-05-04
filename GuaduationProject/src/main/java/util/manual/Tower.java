@@ -33,6 +33,14 @@ public class Tower {
 		return R;
 	}
 	
+	/**
+	 * 电杆环形杆塔接地电阻
+	 * @param p	土壤电阻率
+	 * @param L	环形周长
+	 * @param h	埋深
+	 * @param d	水平接地体等效直径
+	 * @return R
+	 */
 	public double gorizontal(Double p, Double L, Double h, Double d) {
 		return gorizontal(p, L/ 4, L/ 4, h, d, 4);
 	}
@@ -58,6 +66,7 @@ public class Tower {
 	}
 	
 	/**
+	 * @param p 土壤电阻率
 	 * @return R 杆塔工频电阻要求值
 	 */
 	public static Double getR(Double p) {
@@ -67,6 +76,7 @@ public class Tower {
 	}
 
 	/**
+	 * @param p 土壤电阻率
 	 * @return lt 杆塔放射形接地极每根最大长度
 	 */
 	public static Double Getlt(Double p) {
@@ -76,8 +86,8 @@ public class Tower {
 	}
 	
 	
-	public static void main(String[] args) {
-		System.out.println(new Tower().gorizontal(1000d, 40d, 12d, 0.8, 0.05, 1));
-	}
+//	public static void main(String[] args) {
+//		System.out.println(new Tower().gorizontal(1000d, 40d, 12d, 0.8, 0.05, 1));
+//	}
 	
 }
