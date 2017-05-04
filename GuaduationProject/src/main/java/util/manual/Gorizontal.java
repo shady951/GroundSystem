@@ -32,7 +32,7 @@ public class Gorizontal {
 		return r;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(new Gorizontal().gorizontal(500d, 0.05, 10d, 0.8d, 1));
-	}
+//	public static void main(String[] args) {
+//		System.out.println(new Gorizontal().gorizontal(500d, 0.05, 10d, 0.8d, 1));
+//	}
 }
