@@ -33,5 +33,4 @@ public enum Towergroundingshape {
 	public double getB() {
 		return B;
 	}
-
 }
