@@ -5,6 +5,7 @@ import java.util.HashMap;
 /**
  * 双层土壤接地电阻计算模块
  * @author tc
+ * 
  */
 public class Doubledeckground {
 	private static final double pi = Math.PI;
