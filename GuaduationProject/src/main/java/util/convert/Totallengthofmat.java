@@ -43,7 +43,8 @@ public class Totallengthofmat {
 		return n;
 	}
 	
-//	public static void main(String[] args) {
-//		System.out.println(new Totallengthofmat().amount(25d));
-//	}
+	public static void main(String[] args) {
+		System.out.println(Totallengthofmat.amount(25d));
+		System.out.println(Totallengthofmat.totallenth(30d));
+	}
 }
