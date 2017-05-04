@@ -10,6 +10,11 @@ import util.convert.Totallengthofmat;
 import util.manual.Doubledeckground;
 import util.manual.Groundmat;
 
+/**
+ * 普通建筑接地设计
+ * @author tc
+ *
+ */
 public class Building{
 
 	//圆周率
@@ -35,12 +40,13 @@ public class Building{
 	 * @param p1		下层土壤电阻率(0为单层)
 	 * @param S		占地面积
 	 * @param Rk		工频电阻要求值
-	 * @param type	防雷建筑分类
+	 * @param type	防雷建筑分类(1:一类防雷建筑物 2:二类防雷建筑物 3:三类防雷建筑物)
 	 * @param city	土地资源是否受限
 	 * @return
 	 */
 	public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
 		Countresult cs = getR(p, H, p1, S, Rk, type, city);
+		cs.setstyle(1);
 		double R = cs.getR();
 		double Ri = getRi(p,H, p1, cs);
 		double modulecount = 0;
@@ -295,13 +301,14 @@ public class Building{
 	 * (防雷规范2.6.5)
 	 * 计算冲击接地电阻
 	 * @param p
+	 * @param H
+	 * @param p1
 	 * @param S
-	 * @param a
-	 * @param r
 	 * @param lr
 	 * @param lv
 	 * @param flag
 	 * @param R
+	 * @param n
 	 * @return
 	 */
 	protected Double getRi(Double p,Double H, Double p1, Double S, Double lr, Double lv, Integer flag, Double R, Double n) {
@@ -347,11 +354,11 @@ public class Building{
 				} else {
 					if(H == 0d) {
 						System.out.println("冲击接地电阻Ri按单层土壤复合地网计算");
-						Ri = new Groundmat().verticalmat(p, Ls, lrv, a * 4, S, h, bc, br,Totallengthofmat.amount(a));
+						Ri = new Groundmat().verticalmat(p, Ls, lrv, a * 4, S, h, bc, br,n);
 					} else {
 						System.out.println("冲击接地电阻Ri按双层土壤复合地网计算");
 							Ri = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls,
-										a * 4, lrv,lv < 3d ? Totallengthofmat.amount(a) : n, bc, br);
+										a * 4, lrv,n, bc, br);
 					}
 				}
 			}
