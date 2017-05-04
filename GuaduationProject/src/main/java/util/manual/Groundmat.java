@@ -1,6 +1,5 @@
 package util.manual;
 
-import util.convert.Totallengthofmat;
 import enums.Gorizontalshape;
 
 
@@ -202,27 +201,26 @@ public class Groundmat {
 //		return X;
 //	}
 	
-//		System.out.println(new Counterpoisegrounding().verticalCounterpoise(200d, 1000d, 2d, 400d, 10000d, 0.8, 0.05, 0.05, 4d));//1.098欧
 	
-	public static void main(String[] args) {
-		System.out.println(new Groundmat().verticalmat(250d, 3040d, 50d, 640d, 25600d, 0.6, 0.01, 0.025, 1d));
-		System.out.println(new Groundmat().verticalmat(800d, 1500d, 2.5d, 280d, 4800d, 0.8, 0.02, 0.05, 62d));
-		System.out.println(new Groundmat().gorizontalmat(1300d,144d, 0d, 72d, 324d, 0.8d, 0.05, 0d));
+//	public static void main(String[] args) {
+//		System.out.println(new Groundmat().verticalmat(250d, 3040d, 50d, 640d, 25600d, 0.6, 0.01, 0.025, 1d));
+//		System.out.println(new Groundmat().verticalmat(800d, 1500d, 2.5d, 280d, 4800d, 0.8, 0.02, 0.05, 62d));
+//		System.out.println(new Groundmat().gorizontalmat(1300d,144d, 0d, 72d, 324d, 0.8d, 0.05, 0d));
 //		System.out.println(new Groundmat().generalmat(1300d, 324d));
-		System.out.println(new Groundmat().gorizontalmat(1300d,600d, 0d, 200d, 2500d, 0.8d, 0.05, 0d));
+//		System.out.println(new Groundmat().gorizontalmat(1300d,600d, 0d, 200d, 2500d, 0.8d, 0.05, 0d));
 //		System.out.println(new Groundmat().generalmat(1300d, 2500d));
-		System.out.println("//////////////////////////");
+//		System.out.println("//////////////////////////");
 //		System.out.println(new Groundmat().generalmat(1000d, 400d));
-		System.out.println(new Groundmat().gorizontal(1000d, 0.05, 20d, 0.5, 1));
-		System.out.println(new Groundmat().emissivitygorizontal(1000d, 20d, 80d, 22.0, 72.24318203));
-		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 2d));
-		System.out.println(new Groundmat().verticalmat(1000d, 120d, 20d, 80d, 400d, 0.5, 0.05, 0.05, 2d));
-		System.out.println(new Groundmat().verticalmat(1000d, 120d, 0d, 80d, 400d, 0.5, 0.05, 0d, 0d));
-		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
-		System.out.println(new Groundmat().verticalmat(1000d, 120d, 3d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
+//		System.out.println(new Groundmat().gorizontal(1000d, 0.05, 20d, 0.5, 1));
+//		System.out.println(new Groundmat().emissivitygorizontal(1000d, 20d, 80d, 22.0, 72.24318203));
+//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 2d));
+//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 20d, 80d, 400d, 0.5, 0.05, 0.05, 2d));
+//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 0d, 80d, 400d, 0.5, 0.05, 0d, 0d));
+//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
+//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 3d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
 //		System.out.println(new Groundmat().generalmat(1000d, 750d));
-		double a = Math.sqrt(2728d);
-		System.out.println(new Groundmat().gorizontalmat(320d, Totallengthofmat.totallenth(a), 0d, 4 * a, 2728d, 0.5, 0.05, 0d));
-	}
+//		double a = Math.sqrt(2728d);
+//		System.out.println(new Groundmat().gorizontalmat(320d, Totallengthofmat.totallenth(a), 0d, 4 * a, 2728d, 0.5, 0.05, 0d));
+//	}
 	
 }
