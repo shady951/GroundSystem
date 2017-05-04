@@ -1,7 +1,7 @@
 package enums;
 
 /**
- * 水平接地形状系数枚举
+ * 水平接地形状系数枚举 
  * @author tc
  *
  */
