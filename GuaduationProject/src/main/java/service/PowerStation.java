@@ -5,6 +5,11 @@ import util.convert.Impulseconversion;
 import util.manual.Vertical;
 import dto.Countresult;
 
+/**
+ * 变电站/所接地设计
+ * @author tc
+ *
+ */
 public class PowerStation extends Building {
 
 	public PowerStation() {
@@ -12,19 +17,19 @@ public class PowerStation extends Building {
 
 	/**
 	 * 变电站/所接地设计
-	 * 
-	 * @param p
-	 * @param H
-	 * @param p1
-	 * @param S
-	 * @param Rk
-	 * @param type	配电电压规模
-	 * @param city
+	 * @param p		(上层)土壤电阻率
+	 * @param H		上层土壤深度(0为单层)
+	 * @param p1		下层土壤电阻率(0为单层)
+	 * @param S		占地面积
+	 * @param Rk		工频电阻要求值
+	 * @param type	配电电压规模(500kv;220kv;110kv;66kv;35kv;20kv)
+	 * @param city	土地资源是否受限
 	 * @return
 	 */
 	@Override
 	public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
 		Countresult cs = getR(p, H, p1, S, Rk, 1, city);
+		cs.setstyle(2);
 		double R = cs.getR();
 		double modulecount = 0;
 		double K = 1d;
