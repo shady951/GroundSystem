@@ -18,6 +18,7 @@ public class Impulseconversion {
 	 * @return Ri	冲击接地电阻值
 	 */
 	public Double convert(Double p, Double Lk, Double R) {
+		if(Lk > 1.1) Lk = 1.1d;
 		if(p > 3000) p = 3000d;
 		Double Ri = null;
 		Double k = getk(p);
@@ -47,7 +48,6 @@ public class Impulseconversion {
 		System.out.println(new Impulseconversion().convert(1700d, 0.5, 1d));//1.975
 		System.out.println(new Impulseconversion().convert(2000d, 0.5, 1d));//2.125
 		System.out.println(new Impulseconversion().convert(3001d, 0.5, 1d));//2.125
-		System.out.println(new Impulseconversion().convert(2500d, 0.38, 85d));
 	}
 	
 	
