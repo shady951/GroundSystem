@@ -1,5 +1,6 @@
-package service;
+package service.impl;
 
+import service.Ground;
 import util.manual.Groundmat;
 import util.manual.Tower;
 import dto.Countresult;
@@ -9,7 +10,7 @@ import dto.Countresult;
  * @author tc
  *
  */
-public class Towers extends PowerStation {
+public class Towers extends PowerStation implements Ground {
 
 	public Towers() {
 	}
@@ -59,7 +60,7 @@ public class Towers extends PowerStation {
 			System.out.println("增设4根水平放射接地体"+l0+"米");
 			System.out.println("工频接地电阻R:"+R);
 			if(R < Rk) {
-				//l0长度修正
+				//长度修正
 				l0 = l0 == 1d? 1d : l0 - 1d;
 				Ri = getRi(p, H, p1, S, l0 * 4, 0d, 1, R, 0d);
 				cs = new Countresult(3, R, Ri, S, 1, l0, 2);
@@ -114,7 +115,7 @@ public class Towers extends PowerStation {
 				double l2 = 1;
 				for(; (R = new Tower().gorizontal(Sp, l2, l2, h, bc, 2)) > Rk && l2 < le && l2 < lt; l2++);
 				if(R < Rk) {
-					//l0长度修正
+					//长度修正
 					l2 = l2 == 1d? 1d : l2 - 1d;
 					Ri = getRi(p, H, p1, 0d, l2 * 4, 0d, 1, R, 0d);
 					System.out.println("铺设4根长度为"+l2+"米的放射形接地装置");

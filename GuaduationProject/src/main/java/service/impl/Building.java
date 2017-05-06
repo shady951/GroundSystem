@@ -1,9 +1,10 @@
-package service;
+package service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import dto.Countresult;
+import service.Ground;
 import util.convert.GroundModule;
 import util.convert.Impulseconversion;
 import util.convert.Totallengthofmat;
@@ -15,22 +16,9 @@ import util.manual.Groundmat;
  * @author tc
  *
  */
-public class Building{
+public class Building implements Ground{
 
-	//圆周率
-	public final double pi;
-	//地网或垂直接地体顶部埋深
-	public final double h;
-	//接地体水平等效直径
-	public final double bc;
-	//接地体垂直等效直径
-	public final double br;
-	
 	public Building() {
-		this.pi = Math.PI;
-		this.h = 0.8;
-		this.bc = 0.05;
-		this.br = 0.05;
 	}
 
 	/**
@@ -40,10 +28,11 @@ public class Building{
 	 * @param p1		下层土壤电阻率(0为单层)
 	 * @param S		占地面积
 	 * @param Rk		工频电阻要求值
-	 * @param type	防雷建筑分类(1:一类防雷建筑物 2:二类防雷建筑物 3:三类防雷建筑物)
+	 * @param type	防雷建筑分类(2:二类防雷建筑物 3:三类防雷建筑物)
 	 * @param city	土地资源是否受限
 	 * @return
 	 */
+	@Override
 	public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
 		Countresult cs = getR(p, H, p1, S, Rk, type, city);
 		cs.setstyle(1);
@@ -83,7 +72,18 @@ public class Building{
 		cs.setRi(Ri);
 		return cs;
 	}
-
+	
+	/**
+	 * 工频接地电阻计算模块
+	* @param p		(上层)土壤电阻率
+	 * @param H		上层土壤深度(0为单层)
+	 * @param p1		下层土壤电阻率(0为单层)
+	 * @param S		占地面积
+	 * @param Rk		工频电阻要求值
+	 * @param type	(0:不计算防雷规范 1:一类防雷建筑 2:变电站/二类防雷建筑 3:三类防雷建筑)
+	 * @param city
+	 * @return
+	 */
 	protected Countresult getR(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
 		System.out.println("建筑面积S:"+getS(S, 2d));
 		if(city){
@@ -146,17 +146,17 @@ public class Building{
 				if (Rr > Rv) {
 					System.out.println("补加"+lv+"米垂直接地体");
 					R = Rv;
-					flag = 2;
+					flag = 5;
 				} else {
 					System.out.println("补加"+lr+"米水平接地体");
 					R = Rr;
-					flag = 1;
+					flag = 4;
 				}
 			} else {
 				System.out.println("在城市,只能补加垂直接地体");
 				System.out.println("补加"+lv+"米垂直接地体");
 				R = Rv;
-				flag = 2;
+				flag = 5;
 			}
 			System.out.println("flag:"+flag);
 			System.out.println("工频接地电阻R:"+R);

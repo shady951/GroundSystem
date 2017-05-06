@@ -6,8 +6,8 @@ package util.convert;
  */
 public class Equivalentdiameter {
 
-	public Equivalentdiameter() {
-	}
+//	public Equivalentdiameter() {
+//	}
 	
 	public static double getEequivalentdiameter(int index, Double b) {
 		Double d = b;

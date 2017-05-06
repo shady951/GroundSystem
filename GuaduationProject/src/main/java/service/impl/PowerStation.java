@@ -1,5 +1,6 @@
-package service;
+package service.impl;
 
+import service.Ground;
 import util.convert.GroundModule;
 import util.convert.Impulseconversion;
 import util.manual.Vertical;
@@ -10,26 +11,35 @@ import dto.Countresult;
  * @author tc
  *
  */
-public class PowerStation extends Building {
+public class PowerStation extends Building implements Ground{
 
 	public PowerStation() {
 	}
 
 	/**
-	 * 变电站/所接地设计
+	 * 变电站/一类防雷建筑接地设计
 	 * @param p		(上层)土壤电阻率
 	 * @param H		上层土壤深度(0为单层)
 	 * @param p1		下层土壤电阻率(0为单层)
 	 * @param S		占地面积
 	 * @param Rk		工频电阻要求值
-	 * @param type	配电电压规模(500kv;220kv;110kv;66kv;35kv;20kv)
+	 * @param type	配电电压规模(500kv;220kv;110kv;66kv;35kv;20kv)(1:一类防雷建筑)
 	 * @param city	土地资源是否受限
 	 * @return
 	 */
 	@Override
 	public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
-		Countresult cs = getR(p, H, p1, S, Rk, 1, city);
-		cs.setstyle(2);
+		Countresult cs;
+		if(type == 1) {
+			cs = getR(p, H, p1, S, Rk, 1, city);
+		} else {
+			cs = getR(p, H, p1, S, Rk, 2, city);
+		}
+		if(type == 1) {
+			cs.setstyle(1);
+		} else {
+			cs.setstyle(2);
+		}
 		double R = cs.getR();
 		double modulecount = 0;
 		double K = 1d;

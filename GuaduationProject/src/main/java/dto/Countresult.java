@@ -2,7 +2,7 @@ package dto;
 
 /**
  * 数据传输bean类
- * @author hasee
+ * @author tc
  *
  */
 public class Countresult {
@@ -12,7 +12,7 @@ public class Countresult {
 	private double Ri;		//冲击接地电阻
 	private double S;		//地网面积
 	private double m;		//外延长度
-	private Integer flag;	//接地体补加形式(1:只补加水平接地体 2:只补加垂直接地体 3:都补加)
+	private Integer flag;	//接地体补加形式(1:只补加水平接地体 2:只补加垂直接地体 3:都补加 4:根据防雷规范补加水平接地体 5:根据根据防雷规范补加垂直接地体)
 	private double lr;		//单根水平接地体长度
 	private double lv;		//单根垂直接地体长度
 	private double n;		//垂直接地体数量
@@ -23,7 +23,7 @@ public class Countresult {
 	private double s;		//集中接地装置接地体之间的间距
 	private double ni;		//集中接地装置的接地体数量
 	private double r;		//电杆环形接地装置的半径
-	private double kind;//杆塔接地形式(1:自然接地 2:铁塔放射形 3:电杆放射形 4:电杆环形)
+	private int kind;//杆塔接地形式(1:自然接地 2:铁塔放射形 3:电杆放射形 4:电杆环形)
 	
 	public Countresult() {
 	}
@@ -238,11 +238,11 @@ public class Countresult {
 		this.r = r;
 	}
 	
-	public double getkind() {
+	public int getkind() {
 		return kind;
 	}
 
-	public void setkind(double kind) {
+	public void setkind(int kind) {
 		this.kind = kind;
 	}
 	
