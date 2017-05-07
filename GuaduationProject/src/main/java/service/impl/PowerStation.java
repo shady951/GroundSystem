@@ -1,5 +1,7 @@
 package service.impl;
 
+import org.springframework.stereotype.Service;
+
 import service.Ground;
 import util.convert.GroundModule;
 import util.convert.Impulseconversion;
@@ -11,6 +13,7 @@ import dto.Countresult;
  * @author tc
  *
  */
+@Service
 public class PowerStation extends Building implements Ground{
 
 	public PowerStation() {
@@ -35,11 +38,7 @@ public class PowerStation extends Building implements Ground{
 		} else {
 			cs = getR(p, H, p1, S, Rk, 2, city);
 		}
-		if(type == 1) {
-			cs.setstyle(1);
-		} else {
-			cs.setstyle(2);
-		}
+		cs.setstyle(2);
 		double R = cs.getR();
 		double modulecount = 0;
 		double K = 1d;

@@ -1,5 +1,7 @@
 package service.impl;
 
+import org.springframework.stereotype.Service;
+
 import service.Ground;
 import util.manual.Groundmat;
 import util.manual.Tower;
@@ -10,6 +12,7 @@ import dto.Countresult;
  * @author tc
  *
  */
+@Service
 public class Towers extends PowerStation implements Ground {
 
 	public Towers() {

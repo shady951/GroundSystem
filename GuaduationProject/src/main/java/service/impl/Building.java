@@ -3,8 +3,12 @@ package service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import dto.Countresult;
+import dto.Data;
 import service.Ground;
+import util.change.Change;
 import util.convert.GroundModule;
 import util.convert.Impulseconversion;
 import util.convert.Totallengthofmat;
@@ -16,6 +20,7 @@ import util.manual.Groundmat;
  * @author tc
  *
  */
+@Service
 public class Building implements Ground{
 
 	public Building() {
@@ -101,7 +106,7 @@ public class Building implements Ground{
 		if (new Groundmat().gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))), 0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk && !city) {
 			for (; getS(S, m) < 2 * S && new Groundmat().gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))),
 					0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk; m++);
-			m -= m;
+			m -= 1;
 		}
 		S = getS(S, m);
 		// 等效圆半径
@@ -116,7 +121,7 @@ public class Building implements Ground{
 		System.out.println("外延距离:" + m/2);
 		System.out.println("最终地网面积S:" + S);
 		System.out.println("工频接地电阻R:" + R);
-		Integer flag = null;
+		int flag = 0;
 		double lr = 0d;
 		double lv = 0d;
 		// 防雷规范2.5，是否补加接地体
@@ -325,17 +330,15 @@ public class Building implements Ground{
 		Double le = 2 * Math.sqrt(Sp);
 		Double lb = r;
 		Double l = lb;
-		if (flag != null) {
-			if (flag == 1) {
+			if (flag == 1 || flag == 4) {
 				l += lr / 4;
 			}
-			if (flag == 2) {
+			if (flag == 2 || flag == 5) {
 				l += lv;
 				if(H > h) {
 					le = 2 * Math.sqrt(getpa(p, p1, H + l, h, l));
 				}
 			}
-		}
 		System.out.println("地网水平等效半径r:" + r);
 		System.out.println("地网最大长度l:" + l);
 		System.out.println("接地等效长度le:" + le);
@@ -363,7 +366,7 @@ public class Building implements Ground{
 				}
 			}
 		} else {
-			if(flag != null && flag == 2 && H > h) {
+			if((flag == 2 || flag == 5) && H > h) {
 				Ri = new Impulseconversion().convert(getpa(p, p1, H + l, h, l), l / le, R);
 			} else {
 				Ri = new Impulseconversion().convert(Sp, l / le, R);
@@ -425,6 +428,10 @@ public class Building implements Ground{
 //				4d, 0.05, 0.05));
 //------------------------------------------------------------------p--,--H--,--p1--,---S---,--Rk--,-type-,-city
 //		System.out.println(new Building().design(3000d, 2d, 2400d, 4000d, 8d, 1, false));
-		System.out.println(new Building().design(1200d, 2d, 800d, 4000d, 4d, 1, false));
+		Data dt = new Data(5, 1200d, 2d, 800d, 4000d, 4d, 2, true);
+		Countresult cs;
+		System.out.println(cs = new PowerStation().design(1200d, 2d, 800d, 4000d, 4d, 2, true));
+		System.out.println(Change.getResult(cs, dt).getplan());
+		
 	}
 }

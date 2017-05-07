@@ -12,7 +12,7 @@ public class Countresult {
 	private double Ri;		//冲击接地电阻
 	private double S;		//地网面积
 	private double m;		//外延长度
-	private Integer flag;	//接地体补加形式(1:只补加水平接地体 2:只补加垂直接地体 3:都补加 4:根据防雷规范补加水平接地体 5:根据根据防雷规范补加垂直接地体)
+	private int flag;	//接地体补加形式(1:只补加水平接地体 2:只补加垂直接地体 3:都补加 4:根据防雷规范补加水平接地体 5:根据根据防雷规范补加垂直接地体)
 	private double lr;		//单根水平接地体长度
 	private double lv;		//单根垂直接地体长度
 	private double n;		//垂直接地体数量
@@ -38,7 +38,7 @@ public class Countresult {
 	 * @param m		外延长度
 	 * @param n		垂直接地体数量
 	 */
-	public Countresult(double R, Integer flag, double lr, double lv, double S, double m, double n) {
+	public Countresult(double R, int flag, double lr, double lv, double S, double m, double n) {
 		this.R = R;
 		this.flag = flag;
 		this.lr = lr;
@@ -56,7 +56,7 @@ public class Countresult {
 	 * @param lr
 	 * @param kind
 	 */
-	public Countresult(int style, double R, double Ri, Integer flag, double lr, int kind) {
+	public Countresult(int style, double R, double Ri, int flag, double lr, int kind) {
 		super();
 		this.style = style;
 		this.R = R;
@@ -75,8 +75,7 @@ public class Countresult {
 	 * @param lr
 	 * @param kind
 	 */
-	public Countresult(int style, double R, double Ri, double S, Integer flag, double lr, int kind) {
-		super();
+	public Countresult(int style, double R, double Ri, double S, int flag, double lr, int kind) {
 		this.style = style;
 		this.R = R;
 		this.Ri = Ri;
@@ -85,10 +84,6 @@ public class Countresult {
 		this.lr = lr;
 		this.kind = kind;
 	}
-	
-
-
-
 
 	/**
 	 * 用于杆塔自然接地
@@ -150,11 +145,11 @@ public class Countresult {
 		this.m = m;
 	}
 
-	public Integer getflag() {
+	public int getflag() {
 		return flag;
 	}
 
-	public void setflag(Integer flag) {
+	public void setflag(int flag) {
 		this.flag = flag;
 	}
 
