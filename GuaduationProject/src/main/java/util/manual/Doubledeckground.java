@@ -13,21 +13,21 @@ public class Doubledeckground {
 	public Doubledeckground() {
 	}
 	
-	/**
-	 * 计算垂直双层土壤的接地网接地电阻
-	 * 参考文献：曹晓斌,等. 一类垂直双层土壤中地网接地电阻的简易计算公式. 中国电机工程学报,2009(1),29(1)
-	 * @param p1		土壤电阻率
-	 * @param p2		土壤电阻率
-	 * @param A1	p1土壤面积
-	 * @param S		接地网面积		
-	 * @return R		任意形状边缘闭合的接地电阻
-	 */
-	public double verticalDoubledeckMat(Double p1, Double p2, Double A1, Double S) {
-		Double R = null;
-		Double K = 2 * Math.sqrt(S) - Math.sqrt(2 * A1);
-		R = 0.5 * p1 * p2 * Math.sqrt(pi) / (K * p1 + Math.sqrt(2 * A1) * p2);
-		return R;
-	}
+//	/**
+//	 * 计算垂直双层土壤的接地网接地电阻
+//	 * 参考文献：曹晓斌,等. 一类垂直双层土壤中地网接地电阻的简易计算公式. 中国电机工程学报,2009(1),29(1)
+//	 * @param p1		土壤电阻率
+//	 * @param p2		土壤电阻率
+//	 * @param A1	p1土壤面积
+//	 * @param S		接地网面积		
+//	 * @return R		任意形状边缘闭合的接地电阻
+//	 */
+//	public double verticalDoubledeckMat(Double p1, Double p2, Double A1, Double S) {
+//		Double R = null;
+//		Double K = 2 * Math.sqrt(S) - Math.sqrt(2 * A1);
+//		R = 0.5 * p1 * p2 * Math.sqrt(pi) / (K * p1 + Math.sqrt(2 * A1) * p2);
+//		return R;
+//	}
 	
 	/**
 	 * 计算水平双层土壤的接地网接地电阻
@@ -88,42 +88,42 @@ public class Doubledeckground {
 		return R;
 	}
 
-	/**
-	 * 计算水平双层土壤多根垂直接地体的接地电阻
-	 * 参考文献：王洪泽. 双层土壤变电站多根垂直接地极接地电阻解析公式. 广西电力,2005(3)
-	 * @param p1	上层土壤电阻率
-	 * @param p2	下层土壤电阻率
-	 * @param S	垂直接地极顶端覆盖面积
-	 * @param H	上层土壤深度
-	 * @param h	棒顶埋深
-	 * @param L0	面积S的外缘周长
-	 * @param l	单根垂直接地棒平均长度(Lr)
-	 * @param n	垂直接地体总根数
-	 * @param d	接地体等效直径
-	 * @return
-	 */
-	public double gorizontalDoubledeckverticals(Double p1, Double p2, Double S, Double H, Double h, Double L0,
-			Double l, Double n,  Double d) {
-		Double R = null;
-		Double dn = null;
-		HashMap<String, Double> hm = getl(H, h, l);
-		Double l1 = hm.get("l1");
-		Double l2 = hm.get("l2");
-		Double k = getk(p1, p2);
-		Double B = getB(S, h);
-		Double a1 = geta1(L0, S);
-		Double pa = getpa(p1, p2, l, l1, l2);
-		Double Rb = 0.213 * (1 + B) * a1 * pa / Math.sqrt(S);
-		Double R0 = gorizontalDoubledeckvertical(p1, p2, H, h, l, d);
-		if(k < 0d){
-			dn = 0.75;
-		}	else {
-			dn = 1d;
-		}
-		Double Kb = 1 + dn * Math.log(1 / (1 - k));
-		R = (R0 + Rb * Kb * Math.pow(Math.sqrt(n) - 1, 2)) / n;		
-		return R;
-	}
+//	/**
+//	 * 计算水平双层土壤多根垂直接地体的接地电阻
+//	 * 参考文献：王洪泽. 双层土壤变电站多根垂直接地极接地电阻解析公式. 广西电力,2005(3)
+//	 * @param p1	上层土壤电阻率
+//	 * @param p2	下层土壤电阻率
+//	 * @param S	垂直接地极顶端覆盖面积
+//	 * @param H	上层土壤深度
+//	 * @param h	棒顶埋深
+//	 * @param L0	面积S的外缘周长
+//	 * @param l	单根垂直接地棒平均长度(Lr)
+//	 * @param n	垂直接地体总根数
+//	 * @param d	接地体等效直径
+//	 * @return
+//	 */
+//	public double gorizontalDoubledeckverticals(Double p1, Double p2, Double S, Double H, Double h, Double L0,
+//			Double l, Double n,  Double d) {
+//		Double R = null;
+//		Double dn = null;
+//		HashMap<String, Double> hm = getl(H, h, l);
+//		Double l1 = hm.get("l1");
+//		Double l2 = hm.get("l2");
+//		Double k = getk(p1, p2);
+//		Double B = getB(S, h);
+//		Double a1 = geta1(L0, S);
+//		Double pa = getpa(p1, p2, l, l1, l2);
+//		Double Rb = 0.213 * (1 + B) * a1 * pa / Math.sqrt(S);
+//		Double R0 = gorizontalDoubledeckvertical(p1, p2, H, h, l, d);
+//		if(k < 0d){
+//			dn = 0.75;
+//		}	else {
+//			dn = 1d;
+//		}
+//		Double Kb = 1 + dn * Math.log(1 / (1 - k));
+//		R = (R0 + Rb * Kb * Math.pow(Math.sqrt(n) - 1, 2)) / n;		
+//		return R;
+//	}
 
 	/**
 	 * @return HM 判断计算并储存上下层土壤内的棒长l1，l2的值

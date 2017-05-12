@@ -219,24 +219,30 @@ public class Building implements Ground{
 				if(mark) ir -= 1;
 //				System.out.println("可补加"+ir+"米水平接地体电阻Rr:"+Rr);
 				System.out.println("可补加4根"+ir/4+"米水平接地体电阻Rr:"+Rr);
-				if(Rr > Rk) {
+				if(Rr > Rk && Rv1 > Rk) {
 					for (mark = false; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, Rv1,
 							new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++) {
 						mark = true;
 					}
 					if(mark) ir -= 1;
 					flag = 3;
+					R = Rr;
+					lr = ir;
 					System.out.println("以水平为主的地网补加水平接地体的电阻未达要求,则以复合地网为基础补加水平接地体");
 //					System.out.println("补加"+lv+"米垂直接地体"+n+"个，再补加总长度"+ir+"米水平接地体之后");
 					System.out.println("补加"+lv+"米垂直接地体"+n+"个，再补加4根"+ir/4+"米水平接地体之后");
 					System.out.println("接地电阻R:"+Rr);
-				} else {
+				} else if(Rr <= Rv1){
 					flag = 1;
+					R = Rr;
+					lr = ir;
 					System.out.println("补加总长度"+ir+"米水平接地体可达到要求，接地电阻Rr:"+Rr);
 					System.out.println("补加4根"+ir/4+"米水平接地体可达到要求，电阻Rr:"+Rr);
+				} else {
+					System.out.println("补加水平接地体不可行");
+					flag = 2;
+					R = Rv1;
 				}
-				R = Rr;
-				lr = ir;
 			} else {
 				flag = 2;
 				R = Rv1;

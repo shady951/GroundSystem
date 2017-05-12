@@ -31,7 +31,7 @@ public class Vertical {
 	public double vertical(Double p, Double d, Double l, Double h) {
 		Double R = null;
 		Double n = 4 * l * (l + 2 * h) / (l + 4 * h);
-		R = Math.log(n / d) * p / (2 * pi * l);
+		R = Math.log(n / (1.36 * d)) * p / (2 * pi * l);
 		return R;
 	}
 	
@@ -74,13 +74,18 @@ public class Vertical {
 	 */
 	public double straightverticals(Double p,Double p1, Double H, Double d, Double l, Double h, Double s, Double n){
 		Double R = null;
-		Double R0 = vertical(p, d, l, h);
+		Double R0 = null;
 		Double D = (n - 1 + 0.001) * s;
-		R = R0 / n + 1.3 * p * Math.pow(Math.sqrt(n) - 1, 2) / (n * D);
 		if(H != 0d) {
-			Double R1 = Doubledeckvertical(p, p1, H, h, l, d);
-			R = R1 * R / R0;
+			R0 = Doubledeckvertical(p, p1, H, h, l, d);
+			HashMap<String, Double> hm = getl(H, h, l);
+			Double l1 = hm.get("l1");
+			Double l2 = hm.get("l2");
+			p = getpa(p, p1, l, l1, l2);
+		} else {
+			R0 = vertical(p, d, l, h);
 		}
+		R = R0 / n + 1.3 * p * Math.pow(Math.sqrt(n) - 1, 2) / (n * D);
 		return R;
 	}
 	
@@ -101,16 +106,22 @@ public class Vertical {
 		Vertical.angle = 2 * pi / n;
 		Vertical.radius = getradius();
 		Double R = null;
+		Double R1 =null;
+		Double K = null;
 		Double k = 1 / l;
 		Double w = s / l;
-		Double R0 = vertical(p1, d, l, h);
-		Double R1 = vertical(p, d * k, 1d, h);
-		Double K = getK(p, w, n);
-		R = k * (R1 + K) / n;
 		if(H != 0d) {
-			Double R2 = Doubledeckvertical(p, p1, H, h, l, d);
-			R = R2 * R / R0;
+			R1 = Doubledeckvertical(p, p1, H, h, 1d, d * k);
+			HashMap<String, Double> hm = getl(H, h, l);
+			Double l1 = hm.get("l1");
+			Double l2 = hm.get("l2");
+			p = getpa(p, p1, l, l1, l2);
+			K =  getK(p, w, n);
+		} else {
+			R1 = vertical(p, d * k, 1d, h);
+			K = getK(p, w, n);
 		}
+		R = k * (R1 + K) / n;
 		return R;
 	}
 	

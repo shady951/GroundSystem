@@ -46,7 +46,7 @@ public class Groundmat {
 	}
 	
 	/**
-	 * 计算闭合地网与放射型水平接地极组合地网接地电阻
+	 * 计算方形闭合地网与放射型水平接地极组合地网接地电阻
 	 * @param p	土壤电阻率
 	 * @param a	地网等效正方形的边长
 	 * @param b	放射型水平接地极总长度
@@ -80,7 +80,7 @@ public class Groundmat {
 		Double L = Ls + Lr * n;
 		Double B = getB(S, h);
 		Double a1 = geta1(S, L0);
-		Double Re = 0.213 * p / Math.sqrt(S) * (1 + B) + (Math.log(S / (9 * h * bc)) - 5 * B) * p / (2 * pi * L);
+		Double Re = 0.213 * p / Math.sqrt(S) * (1 + B) + (Math.log(S / (9 * h * bc)) - 5 * B) * S / (2 * pi * L);
 		R = a1 * Re;
 		return R;
 	}

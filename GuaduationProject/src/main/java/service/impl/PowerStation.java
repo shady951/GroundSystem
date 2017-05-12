@@ -169,8 +169,8 @@ public class PowerStation extends Building implements Ground{
 		double Ra = 0;
 		// Ri:冲击接地电阻
 		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le, R);
-		// l最大不能超过地网等效直径或者60米
-		for (; (l = l == 3.5 ? 3d : l) < (le = getle(p, p1, H, l) < 60d ? getle(p, p1, H, l) : 60d); l++) {
+		// l最大不能超过地网等效直径或者40米
+		for (; (l = l == 3.5 ? 3d : l) < (le = getle(p, p1, H, l) < 40d ? getle(p, p1, H, l) : 40d); l++) {
 			// s的最大值需满足在有效长度之内
 			for (s = l; s <= (le - l) * 2; s++) {
 				// d最大不能超过地网等效直径或者有效长度
@@ -180,13 +180,19 @@ public class PowerStation extends Building implements Ground{
 					if (Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le,
 							R = new Vertical().straightverticals(p, p1, H, br, l, h, s, n = getni(d, s))))) {
 						if(needRi) {
-							if (n <= 15) {
+							if (Ri >= 10 && n <= 15) {
 								Ri = Ra;
 								li = l;
 								si = s;
 								di = d;
 								ni = n;
 								// System.out.println(Ri+"i:"+i);
+							} else if(Ri < 10 && n <= ni) {
+								Ri = Ra;
+								li = l;
+								si = s;
+								di = d;
+								ni = n;
 							}
 						} else {
 							if(R > (Ra = new Vertical().straightverticals(p, p1, H, br, l, h, s, n = getni(d, s)))) {
@@ -241,11 +247,11 @@ public class PowerStation extends Building implements Ground{
 		double R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n);
 		// Ri:冲击接地电阻
 		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le, R);
-		//l取2.5及大于2.5的正整数，小于接地体有效长度或60米
-		for (; (l = l == 3.5 ? 3d : l) < (getle(p, p1, H, l) < 60d ? getle(p, p1, H, l) : 60d); l++) {
+		//l取2.5及大于2.5的正整数，小于接地体有效长度或40米
+		for (; (l = l == 3.5 ? 3d : l) < (getle(p, p1, H, l) < 40d ? getle(p, p1, H, l) : 40d); l++) {
 			//s需大于l的两倍，小于当n为3个时，s可达到最大值，s最大值构成的圆半径
 			for (s = l * 2; s <= 2 * (le - l) * Math.sin(pi / 3); s++) {
-				//为构成最基本的环形，n最小为3，最大值所构成的圆半径需小于建筑面积的等效圆半径和接地等效半径需且数量小于50个
+				//为构成最基本的环形，n最小为3，最大值所构成的圆半径需小于建筑面积的等效圆半径和接地有效半径需且数量小于50个
 				for (n = 3; getr(s, n) <=  (Math.sqrt(S / pi) < le - l? Math.sqrt(S / pi) : le - l) && n <= 50d; n++) {
 					i++;
 					if(needRi) {
@@ -259,7 +265,7 @@ public class PowerStation extends Building implements Ground{
 								ni = n;
 								// System.out.println("一Ri:"+Ri+"i:"+i);
 								//若有小于10欧姆的，则在小于10欧的方案中选择耗材最小的
-							} else if (Ra < 10d && si * ni > s * n) {
+							} else if (Ra < 10d && li * ni > l * n) {
 								Ri = Ra;
 								li = l;
 								si = s;
