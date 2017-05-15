@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import dto.Countresult;
 import dto.Data;
 import service.Ground;
-import util.change.Change;
+import util.charge.Change;
 import util.convert.GroundModule;
 import util.convert.Impulseconversion;
 import util.convert.Totallengthofmat;
@@ -16,7 +16,7 @@ import util.manual.Doubledeckground;
 import util.manual.Groundmat;
 
 /**
- * 普通建筑接地设计
+ * 普通建筑接地网设计
  * @author tc
  *
  */
@@ -213,15 +213,17 @@ public class Building implements Ground{
 				Double Rr = null;
 				boolean mark = false;
 				for (; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, new Groundmat().gorizontalmat(Sp, Ls,
-						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++) {
+						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir += 4) {
 							mark = true;
 						}
 				if(mark) ir -= 1;
 //				System.out.println("可补加"+ir+"米水平接地体电阻Rr:"+Rr);
 				System.out.println("可补加4根"+ir/4+"米水平接地体电阻Rr:"+Rr);
 				if(Rr > Rk && Rv1 > Rk) {
+					ir = 1d;
+					if (lr != 0) ir = Math.ceil(lr);
 					for (mark = false; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, Rv1,
-							new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir++) {
+							new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir += 4) {
 						mark = true;
 					}
 					if(mark) ir -= 1;
@@ -336,15 +338,18 @@ public class Building implements Ground{
 		Double le = 2 * Math.sqrt(Sp);
 		Double lb = r;
 		Double l = lb;
-			if (flag == 1 || flag == 4) {
-				l += lr / 4;
+		if(flag == 3) {
+			l += lr / 4 < lv? lv : lr / 4;
+		}
+		if (flag == 1 || flag == 4) {
+			l += lr / 4;
+		}
+		if (flag == 2 || flag == 5) {
+			l += lv;
+			if(H > h) {
+				le = 2 * Math.sqrt(getpa(p, p1, H + l, h, l));
 			}
-			if (flag == 2 || flag == 5) {
-				l += lv;
-				if(H > h) {
-					le = 2 * Math.sqrt(getpa(p, p1, H + l, h, l));
-				}
-			}
+		}
 		System.out.println("地网水平等效半径r:" + r);
 		System.out.println("地网最大长度l:" + l);
 		System.out.println("接地等效长度le:" + le);
@@ -357,17 +362,26 @@ public class Building implements Ground{
 				double lrv = le - lb;
 				System.out.println("接地等效半径在地网水平等效半径与地网最大长度之间，冲击接地电阻Ri按复合地网计算");
 				System.out.println("lrv:"+lrv);
-				if (flag == 1) {
+				if (flag == 1 || flag == 4) {
 					Ri = new Groundmat().emissivitygorizontal(Sp, a, 4 * lrv, new Groundmat().gorizontalmat(Sp, Ls,
-							0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(p, bc, lrv, h, 1) / 4);
+							0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, lrv, h, 1) / 4);
+				} else if(flag == 3) {
+					double ler = le - lb < lr / 4 ? le -  lb : lr / 4;
+					double lev = le - lb < lv? le - lb : lv;
+					double Rv;
+					if(H == 0d) {
+						Rv = new Groundmat().verticalmat(p, Ls, lev, a * 4, S, h, bc, br,n);
+					} else {
+						Rv = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lev, n, bc, br);
+					}
+					Ri = new Groundmat().emissivitygorizontal(Sp, a, 4 * ler, Rv, new Groundmat().gorizontal(Sp, bc, ler, h, 1) / 4);
 				} else {
 					if(H == 0d) {
 						System.out.println("冲击接地电阻Ri按单层土壤复合地网计算");
 						Ri = new Groundmat().verticalmat(p, Ls, lrv, a * 4, S, h, bc, br,n);
 					} else {
 						System.out.println("冲击接地电阻Ri按双层土壤复合地网计算");
-							Ri = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls,
-										a * 4, lrv,n, bc, br);
+							Ri = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lrv,n, bc, br);
 					}
 				}
 			}
@@ -434,9 +448,9 @@ public class Building implements Ground{
 //				4d, 0.05, 0.05));
 //------------------------------------------------------------------p--,--H--,--p1--,---S---,--Rk--,-type-,-city
 //		System.out.println(new Building().design(3000d, 2d, 2400d, 4000d, 8d, 1, false));
-		Data dt = new Data(5, 1200d, 2d, 800d, 4000d, 4d, 2, true);
+		Data dt = new Data(5, 1200d, 2d, 800d, 4000d, 4d, 2, false);
 		Countresult cs;
-		System.out.println(cs = new PowerStation().design(1200d, 2d, 800d, 4000d, 4d, 2, true));
+		System.out.println(cs = new PowerStation().design(1200d, 2d, 800d, 4000d, 4d, 2, false));
 		System.out.println(Change.getResult(cs, dt).getplan());
 		
 	}

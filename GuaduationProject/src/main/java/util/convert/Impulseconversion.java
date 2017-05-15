@@ -13,7 +13,7 @@ public class Impulseconversion {
 	/**
 	 * 计算冲击系数
 	 * @param p	土壤电阻率
-	 * @param Lk	接地体实际长度与有效长度的比值
+	 * @param Lk	接地体最大支线长度与接地体有效长度的比值
 	 * @param R	有效长度下的工频电阻值
 	 * @return Ri	冲击接地电阻值
 	 */
@@ -47,7 +47,7 @@ public class Impulseconversion {
 		System.out.println(new Impulseconversion().convert(1500d, 0.5, 1d));//1.875
 		System.out.println(new Impulseconversion().convert(1700d, 0.5, 1d));//1.975
 		System.out.println(new Impulseconversion().convert(2000d, 0.5, 1d));//2.125
-		System.out.println(new Impulseconversion().convert(3001d, 0.5, 1d));//2.125
+		System.out.println(new Impulseconversion().convert(3001d, 0.5, 1d));//2.625
 	}
 	
 	

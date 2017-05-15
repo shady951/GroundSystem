@@ -141,11 +141,11 @@ public class Towers extends PowerStation implements Ground {
 		return cs; 
 	}
 	
-//	public static void main(String[] args) {
-//		System.out.println(new Towers().design(80d, 0d, 100d,80d, 0d, 2, true));
+	public static void main(String[] args) {
+		System.out.println(new Towers().design(80d, 0d, 100d,80d, 0d, 2, true));
 //		System.out.println(new Towers().design(80d, 0d, 100d,80d, 0d, 1, true));
-//		System.out.println(new Towers().design(2500d, 0d, 100d,80d, 0d, 2, true));
+		System.out.println(new Towers().design(2500d, 0d, 100d,80d, 0d, 2, true));
 //		System.out.println(new Towers().design(2500d, 0d, 100d,0d, 0d, 2, false));
 //		System.out.println(new Towers().design(2500d, 0d, 100d,80d, 0d, 1, false));
-//	}
+	}
 }
