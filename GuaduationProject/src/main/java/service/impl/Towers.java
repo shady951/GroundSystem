@@ -48,7 +48,7 @@ public class Towers extends PowerStation implements Ground {
 			System.out.println("自然接地体工频接地电阻R:"+R);
 			if (R <= Rk) {
 				if(type == 1) {
-					Ri = getRi(p, H, p1, S, 0d, 0d, null, R, 0d);
+					Ri = getRi(p, H, p1, S, 0d, 0d, 0, R, 0d);
 				} else {
 					Ri = R * a;
 				}

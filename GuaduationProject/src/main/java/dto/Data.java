@@ -1,12 +1,18 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Data {
 
 	private int style;		//建筑类型
 	private double p;		//(上层)土壤电阻率
+	@JsonProperty
 	private double H;		//上层土壤深度(0为单层)
 	private double p1;	//下层土壤电阻率(0为单层)
+	@JsonProperty
 	private double S;		//占地面积
+	@JsonProperty
 	private double Rk;	//工频电阻要求值
 	private int type;			//防雷建筑分类
 	private boolean city;//土地资源是否受限
@@ -51,10 +57,12 @@ public class Data {
 		this.p = p;
 	}
 
+	@JsonIgnore
 	public double getH() {
 		return H;
 	}
 
+	@JsonIgnore
 	public void setH(double H) {
 		this.H = H;
 	}
@@ -66,19 +74,23 @@ public class Data {
 	public void setp1(double p1) {
 		this.p1 = p1;
 	}
-
+	
+	@JsonIgnore
 	public double getS() {
 		return S;
 	}
 
+	@JsonIgnore
 	public void setS(double S) {
 		this.S = S;
 	}
 
+	@JsonIgnore
 	public double getRk() {
 		return Rk;
 	}
 
+	@JsonIgnore
 	public void setRk(double Rk) {
 		this.Rk = Rk;
 	}
@@ -97,6 +109,12 @@ public class Data {
 
 	public void setcity(boolean city) {
 		this.city = city;
+	}
+
+	@Override
+	public String toString() {
+		return "Data [style=" + style + ", p=" + p + ", H=" + H + ", p1=" + p1 + ", S=" + S + ", Rk=" + Rk + ", type=" + type + ", city="
+				+ city + "]";
 	}
 	
 }

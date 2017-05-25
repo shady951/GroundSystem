@@ -238,7 +238,8 @@ public class Change {
 		sb.append("即可满足要求。");
 		return sb.toString();
 	}
-	public static void main(String[] args) {
 	
-	}
+//	public static void main(String[] args) {
+//	}
+	
 }

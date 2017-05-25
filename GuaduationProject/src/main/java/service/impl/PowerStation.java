@@ -116,9 +116,7 @@ public class PowerStation extends Building implements Ground{
 	 * @return 是否设置独立防雷接地装置
 	 */
 	private boolean isindependent(Double p, Integer Rk) {
-		if (Rk <= 35d)
-			return true;
-		if (Rk == 66d && p >= 500d)
+		if (Rk <= 66d)
 			return true;
 		if (Rk >= 110d && p >= 1000d)
 			return true;
@@ -306,10 +304,10 @@ public class PowerStation extends Building implements Ground{
 		return needRi? Ri : R;
 	}
 
-	public static void main(String[] args) {
-		// new PowerStation().straightscheme(2500d, 1500d, 4d, 6000d);
-		//-----------------------------------------------------------------p-----,--H--,--p1--,---S---,--Rk--,-type-,-city
-		System.out.println(new PowerStation().design(2400d, 2d, 1500d, 4000d, 8d, 110, true));
-	}
+//	public static void main(String[] args) {
+//		// new PowerStation().straightscheme(2500d, 1500d, 4d, 6000d);
+//		//-----------------------------------------------------------------p-----,--H--,--p1--,---S---,--Rk--,-type-,-city
+//		System.out.println(new PowerStation().design(2400d, 2d, 1500d, 4000d, 8d, 110, true));
+//	}
 
 }

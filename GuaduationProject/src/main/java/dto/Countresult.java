@@ -7,7 +7,7 @@ package dto;
  */
 public class Countresult {
 
-	private int style;		//建筑类型(1:普通建筑 2:变电站/所 3:杆塔)
+	private int style;		//建筑类型(1:二、三类防雷建筑 2:变电站/一类防雷建筑 3:架空杆塔)
 	private double R;		//工频接地电阻
 	private double Ri;		//冲击接地电阻
 	private double S;		//地网面积
