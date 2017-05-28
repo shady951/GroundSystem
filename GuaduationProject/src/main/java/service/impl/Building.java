@@ -6,9 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import dto.Countresult;
-import dto.Data;
 import service.Ground;
-import util.charge.Change;
 import util.convert.GroundModule;
 import util.convert.Impulseconversion;
 import util.convert.Totallengthofmat;
@@ -42,6 +40,7 @@ public class Building implements Ground{
 		Countresult cs = getR(p, H, p1, S, Rk, type, city);
 		cs.setstyle(1);
 		double R = cs.getR();
+		System.out.println("getR与getRi之间"+cs);
 		double Ri = getRi(p,H, p1, cs);
 		double modulecount = 0;
 		// 考虑是否加装接地模块
@@ -79,14 +78,14 @@ public class Building implements Ground{
 	}
 	
 	/**
-	 * 工频接地电阻计算模块
+	 * 建筑接地设计与工频接地电阻计算
 	* @param p		(上层)土壤电阻率
 	 * @param H		上层土壤深度(0为单层)
 	 * @param p1		下层土壤电阻率(0为单层)
 	 * @param S		占地面积
 	 * @param Rk		工频电阻要求值
 	 * @param type	(0:不计算防雷规范 1:一类防雷建筑 2:变电站/二类防雷建筑 3:三类防雷建筑)
-	 * @param city
+	 * @param city	土壤周围环境
 	 * @return
 	 */
 	protected Countresult getR(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
@@ -311,7 +310,6 @@ public class Building implements Ground{
 	}
 	
 	/**
-	 * (防雷规范2.6.5)
 	 * 计算冲击接地电阻
 	 * @param p
 	 * @param H
@@ -326,6 +324,7 @@ public class Building implements Ground{
 	 */
 	protected Double getRi(Double p,Double H, Double p1, Double S, Double lr, Double lv, Integer flag, Double R, Double n) {
 		System.out.println("-----------------计算冲击接地电阻-------------------------");
+		if(flag == null) flag = 0;
 		Double Sp = getsinglep(p, H, p1);
 		Double Ri = null;
 		//a:地网的等效方形边长
@@ -399,7 +398,7 @@ public class Building implements Ground{
 	}
 	
 	protected Double getRi(Double p,Double H, Double p1, Countresult cs) {
-		return getRi(p1, H, p1, cs.getS(), cs.getlr(),cs.getlv(), cs.getflag(), cs.getR(), cs.getn());
+		return getRi(p, H, p1, cs.getS(), cs.getlr(),cs.getlv(), cs.getflag(), cs.getR(), cs.getn());
 	}
 	
 	/**
@@ -448,10 +447,10 @@ public class Building implements Ground{
 //				4d, 0.05, 0.05));
 //------------------------------------------------------------------p--,--H--,--p1--,---S---,--Rk--,-type-,-city
 //		System.out.println(new Building().design(3000d, 2d, 2400d, 4000d, 8d, 1, false));
-		Data dt = new Data(5, 1200d, 2d, 800d, 4000d, 4d, 2, false);
-		Countresult cs;
-		System.out.println(cs = new PowerStation().design(1200d, 2d, 800d, 4000d, 4d, 2, false));
-		System.out.println(Change.getResult(cs, dt).getplan());
-		
+//		Data dt = new Data(5, 1200d, 2d, 800d, 4000d, 4d, 2, false);
+//		Countresult cs;
+//		System.out.println(cs = new PowerStation().design(1200d, 2d, 800d, 4000d, 4d, 2, false));
+//		System.out.println(Change.getResult(cs, dt).getplan());
+		System.out.println(new Building().design(74d, 0d, 0d, 4320d, 1.7d, 3, true));
 	}
 }

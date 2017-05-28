@@ -52,23 +52,4 @@ public class Control {
 		return Change.getResult(countresult, data);
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="/design1", method = RequestMethod.POST, produces={"application/json; charset=utf-8"})
-	public Result work1() {
-//		Result result;
-//		switch(data.getstyle()) {
-//			case 1:
-//				if(data.gettype() == 1) {
-//					result = powerStation.design(p, H, p1, S, Rk, type, city);
-//				} else {
-//					result = building.design(p, H, p1, S, Rk, type, city);
-//				}
-//			break;
-//			case 2:result = powerStation.design(p, H, p1, S, Rk, type, city);
-//			break;
-//			case 3:result = towers.design(p, H, p1, S, Rk, type, city);
-//			break;
-//		}
-		return new Result("this is a plan", 2, 3, 4);
-	}
 }

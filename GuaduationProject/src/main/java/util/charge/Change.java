@@ -17,7 +17,6 @@ public class Change {
 	
 	public static Result getResult(Countresult cs, Data dt) {
 		String plan = null;
-		double money;
 		switch (cs.getstyle()) {
 		case 1: 
 			plan = building(cs, dt);
@@ -29,24 +28,30 @@ public class Change {
 			plan =  towers(cs, dt);
 			break;
 		}
-		money = getmoney(cs, dt);
-		return new Result(plan, cs.getR(), cs.getRi(), money);
+		return new Result(plan, cs.getR(), cs.getRi(), getmoney(cs, dt));
 	}
 
 	/**
-	 * 水平地网，集中垂直接地体的连接，以扁钢计算，其余以圆钢计算
+	 * 水平地网以扁钢计算，其余以圆钢计算
 	 * @return 耗材预算(元)
 	 */
-	private static double getmoney(Countresult cs, Data dt) {
+	private static String getmoney(Countresult cs, Data dt) {
+		StringBuilder sb = new StringBuilder();
 		double Lbc = 0d;
 		double Lbr = 0d;
+		double count = 0d;
+		double money = 0d;
 		//计算扁钢耗材
 		if(dt.getstyle() != 3) {
-			Lbc = Totallengthofmat.totallenth(cs.getS()) - (Totallengthofmat.totallenth(dt.getS()) - Math.sqrt(dt.getS()) * 4);
+			Lbc = Totallengthofmat.totallenth(Math.sqrt(cs.getS())) - (Totallengthofmat.totallenth(Math.sqrt(dt.getS())) - Math.sqrt(dt.getS()) * 4);
 		} else if(cs.getkind() == 4){
 			Lbc = cs.getr() * 2 * (pi + 2);
 		}
-		if(cs.getindependent() != 0) Lbc += cs.gets() * (cs.getindependent() == 1 ?cs.getni() - 1 : cs.getni());
+		if(Lbc != 0d){
+			sb.append("需要扁钢"+(int)Lbc+"米，");
+		}
+		System.out.println("扁钢耗材："+Lbc);
+		System.out.println("扁钢耗费："+Lbc * bcmoney);
 		//计算圆钢耗材
 		switch(cs.getflag()) {
 		case 4 :
@@ -62,7 +67,20 @@ public class Change {
 			break;
 		}
 		if(cs.getindependent() != 0) Lbr += cs.getl() * cs.getni();
-		return Lbc * bcmoney + Lbr * brmoney + (cs.getmodulecount() + cs.getmodulecounti()) * mdmoney;
+		if(Lbr != 0d) sb.append("圆钢"+(int)Lbr+"米，");
+		System.out.println("圆钢耗材："+Lbr);
+		System.out.println("圆钢耗费："+Lbr * brmoney);
+		//计算接地模块消耗
+		count = cs.getmodulecount() + cs.getmodulecounti();
+		if(count != 0d) sb.append("接地模块"+count+"个，");
+		//计算总价
+		money = (int)Lbc * bcmoney + (int)Lbr * brmoney + count * mdmoney;
+		if(money == 0d) {
+			sb.append(money+"元");
+		} else {
+			sb.append("总计："+money+"元");
+		}
+		return sb.toString();
 	}
 
 	private static String building(Countresult cs, Data dt) {
@@ -107,7 +125,7 @@ public class Change {
 				break;
 			case 5:
 				sb.append("因符合规范条件，需按规范在地网每个网孔交叉点补加" +
-						cs.getlr() +
+						cs.getlv() +
 						"米的Ф40热镀锌圆钢垂直接地体，总共" +
 						cs.getn() +
 						"根，形成复合地网，");
@@ -133,7 +151,7 @@ public class Change {
 						"其冲击接地电阻不宜大于10欧姆。根据《防雷规范与标准》§2.5，");
 			}
 		} else {
-			sb.append("根据《防雷规范与标准》§2.4，该变电站按二类防雷建筑物设计。根据该规范§2.5，" );
+			sb.append("根据《防雷规范与标准》§2.4-2.5，" );
 		}
 		sb.append("采用100*5热镀锌扁钢，围绕建筑外" + 
 				cs.getm() +
@@ -175,7 +193,7 @@ public class Change {
 				break;
 			case 5:
 				sb.append("因符合规范条件，需按规范在地网每个网孔交叉点补加" +
-						cs.getlr() +
+						cs.getlv() +
 						"米的Ф40热镀锌圆钢垂直接地体，总共" +
 						cs.getn() +
 						"根，形成复合地网，");
@@ -195,7 +213,7 @@ public class Change {
 						cs.getni() +
 						"根，每根间距" +
 						cs.gets() +
-						"米，以100*5热镀锌扁钢将所有垂直接地体焊接，埋深0.8米，");
+						"米，埋深0.8米，");
 				if(cs.getmodulecounti() != 0) {
 					sb.append("再等距补加" +
 							cs.getmodulecounti() +
@@ -210,8 +228,8 @@ public class Change {
 		sb.append("根据L/T621-1997《交流电气装置的接地》§6.3，该");
 		switch(cs.getkind()) {
 		case 1: 
-			sb.append(dt.gettype() == 1 ? "铁塔" : "混凝土电杆" +
-					"的自然接地体已满足要求，无需增设人工接地装置，");
+			sb.append(dt.gettype() == 1 ? "铁塔" : "混凝土电杆");
+			sb.append("无需增设人工接地装置，其自身的自然接地体");
 			break;
 		case 2:
 			sb.append("铁塔需铺设人工接地装置，沿铁塔四角向外铺设4根" +

@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE html>
 <html>
 <head>
-	<title>123</title>
+	<title>防雷接地计算</title>
 	<script type="text/javascript" src="/GuaduationProject/jq/jquery-3.1.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="<%=path%>/bootstrap/css/bootstrap.min.css">

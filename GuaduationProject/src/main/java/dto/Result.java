@@ -10,7 +10,7 @@ public class Result {
 	private double R;			//工频接地电阻
 	@JsonProperty
 	private double Ri;			//冲击接地电阻
-	private double money;//消耗材料预算(元)
+	private String money;//消耗材料预算(元)
 	
 	public Result() {
 	}
@@ -22,7 +22,7 @@ public class Result {
 	 * @param Ri			冲击接地电阻
 	 * @param money消耗材料预算(元)
 	 */
-	public Result(String plan, double R, double Ri, double money) {
+	public Result(String plan, double R, double Ri, String money) {
 		this.plan = plan;
 		this.R = R;
 		this.Ri = Ri;
@@ -57,11 +57,11 @@ public class Result {
 		this.Ri = Ri;
 	}
 
-	public double getmoney() {
+	public String getmoney() {
 		return money;
 	}
 
-	public void setmoney(double money) {
+	public void setmoney(String money) {
 		this.money = money;
 	}
 
