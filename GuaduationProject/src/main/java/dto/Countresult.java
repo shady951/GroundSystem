@@ -23,7 +23,7 @@ public class Countresult {
 	private double s;		//集中接地装置接地体之间的间距
 	private double ni;		//集中接地装置的接地体数量
 	private double r;		//电杆环形接地装置的半径
-	private int kind;//杆塔接地形式(1:自然接地 2:铁塔放射形 3:电杆放射形 4:电杆环形)
+	private int kind;//杆塔接地形式(1:自然接地 2:铁塔放射形 3:电杆放射形 4:电杆环形 5:电杆复合地网)
 	
 	public Countresult() {
 	}

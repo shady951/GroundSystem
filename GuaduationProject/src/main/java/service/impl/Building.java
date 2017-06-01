@@ -180,8 +180,8 @@ public class Building implements Ground{
 				Rv1 = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lv, n, bc, br);
 			}
 			System.out.println("补加"+lv+"米垂直接地体电阻Rv1:"+Rv1);
-			if(H > h && H < a / 3 && p >= p1 * 1.2 && Rv1 > Rk) {
-				System.out.println("下层土壤电阻率小于上层土壤电阻率的80%，可补加长垂直接地体");
+			if(H > h && H < a / 3 && p * 0.75 >= p1 && Rv1 > Rk) {
+				System.out.println("下层土壤电阻率小于上层土壤电阻率的75%，可补加长垂直接地体");
 				double iv = Math.ceil(H) <= 3d? 3d : Math.ceil(H);
 				Double N = 4d;
 				boolean f = false;
@@ -433,7 +433,7 @@ public class Building implements Ground{
 	}
 	
 
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 //		System.out.println("----------1----------------------------------------------");
 //		System.out.println(new Architecture().design(1500d, 0d, 0d, 640d, 10d, 2, true));
 //		System.out.println("----------2----------------------------------------------");
@@ -451,6 +451,7 @@ public class Building implements Ground{
 //		Countresult cs;
 //		System.out.println(cs = new PowerStation().design(1200d, 2d, 800d, 4000d, 4d, 2, false));
 //		System.out.println(Change.getResult(cs, dt).getplan());
-		System.out.println(new Building().design(74d, 0d, 0d, 4320d, 1.7d, 3, true));
-	}
+//		System.out.println(new Building().design(74d, 0d, 0d, 4320d, 1.7d, 3, true));
+//	}
+	
 }

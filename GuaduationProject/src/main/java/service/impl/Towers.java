@@ -68,51 +68,28 @@ public class Towers extends PowerStation implements Ground {
 				Ri = getRi(p, H, p1, S, l0 * 4, 0d, 1, R, 0d);
 				cs = new Countresult(3, R, Ri, S, 1, l0, 2);
 			}
-			/*
-			 *经测试，只要土壤电阻率小于4500，就不会执行下列方案，即可省略 
-			cs = getR(p, H, p1, S, Rk, 0, city);
-			System.out.println("水平接地体不满足要求,按普通建筑工频接地方案设计地网");
-			System.out.println("地网面积:"+cs.getS());
-			System.out.println("接地形式，1:水平接地体2:垂直接地体3:水平加垂直接地体"+cs.getflag());
-			System.out.println("4根水平接地体，每根长度lr:"+cs.getlr());
-			System.out.println("垂直接地体长度lv:"+cs.getlv());
-			System.out.println("垂直接地体个数:"+cs.getn());
-			System.out.println("工频接地电阻R:"+cs.getR());
-			 */
 		} else {
-			if(city) { //采用环形接地装置
+			if(city) { //采用环形接地装置或复合地网
 				cs = new Countresult();
+				cs.setkind(4);
 				double l1 = 1d;
-				for(; (R = new Tower().gorizontal(Sp, 2 * l1 * pi, h, bc)) > Rk && l1 <= 4d; l1++);
+				for(; (R = new Tower().gorizontal(Sp, 2 * l1 * pi, h, bc)) > Rk && l1 <= 5d; l1++);
 				l1 = l1 == 1d? 1d : l1 - 1d;
 				if(R <= Rk) Ri = getRi(p, H, p1, Math.pow(l1, 2) * pi, 0d, 0d, 0, R, 0d);
+				cs.setr(l1);
 				System.out.println("铺设半径为"+l1+"米的环形接地装置");
 				System.out.println("工频接地电阻R:"+R);
-				double R1;
-				//R不满足要求，补加环形垂直接地体
-				for(; R > Rk ; l1++) {
-					R1 = linkscheme(p, p1, H, Math.pow(l1, 2) * pi, cs, false);
-					R = new Tower().gorizontal(Sp, 2 * l1 * pi, h, bc);
-					R = R * R1 / (R + R1);
+				cs.setR(R);
+				//R不满足要求，设计复合地网
+				for(l1 = 3d; cs.getR() > Rk ; l1++) cs = getR(p, H, p1, Math.pow(l1, 2), Rk, 0, true);
+				if(Ri == null) {
+					cs.setkind(5);
+					Ri = getRi(p, H, p1, cs);
 				}
-				if(l1 > 4) {
-				System.out.println("R不满足要求，补加环形垂直接地体");
-				System.out.println("垂直接地体长度l:"+cs.getl());
-				System.out.println("垂直接地体个数ni:"+cs.getni());
-				System.out.println("环形垂直接地体接地电阻R1:"+cs.getR());
-				System.out.println("工频接地电阻R:"+R);
-				System.out.println("视在土壤电阻率"+Sp+"欧姆下的最大工频电阻允许值Rk:" + Rk);
-				System.out.println("铺设半径为"+(l1 - 1)+"米的环形接地装置和环形垂直接地体");
-				System.out.println("工频接地电阻R:"+R);
-				}
-				l1 -= 1;
-				if(Ri == null) Ri = getRi(p, H, p1, S, 0d, cs.getl(), 2, R, cs.getni());
 				System.out.println("冲击接地电阻Ri:"+Ri);
 				cs.setstyle(3);
-				cs.setR(R);
 				cs.setRi(Ri);
-				cs.setr(l1);
-				cs.setkind(4);
+				System.out.println("towers:cs"+cs);
 			} else { //采用放射形接地装置
 				double le = 2 * Math.sqrt(Sp);
 				double l2 = 1;
@@ -125,27 +102,9 @@ public class Towers extends PowerStation implements Ground {
 					System.out.println("工频接地电阻R:"+R);
 					cs = new Countresult(3, R, Ri, 1, l2, 3);
 				}
-				/*
-				 * 实测在4500欧姆电阻率下，不会用到以下方案 
-				//R不满足要求，补加直线型垂直接地体，其最大排列距离为三倍l2
-				double R2 = straightscheme(p, p1, H, Math.pow(3 * l2, 2) * pi, cs, false);
-				R = R * R2 / (R + R2);
-				System.out.println("R不满足要求，补加直线形垂直接地体");
-				System.out.println("垂直接地体长度l:"+cs.getl());
-				System.out.println("垂直接地体个数ni:"+cs.getni());
-				System.out.println("直线形垂直接地体接地电阻R2:"+cs.getR());
-				System.out.println("工频接地电阻R:"+R);
-				 */
 			}
 		}
 		return cs; 
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(new Towers().design(80d, 0d, 100d,80d, 0d, 2, true));
-//		System.out.println(new Towers().design(80d, 0d, 100d,80d, 0d, 1, true));
-		System.out.println(new Towers().design(2500d, 0d, 100d,80d, 0d, 2, true));
-//		System.out.println(new Towers().design(2500d, 0d, 100d,0d, 0d, 2, false));
-//		System.out.println(new Towers().design(2500d, 0d, 100d,80d, 0d, 1, false));
-	}
 }

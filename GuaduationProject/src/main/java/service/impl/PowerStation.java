@@ -174,7 +174,7 @@ public class PowerStation extends Building implements Ground{
 				// d最大不能超过地网等效直径或者有效长度
 				for (d = s; d <= ((le - l) * 2 < dr ? (le - l) * 2 : dr); d++) {
 					i++;
-					// 遍历所有可行方案，选择Ri最小且垂直接地体数量小于15个的方案
+					// 遍历所有可行方案，选择Ri达标且垂直接地体数量小于15个的方案
 					if (Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le,
 							R = new Vertical().straightverticals(p, p1, H, br, l, h, s, n = getni(d, s))))) {
 						if(needRi) {
@@ -304,10 +304,5 @@ public class PowerStation extends Building implements Ground{
 		return needRi? Ri : R;
 	}
 
-//	public static void main(String[] args) {
-//		// new PowerStation().straightscheme(2500d, 1500d, 4d, 6000d);
-//		//-----------------------------------------------------------------p-----,--H--,--p1--,---S---,--Rk--,-type-,-city
-//		System.out.println(new PowerStation().design(2400d, 2d, 1500d, 4000d, 8d, 110, true));
-//	}
 
 }

@@ -14,14 +14,14 @@ public interface Ground {
 		public final double br = 0.05;
 		
 		/**
-		 * 接地设计
+		 * 防雷接地设计接口
 		 * @param p		(上层)土壤电阻率
-		 * @param H		上层土壤深度(0为单层)
-		 * @param p1		下层土壤电阻率(0为单层)
-		 * @param S		占地面积
+		 * @param H		上层土壤深度(0表示单层)
+		 * @param p1		下层土壤电阻率
+		 * @param S		建筑占地面积
 		 * @param Rk		工频电阻要求值
 		 * @param type	建筑类型
-		 * @param city	土地资源是否受限
+		 * @param city	周围环境是否受限
 		 * @return cs		数据传输类
 		 */
 		public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city);
