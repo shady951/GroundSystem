@@ -1,6 +1,7 @@
 package util.charge;
 
 import util.convert.Totallengthofmat;
+import util.manual.Tower;
 import dto.Countresult;
 import dto.Data;
 import dto.Result;
@@ -22,6 +23,8 @@ public class Charge {
 	
 	public static Result getResult(Countresult cs, Data dt) {
 		String plan = null;
+		//地网面积取整
+		cs.setS(Math.ceil(cs.getS()));
 		switch (cs.getstyle()) {
 		case 1: 
 			plan = building(cs, dt);
@@ -53,7 +56,7 @@ public class Charge {
 			Lbc = cs.getr() * 2 * (pi + 2);
 		}
 		if(Lbc != 0d){
-			sb.append("需要扁钢"+(int)Lbc+"米，");
+			sb.append("扁钢"+(int)Lbc+"米，");
 		}
 		System.out.println("扁钢耗材："+Lbc);
 		System.out.println("扁钢耗费："+Lbc * bcmoney);
@@ -79,18 +82,20 @@ public class Charge {
 		count = cs.getmodulecount() + cs.getmodulecounti();
 		if(count != 0d) sb.append("接地模块"+count+"个，");
 		//计算总价
-		money = (int)Lbc * bcmoney + (int)Lbr * brmoney + count * mdmoney;
+		money = Lbc * bcmoney + Lbr * brmoney + count * mdmoney;
 		if(money == 0d) {
-			sb.append(money+"元");
+			sb.append((int)money+"元");
 		} else {
-			sb.append("总计："+money+"元");
+			sb.append("总计："+(int)money+"元");
 		}
 		return sb.toString();
 	}
 
 	private static String building(Countresult cs, Data dt) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("根据《建筑物防雷设计规范》，采用100*5热镀锌扁钢，围绕建筑外" + 
+		sb.append("根据《建筑物防雷设计规范》，该建筑防雷接地冲击接地电阻不宜大于"
+				+ (dt.gettype() == 3? "30" : "10")
+				+ "欧姆。需采用100*5热镀锌扁钢，围绕建筑外" + 
 				cs.getm() +
 				"米铺设环形接地体，埋深0.8米。与建筑地基内钢筋进行可靠焊接，形成网格面积为" +
 				Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS()))) + 
@@ -151,16 +156,16 @@ public class Charge {
 		StringBuilder sb = new StringBuilder();
 		if(cs.getindependent() != 0) {
 			if(dt.gettype() == 1) {
-				sb.append("根据《建筑物防雷设计规范》，一类防雷建筑物应设置独立的集中接地装置，" +
+				sb.append("根据《建筑物防雷设计规范》，该建筑应设置独立的集中接地装置，" +
 						"其冲击接地电阻不宜大于10欧姆。");
 			} else {
-				sb.append("根据DL/T620-1997《交流电气装置的过电压保护和绝缘配合》，该变电站应装设独立的集中接地装置，" +
-						"其冲击接地电阻不宜大于10欧姆。根据《建筑物防雷设计规范》§2.5，");
+				sb.append("根据《交流电气装置的过电压保护和绝缘配合》，该变电站应装设独立的集中接地装置，" +
+						"其冲击接地电阻不宜大于10欧姆。根据《建筑物防雷设计规范》，");
 			}
 		} else {
-			sb.append("根据《建筑物防雷设计规范》，" );
+			sb.append("根据《建筑物防雷设计规范》，该变电站防雷接地冲击接地电阻不宜大于10欧姆。" );
 		}
-		sb.append("采用100*5热镀锌扁钢，围绕建筑外" + 
+		sb.append("需采用100*5热镀锌扁钢，围绕建筑外" + 
 				cs.getm() +
 				"米铺设环形接地体，埋深0.8米。与建筑地基内钢筋进行可靠焊接，形成网格面积为" +
 				Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS()))) + 
@@ -235,11 +240,15 @@ public class Charge {
 	}
 	private static String towers(Countresult cs, Data dt) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("根据L/T621-1997《交流电气装置的接地》，该");
+		sb.append("根据《交流电气装置的接地》，该"
+				+ (dt.gettype() == 1 ? "铁塔" : "混凝土电杆")
+				+ "工频接地电阻应小于"
+				+ Tower.getR(dt.getp())
+				+ "欧姆，所以该");
 		switch(cs.getkind()) {
 		case 1: 
-			sb.append(dt.gettype() == 1 ? "铁塔" : "混凝土电杆");
-			sb.append("无需增设人工接地装置，其自身的自然接地体");
+			sb.append((dt.gettype() == 1 ? "铁塔" : "混凝土电杆")
+					+ "无需增设人工接地装置，其自身的自然接地体");
 			break;
 		case 2:
 			sb.append("铁塔需铺设人工接地装置，沿铁塔四角向外铺设4根" +
@@ -251,15 +260,15 @@ public class Charge {
 					cs.getlr() +
 					"米的Ф40热镀锌圆钢水平接地体，埋深0.8米，再以该接地体两端向外各延伸出两根" +
 					cs.getlr() + 
-					"米的Ф40热镀锌圆钢作为水平水平外延接地体，");
+					"米的Ф40热镀锌圆钢作为水平外延接地体，");
 			break;
 		case 4: 
-			sb.append( "混凝土杆采用100*5热镀锌扁钢围绕铺设半径为" +
+			sb.append( "混凝土杆需采用100*5热镀锌扁钢围绕铺设半径为" +
 					cs.getr() +
 					"米的环形接地装置，埋深0.8米，"); 
 			break;
 		case 5:
-			sb.append("混凝土杆因地形受限，优先以占地面积小来设计，以电杆为中心，采用100*5热镀锌扁钢铺设面积为"
+			sb.append("混凝土杆需铺设人工接地装置。因地形受限，接地装置优先以占地面积小来设计，以电杆为中心，采用100*5热镀锌扁钢铺设面积为"
 					+ cs.getS()
 					+ "平方米的"
 					+ (cs.getflag() == 0 ? "水平" : "复合")
@@ -276,6 +285,11 @@ public class Charge {
 						+ "根，");
 			}
 			break;
+		}
+		if(cs.getmodulecount() != 0d	) {
+			sb.append("最后沿接地装置向外均匀敷设" +
+					cs.getmodulecount() +
+					"个规格为400mmX600mmX60mm的方形接地模块，"); 
 		}
 		sb.append("即可满足要求。");
 		return sb.toString();

@@ -8,10 +8,8 @@ import enums.Towergroundingshape;
  *
  */
 public class Tower {
+	
 	private static final double pi = Math.PI;
-
-	public Tower() {
-	}
 
 	/**
 	 * 计算杆塔接地电阻
@@ -24,7 +22,7 @@ public class Tower {
 	 * @param indexT形状系数的序号
 	 * @return R			不同接地装置种类的接地电阻
 	 */
-	public double gorizontal(Double p, Double L1, Double L2, Double h, Double d, Integer indexT) {
+	public static double gorizontal(Double p, Double L1, Double L2, Double h, Double d, Integer indexT) {
 		Double R = null;
 		Double B = Towergroundingshape.shapeOf(indexT).getB();
 		Double L = getL(L1, L2, indexT);
@@ -41,30 +39,10 @@ public class Tower {
 	 * @param d	水平接地体等效直径
 	 * @return R
 	 */
-	public double gorizontal(Double p, Double L, Double h, Double d) {
+	public static double gorizontal(Double p, Double L, Double h, Double d) {
 		return gorizontal(p, L/ 4, L/ 4, h, d, 4);
 	}
 
-	/**
-	 * @return L	水平接地极总长度
-	 */
-	private Double getL(Double L1, Double L2, Integer index) {
-		Double L = null;
-		switch (index) {
-		case 1:	L = 4 * (L1 + L2);
-			break;
-		case 2:	L = 4 * L1 + L2;
-			break;
-		case 3:	L = L1 + L2;
-			break;
-		case 4:	L = 2 * (L1 + L2);
-			break;
-		case 5:	L = 2 * (L1 + L2);
-			break;
-		}
-		return L;
-	}
-	
 	/**
 	 * @param p 土壤电阻率
 	 * @return R 杆塔工频电阻要求值
@@ -84,10 +62,25 @@ public class Tower {
 		if(p >= 3000d) return 100d;
 		return 0.02 * p + 40d;
 	}
-	
-	
-//	public static void main(String[] args) {
-//		System.out.println(new Tower().gorizontal(1000d, 40d, 12d, 0.8, 0.05, 1));
-//	}
+
+	/**
+	 * @return L	水平接地极总长度
+	 */
+	private static Double getL(Double L1, Double L2, Integer index) {
+		Double L = null;
+		switch (index) {
+		case 1:	L = 4 * (L1 + L2);
+			break;
+		case 2:	L = 4 * L1 + L2;
+			break;
+		case 3:	L = L1 + L2;
+			break;
+		case 4:	L = 2 * (L1 + L2);
+			break;
+		case 5:	L = 2 * (L1 + L2);
+			break;
+		}
+		return L;
+	}
 	
 }

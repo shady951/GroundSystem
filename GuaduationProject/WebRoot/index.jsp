@@ -271,7 +271,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="btn btn-primary btn-lg" id="query" style="position: absolute;left: 0; right: 0;width: 200px; margin: 10px auto 0 auto;">开始设计</div>
 	<div class="result" style="margin-left:27%; margin-right:27%">
 		<div>
-			<label>接地装置设计:</label>
+			<label>防雷接地装置设计:</label>
 			<span id="plan"></span>
 		</div>
 		<div>

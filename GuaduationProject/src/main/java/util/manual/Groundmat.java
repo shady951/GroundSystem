@@ -12,21 +12,6 @@ public class Groundmat {
 
 	private static final double pi = Math.PI;
 	
-	public Groundmat() {
-	}
-	
-	/**
-	 * 计算基础接地网电阻(简化计算)
-	 * @param p	土壤电阻率
-	 * @param S	建筑面积
-	 * @return R	接地电阻
-	 */
-	public double generalmat (Double p, Double S) {
-		Double R = null;
-		R = 0.44 * p / Math.sqrt(S);
-		return R;
-	}
-	
 	/**
 	 * 计算水平接地电阻
 	 * @param p	土壤电阻率
@@ -36,7 +21,7 @@ public class Groundmat {
 	 * @param indexG	接地系数
 	 * @return R	水平接地电阻
 	 */
-	public double gorizontal(Double p, Double d, Double l, Double h,  Integer indexG) {
+	public static double gorizontal(Double p, Double d, Double l, Double h,  Integer indexG) {
 		Double R = null;
 		h += 0.001;
 		Double B = Gorizontalshape.shapeOf(indexG).getB();
@@ -54,7 +39,7 @@ public class Groundmat {
 	 * @param R2	放射型水平接地极接地电阻
 	 * @return R	接地电阻
 	 */
-	public double emissivitygorizontal(Double p, Double a, Double b, Double R1, Double R2) {
+	public static double emissivitygorizontal(Double p, Double a, Double b, Double R1, Double R2) {
 		Double R = null;
 		Double R12 = p * Math.log((2 * b + a ) / a) / (2 * pi * b);
 		R = (R1 * R2 - Math.pow(R12, 2)) / (R1 + R2 - 2 * R12);
@@ -74,7 +59,7 @@ public class Groundmat {
 	 * @param n	垂直接地极数量
 	 * @return R	任意形状边缘闭合的接地网的接地电阻
 	 */
-	public double gorizontalmat(Double p, Double Ls, Double Lr, Double L0, Double S, Double h, Double bc, Double n){
+	public static double gorizontalmat(Double p, Double Ls, Double Lr, Double L0, Double S, Double h, Double bc, Double n){
 		Double R = null;
 		h += 0.01;
 		Double L = Ls + Lr * n;
@@ -99,7 +84,7 @@ public class Groundmat {
 	 * @param n	垂直接地极数量
 	 * @return R	任意形状边缘闭合的接地网的接地电阻
 	 */
-	public double verticalmat(Double p, Double Ls, Double Lr, Double L0, Double S, Double h, Double bc, Double br, Double n) {
+	public static double verticalmat(Double p, Double Ls, Double Lr, Double L0, Double S, Double h, Double bc, Double br, Double n) {
 		Double R = null;
 		h += 0.01;
 		Double L = Ls + Lr * n;
@@ -114,7 +99,7 @@ public class Groundmat {
 	/**
 	 * @return a1	地网修正系数
 	 */
-	private double geta1(Double S, Double L0) {
+	private static double geta1(Double S, Double L0) {
 		Double a1 = null;
 		Double S1 = Math.sqrt(S);
 		a1 = S1 / L0 * (3 * Math.log(L0 / S1) - 0.2);
@@ -124,7 +109,7 @@ public class Groundmat {
 	/**
 	 * @return B	地网面积S和埋深h相关系数
 	 */
-	private Double getB(Double S, Double h) {
+	private static Double getB(Double S, Double h) {
 		Double B = null;
 		Double S1 = Math.sqrt(S);
 		B	=	1 / (1 + 4.6 * h / S1);
@@ -136,7 +121,7 @@ public class Groundmat {
 //	/**
 //	 * @return R1 接地网中的水平接地电阻
 //	 */
-//	private double getR1(Double p, Double Lc, Double bc, Double S, Double h, Double L0) {
+//	private static double getR1(Double p, Double Lc, Double bc, Double S, Double h, Double L0) {
 //		Double R1 = null;
 //		Double K1 = getK1(S, L0);
 //		Double K2 = getK2(S, L0);
@@ -149,7 +134,7 @@ public class Groundmat {
 //	/**
 //	 * @return R2 接地网中的垂直接地电阻
 //	 */
-//	private double getR2(Double p, Double Lr, Double br, Double n, Double S, Double L0) {
+//	private static double getR2(Double p, Double Lr, Double br, Double n, Double S, Double L0) {
 //		Double R2 = null;
 //		Double K1 = getK1(S, L0);
 //		Double K = Math.pow(Math.sqrt(n) - 1, 2) / Math.sqrt(S);
@@ -160,7 +145,7 @@ public class Groundmat {
 //	/**
 //	 * @return Rm 接地网中的互电阻系数
 //	 */
-//	private double getRm(Double p, Double Lc, Double Lr, Double S, Double L0){
+//	private static double getRm(Double p, Double Lc, Double Lr, Double S, Double L0){
 //		Double Rm = null;
 //		Double K1 = getK1(S, L0);
 //		Double K2 = getK2(S, L0);
@@ -171,7 +156,7 @@ public class Groundmat {
 //	/**
 //	 * @return K1	系数
 //	 */
-//	private double getK1(Double S, Double L0){
+//	private static double getK1(Double S, Double L0){
 //		Double K1 = null;
 //		Double X = getX(S, L0);
 //		K1 = -0.04 * X + 1.41;
@@ -181,7 +166,7 @@ public class Groundmat {
 //	/**
 //	 * @return K2 系数
 //	 */
-//	private double getK2(Double S, Double L0){
+//	private static double getK2(Double S, Double L0){
 //		Double K2 = null;
 //		Double X = getX(S, L0);
 //		K2 = 0.15 * X + 5.5;
@@ -191,7 +176,7 @@ public class Groundmat {
 //	/**
 //	 * @return	X	长宽比值，返回值-1：表示面积相对周长过大，或周长相对面积过小
 //	 */
-//	private double getX(Double S, Double L0) {
+//	private static double getX(Double S, Double L0) {
 //		Double X = null;
 //		Double K = Math.pow(L0, 2) / 4 - 4 * S;
 //		if(K < 0) return -1d;

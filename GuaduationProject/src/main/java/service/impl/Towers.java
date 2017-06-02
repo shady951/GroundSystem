@@ -3,7 +3,7 @@ package service.impl;
 import org.springframework.stereotype.Service;
 
 import service.Ground;
-import util.manual.Groundmat;
+import util.convert.GroundModule;
 import util.manual.Tower;
 import dto.Countresult;
 
@@ -44,7 +44,7 @@ public class Towers extends PowerStation implements Ground {
 		if (p < 300d) {
 			double a = 0.4;	//混凝土电杆自然接地体的冲击系数
 			System.out.println("土壤视在电阻率小于300，按规范考虑自然接地体");
-			R = type == 1? new Groundmat().generalmat(Sp, S) :  0.1 * Sp;
+			R = (type == 1? 0.44 * p / Math.sqrt(S) :  0.1 * Sp);
 			System.out.println("自然接地体工频接地电阻R:"+R);
 			if (R <= Rk) {
 				if(type == 1) {
@@ -59,21 +59,20 @@ public class Towers extends PowerStation implements Ground {
 		}
 		if (type == 1d) {
 			double l0 = 1; //水平接地体长度
-			for(; (R = new Tower().gorizontal(Sp, l0 , Math.sqrt(S), h, bc, 1)) > Rk && l0 <= lt; l0++);
+			for(; (R = Tower.gorizontal(Sp, l0 , Math.sqrt(S), h, bc, 1)) > Rk && l0 <= lt; l0++);
 			System.out.println("增设4根水平放射接地体"+l0+"米");
 			System.out.println("工频接地电阻R:"+R);
-			if(R < Rk) {
-				//长度修正
-				l0 = l0 == 1d? 1d : l0 - 1d;
-				Ri = getRi(p, H, p1, S, l0 * 4, 0d, 1, R, 0d);
-				cs = new Countresult(3, R, Ri, S, 1, l0, 2);
-			}
+			//长度修正
+			l0 = l0 == 1d? 1d : l0 - 1d;
+			Ri = getRi(p, H, p1, S, l0 * 4, 0d, 1, R, 0d);
+			cs = new Countresult(3, R, Ri, S, 1, l0, 2);
 		} else {
-			if(city) { //采用环形接地装置或复合地网
+			if(city) { //采用环形接地装置或接地网
 				cs = new Countresult();
 				cs.setkind(4);
 				double l1 = 1d;
-				for(; (R = new Tower().gorizontal(Sp, 2 * l1 * pi, h, bc)) > Rk && l1 <= 5d; l1++);
+				new Tower();
+				for(; (R = Tower.gorizontal(Sp, 2 * l1 * pi, h, bc)) > Rk && l1 <= 5d; l1++);
 				l1 = l1 == 1d? 1d : l1 - 1d;
 				if(R <= Rk) Ri = getRi(p, H, p1, Math.pow(l1, 2) * pi, 0d, 0d, 0, R, 0d);
 				cs.setr(l1);
@@ -93,7 +92,8 @@ public class Towers extends PowerStation implements Ground {
 			} else { //采用放射形接地装置
 				double le = 2 * Math.sqrt(Sp);
 				double l2 = 1;
-				for(; (R = new Tower().gorizontal(Sp, l2, l2, h, bc, 2)) > Rk && l2 < le && l2 < lt; l2++);
+				new Tower();
+				for(; (R = Tower.gorizontal(Sp, l2, l2, h, bc, 2)) > Rk && l2 < le && l2 < lt; l2++);
 				if(R < Rk) {
 					//长度修正
 					l2 = l2 == 1d? 1d : l2 - 1d;
@@ -103,6 +103,15 @@ public class Towers extends PowerStation implements Ground {
 					cs = new Countresult(3, R, Ri, 1, l2, 3);
 				}
 			}
+		}
+		//装设接地模块
+		if(cs.getRi() > 10d) {
+			double mRi = cs.getRi();
+			double modulecount = GroundModule.getcount(p, mRi, 10d);
+			double K = GroundModule.getR(p, mRi, modulecount) / mRi;
+			cs.setmodulecount(modulecount);
+			cs.setR(cs.getR() * K);
+			cs.setRi(cs.getRi() * K);
 		}
 		return cs; 
 	}

@@ -7,11 +7,9 @@ import java.util.HashMap;
  * @author tc
  * 
  */
-public class Doubledeckground {
-	private static final double pi = Math.PI;
+public  class Doubledeckground {
 	
-	public Doubledeckground() {
-	}
+	private static final double pi = Math.PI;
 	
 //	/**
 //	 * 计算垂直双层土壤的接地网接地电阻
@@ -45,7 +43,7 @@ public class Doubledeckground {
 	 * @param d0	垂直接地棒等效直径
 	 * @return R	任意形状边缘闭合的接地电阻
 	 */
-	public double gorizontalDoubledeckMat(Double p1, Double p2, Double S, Double H, 
+	public static double gorizontalDoubledeckMat(Double p1, Double p2, Double S, Double H, 
 			Double h, Double L, Double L0, Double l, Double N, Double d, Double d0) {
 		Double R = null;
 		HashMap<String, Double> hm = getl(H, h, l);
@@ -76,7 +74,7 @@ public class Doubledeckground {
 	 * @param d	垂直接地体等效直径
 	 * @return R	接地电阻阻值
 	 */
-	public double gorizontalDoubledeckvertical(Double p1, Double p2, Double H, Double h, Double l, Double d) {
+	public static double gorizontalDoubledeckvertical(Double p1, Double p2, Double H, Double h, Double l, Double d) {
 		Double R = null;
 		HashMap<String, Double> hm = getl(H, h, l);
 		Double l1 = hm.get("l1");
@@ -128,7 +126,7 @@ public class Doubledeckground {
 	/**
 	 * @return HM 判断计算并储存上下层土壤内的棒长l1，l2的值
 	 */
-	private HashMap<String, Double> getl(Double H, Double h, Double l) {
+	private static HashMap<String, Double> getl(Double H, Double h, Double l) {
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 		Double l1 = null;
 		Double l2 = null;
@@ -154,7 +152,7 @@ public class Doubledeckground {
 	/**
 	 * @return Rhor 水平双层土壤水平地网接地电阻
 	 */
-	private double getRhor(Double p1, Double S, Double k, Double H, Double h,Double L, Double L0, Double d) {
+	private static double getRhor(Double p1, Double S, Double k, Double H, Double h,Double L, Double L0, Double d) {
 		Double Rhor = null;
 		Double f = 0.016 * k * (L0 / 4);
 		Double H0 = 0.9 * ((k - 1) / k) * Math.sqrt(S / (8 * pi)) * Math.log(1 - k);
@@ -169,7 +167,7 @@ public class Doubledeckground {
 	/**
 	 * @return B 地网面积与埋深的关联系数
 	 */
-	private double getB(Double S, Double h) {
+	private static double getB(Double S, Double h) {
 		Double B = null;
 		B = 1 / (1 + 4.6 * h / Math.sqrt(S));
 		return B;
@@ -178,7 +176,7 @@ public class Doubledeckground {
 	/**
 	 * @return a1 面积S形状修正系数
 	 */
-	private double geta1(Double L0, Double S) {
+	private static double geta1(Double L0, Double S) {
 		Double a1 = null;
 		Double N = 3 * Math.log(L0 / Math.sqrt(S)) - 0.2;
 		a1 = N * Math.sqrt(S) / L0;
@@ -188,7 +186,7 @@ public class Doubledeckground {
 	/**
 	 * @return R1e 均匀土壤电阻率为p1时的等值正方形接地网的接地电阻
 	 */
-	private double getR1e(Double p1, Double S, Double L, Double h, Double d, Double B) {
+	private static double getR1e(Double p1, Double S, Double L, Double h, Double d, Double B) {
 		Double R1e = null;
 		Double N0 = 0.213 * (1 + B);
 		Double N1 = Math.log(S / (9 * h * d)) - 5 * B;
@@ -199,7 +197,7 @@ public class Doubledeckground {
 	/**
 	 * @return Re 下层土壤镜像电流对等值正方形地网所引起的附加接地电阻差
 	 */
-	private double getRe(Double p1, Double k, Double H, Double H0, Double f) {
+	private static double getRe(Double p1, Double k, Double H, Double H0, Double f) {
 		Double Re = null;
 		Re = p1 * Math.log(1 - k) / (2 * pi * (H + H0 + f));
 		return Re;
@@ -208,7 +206,7 @@ public class Doubledeckground {
 	/**
 	 * @return Rrod 水平双层土壤中组合棒的接地电阻
 	 */
-	private double getRrod(Double p1, Double p2, Double S, Double k, Double H, Double h, Double l,Double N, Double d0, Double l1, Double l2) {
+	private static double getRrod(Double p1, Double p2, Double S, Double k, Double H, Double h, Double l,Double N, Double d0, Double l1, Double l2) {
 		Double Rrod = null;
 		Double K0 = null;
 		Double q = null;
@@ -233,7 +231,7 @@ public class Doubledeckground {
 	/**
 	 * @return F0 水平双层土壤中组合棒的接地电阻相关系数
 	 */
-	private double getF0(Double S, Double k, Double N, Double l, Double K0, Double g0) {
+	private static double getF0(Double S, Double k, Double N, Double l, Double K0, Double g0) {
 		Double F0 = null;
 		Double n = Math.pow(l / (Math.sqrt(S) * (1 - 0.9 * k)), 0.6);
 		F0 = 1 + (N - 1 / Math.sqrt(N)) * K0 * n / g0;
@@ -243,7 +241,7 @@ public class Doubledeckground {
 	/**
 	 * @return E 水平双层土壤中组合棒的接地电阻相关系数
 	 */
-	private double getE(Double N, Double F0, Double q) {
+	private static double getE(Double N, Double F0, Double q) {
 		Double E = null;
 		Double n = Math.pow(N / F0 - 1, 2);
 		E = Math.sqrt(n * Math.pow(q, 2) + 1);
@@ -253,7 +251,7 @@ public class Doubledeckground {
 	/**
 	 * @return Ra 水平双层土壤中组合棒的接地电阻相关系数
 	 */
-	private double getRa(Double p1, Double k, Double H, Double N, Double l1, Double E, Double g0, Double F0) {
+	private static double getRa(Double p1, Double k, Double H, Double N, Double l1, Double E, Double g0, Double F0) {
 		Double Ra = null;
 		Double n1 = p1 * g0 * F0 / (2 * pi * N * l1);
 		Double n2 = p1 * Math.log(1 / (1 - k)) / (2 * pi * H * E);
@@ -264,7 +262,7 @@ public class Doubledeckground {
 	/**
 	 * @return Rm 水平双层土壤，当下层土壤内棒长等于0，或，下层土壤内棒长大于0且土壤反射系数大于等于0时的互电阻
 	 */
-	private double getRm(Double Rhor, Double p1, Double S, Double L0,  Double L, Double l, Double h, Double d) {
+	private static double getRm(Double Rhor, Double p1, Double S, Double L0,  Double L, Double l, Double h, Double d) {
 		Double Rm = null;
 		Double a1 = geta1(L0, S);
 		Rm = Rhor - a1 * p1 * Math.log(l / Math.sqrt(h * d)) / (pi * L);
@@ -274,7 +272,7 @@ public class Doubledeckground {
 	/**
 	 * @return Rm 水平双层土壤，当下层土壤内棒长大于0且土壤反射系数小于0时的互电阻
 	 */
-	private double getRm(Double p1, Double p2, Double S, Double h, Double L, Double L0, Double l, Double d, Double l1, Double l2) {
+	private static double getRm(Double p1, Double p2, Double S, Double h, Double L, Double L0, Double l, Double d, Double l1, Double l2) {
 		Double Rm = null;
 		Double a1 = geta1(L0, S);
 		Double B = getB(S, h);
@@ -286,7 +284,7 @@ public class Doubledeckground {
 	/**
 	 * @return k	土壤反射系数(+0.001：防止用户输入相同电阻率的两层土壤，使k等于0)
 	 */
-	private Double getk(Double p1, Double p2) {
+	private static Double getk(Double p1, Double p2) {
 		Double k = null;
 		 k = (p2 - p1 + 0.001) / (p2 + p1);
 		return k;
@@ -295,7 +293,7 @@ public class Doubledeckground {
 	/**
 	 * @return x	比值系数
 	 */
-	private Double getx(Double H, Double l, Double l1, Double l2) {
+	private static Double getx(Double H, Double l, Double l1, Double l2) {
 		Double x = null;
 		if(l2 == 0d) {
 			x = l / H;
@@ -308,7 +306,7 @@ public class Doubledeckground {
 	/**
 	 * @return pa 土壤视电阻率公式一
 	 */
-	private Double getpa(Double p1, Double p2, Double l, Double l1, Double l2) {
+	private static Double getpa(Double p1, Double p2, Double l, Double l1, Double l2) {
 		Double pa = null;
 		pa = p1 * p2 * l / (p1 * l2 + p2 * l1);
 		return pa;

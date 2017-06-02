@@ -102,8 +102,8 @@ public class Building implements Ground{
 		// 外延环形接地体距离，最小1米
 		Double m = 2d;
 		// 建筑一米布置接环形接地体
-		if (new Groundmat().gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))), 0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk && !city) {
-			for (; getS(S, m) < 2 * S && new Groundmat().gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))),
+		if (Groundmat.gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))), 0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk && !city) {
+			for (; getS(S, m) < 2 * S && Groundmat.gorizontalmat(Sp, Totallengthofmat.totallenth(Math.sqrt(getS(S, m))),
 					0d, Math.sqrt(getS(S, m)) * 4, getS(S, m), h, bc, 0d) > Rk; m++);
 			m -= 1;
 		}
@@ -116,7 +116,7 @@ public class Building implements Ground{
 		System.out.println("等效方形边长a:" + a);
 		Double Ls = Totallengthofmat.totallenth(a);
 		Double n = Totallengthofmat.amount(a);
-		R = new Groundmat().gorizontalmat(Sp, Ls, 0d, a * 4, S, h, bc, 0d);
+		R = Groundmat.gorizontalmat(Sp, Ls, 0d, a * 4, S, h, bc, 0d);
 		System.out.println("外延距离:" + m/2);
 		System.out.println("最终地网面积S:" + S);
 		System.out.println("工频接地电阻R:" + R);
@@ -136,15 +136,15 @@ public class Building implements Ground{
 			System.out.println("n:"+n);
 			if (H == 0d) {
 				System.out.println("按单层土壤计算");
-				Rv = new Groundmat().verticalmat(p , Ls, lv, a * 4, S, h, bc, br, n);
+				Rv = Groundmat.verticalmat(p , Ls, lv, a * 4, S, h, bc, br, n);
 			} else {
 				System.out.println("按双层土壤计算");
-				Rv = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lv, n, bc, br);
+				Rv = Doubledeckground.gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lv, n, bc, br);
 			}
 			if (!city) {
 				System.out.println("未在城市,比较水平接地体与垂直接地体");
-				double Rr = new Groundmat().emissivitygorizontal(Sp, a, lr, new Groundmat().gorizontalmat(Sp, Ls,
-						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, lr / 4, h, 1) / 4);
+				double Rr = Groundmat.emissivitygorizontal(Sp, a, lr, Groundmat.gorizontalmat(Sp, Ls,
+						0d, a * 4, S, h, bc, 0d), Groundmat.gorizontal(Sp, bc, lr / 4, h, 1) / 4);
 				System.out.println("lr:"+lr);
 				System.out.println("Rr:"+Rr+"  Rv:"+Rv);
 				if (Rr > Rv) {
@@ -174,10 +174,10 @@ public class Building implements Ground{
 			Double Rv2 = null;
 			if(H == 0d) {
 				System.out.println("单层土壤");
-				Rv1 = new Groundmat().verticalmat(p, Ls, lv, a * 4, S, h, bc, br, n);
+				Rv1 = Groundmat.verticalmat(p, Ls, lv, a * 4, S, h, bc, br, n);
 			} else {
 				System.out.println("双层土壤");
-				Rv1 = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lv, n, bc, br);
+				Rv1 = Doubledeckground.gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lv, n, bc, br);
 			}
 			System.out.println("补加"+lv+"米垂直接地体电阻Rv1:"+Rv1);
 			if(H > h && H < a / 3 && p * 0.75 >= p1 && Rv1 > Rk) {
@@ -185,7 +185,7 @@ public class Building implements Ground{
 				double iv = Math.ceil(H) <= 3d? 3d : Math.ceil(H);
 				Double N = 4d;
 				boolean f = false;
-				for(;(Rv2 = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, iv,
+				for(;(Rv2 = Doubledeckground.gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, iv,
 						N = Math.ceil(a * 4 / (iv * 2 )) < 4d? 4d : Math.ceil(a * 4 / (iv * 2 )), bc, br)) > Rk && iv <= a && iv <= 60d; iv++) {
 					if(Rv2 < Rv1 && iv < 2 * Math.sqrt(getpa(p, p1, H + r, h, iv + r)) - r) {
 						Rv1 = Rv2;
@@ -211,8 +211,8 @@ public class Building implements Ground{
 				if (lr != 0) ir = Math.ceil(lr);
 				Double Rr = null;
 				boolean mark = false;
-				for (; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, new Groundmat().gorizontalmat(Sp, Ls,
-						0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir += 4) {
+				for (; (Rr = Groundmat.emissivitygorizontal(Sp, a, ir, Groundmat.gorizontalmat(Sp, Ls,
+						0d, a * 4, S, h, bc, 0d), Groundmat.gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir += 4) {
 							mark = true;
 						}
 				if(mark) ir -= 1;
@@ -221,8 +221,8 @@ public class Building implements Ground{
 				if(Rr > Rk && Rv1 > Rk) {
 					ir = 1d;
 					if (lr != 0) ir = Math.ceil(lr);
-					for (mark = false; (Rr = new Groundmat().emissivitygorizontal(Sp, a, ir, Rv1,
-							new Groundmat().gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir += 4) {
+					for (mark = false; (Rr = Groundmat.emissivitygorizontal(Sp, a, ir, Rv1,
+							Groundmat.gorizontal(Sp, bc, ir / 4, h, 1) / 4)) > Rk && ir < 4 * r; ir += 4) {
 						mark = true;
 					}
 					if(mark) ir -= 1;
@@ -354,7 +354,7 @@ public class Building implements Ground{
 		System.out.println("接地等效长度le:" + le);
 		if (l > le) {
 			if (le <= lb) {
-				Ri = new Groundmat().gorizontalmat(Sp, Ls, 0d, 2 * pi * le, Math.pow(le, 2) * pi, h, bc, 0d);
+				Ri = Groundmat.gorizontalmat(Sp, Ls, 0d, 2 * pi * le, Math.pow(le, 2) * pi, h, bc, 0d);
 				System.out.println("接地等效长度小于等于地网水平等效半径，冲击接地电阻Ri按水平地网计算");
 			} else {
 				//lrv:补加接地体的冲击有效长度
@@ -362,33 +362,33 @@ public class Building implements Ground{
 				System.out.println("接地等效半径在地网水平等效半径与地网最大长度之间，冲击接地电阻Ri按复合地网计算");
 				System.out.println("lrv:"+lrv);
 				if (flag == 1 || flag == 4) {
-					Ri = new Groundmat().emissivitygorizontal(Sp, a, 4 * lrv, new Groundmat().gorizontalmat(Sp, Ls,
-							0d, a * 4, S, h, bc, 0d), new Groundmat().gorizontal(Sp, bc, lrv, h, 1) / 4);
+					Ri = Groundmat.emissivitygorizontal(Sp, a, 4 * lrv, Groundmat.gorizontalmat(Sp, Ls,
+							0d, a * 4, S, h, bc, 0d), Groundmat.gorizontal(Sp, bc, lrv, h, 1) / 4);
 				} else if(flag == 3) {
 					double ler = le - lb < lr / 4 ? le -  lb : lr / 4;
 					double lev = le - lb < lv? le - lb : lv;
 					double Rv;
 					if(H == 0d) {
-						Rv = new Groundmat().verticalmat(p, Ls, lev, a * 4, S, h, bc, br,n);
+						Rv = Groundmat.verticalmat(p, Ls, lev, a * 4, S, h, bc, br,n);
 					} else {
-						Rv = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lev, n, bc, br);
+						Rv = Doubledeckground.gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lev, n, bc, br);
 					}
-					Ri = new Groundmat().emissivitygorizontal(Sp, a, 4 * ler, Rv, new Groundmat().gorizontal(Sp, bc, ler, h, 1) / 4);
+					Ri = Groundmat.emissivitygorizontal(Sp, a, 4 * ler, Rv, Groundmat.gorizontal(Sp, bc, ler, h, 1) / 4);
 				} else {
 					if(H == 0d) {
 						System.out.println("冲击接地电阻Ri按单层土壤复合地网计算");
-						Ri = new Groundmat().verticalmat(p, Ls, lrv, a * 4, S, h, bc, br,n);
+						Ri = Groundmat.verticalmat(p, Ls, lrv, a * 4, S, h, bc, br,n);
 					} else {
 						System.out.println("冲击接地电阻Ri按双层土壤复合地网计算");
-							Ri = new Doubledeckground().gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lrv,n, bc, br);
+							Ri = Doubledeckground.gorizontalDoubledeckMat(p, p1, S, H, h, Ls, a * 4, lrv,n, bc, br);
 					}
 				}
 			}
 		} else {
 			if((flag == 2 || flag == 5) && H > h) {
-				Ri = new Impulseconversion().convert(getpa(p, p1, H + l, h, l), l / le, R);
+				Ri = Impulseconversion.convert(getpa(p, p1, H + l, h, l), l / le, R);
 			} else {
-				Ri = new Impulseconversion().convert(Sp, l / le, R);
+				Ri = Impulseconversion.convert(Sp, l / le, R);
 			}
 			System.out.println("接地等效半径大于地网最大长度");
 		}

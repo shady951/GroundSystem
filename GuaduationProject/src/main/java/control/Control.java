@@ -33,16 +33,17 @@ public class Control {
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(HttpServletRequest request) {
+//		System.out.println("index:"+request.getServletContext().getAttribute("ipset"));
 		Set<String> set;
-		if((set = Iprecord.iplog(request)) != null) request.getServletContext().setAttribute("ipset", set);;
+		if((set = Iprecord.iplog(request, false)) != null) request.getServletContext().setAttribute("ipset", set);
 		return "index";
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/design", method = RequestMethod.POST, produces = { "application/json; charset=utf-8" })
-	public Result design(@RequestBody Data data) {
+	public Result design(HttpServletRequest request, @RequestBody Data data) {
+		Iprecord.iplog(request, true);
 		Countresult countresult = null;
-//		System.out.println(data);
 		switch (data.getstyle()) {
 		case 1:
 			if (data.gettype() == 1) {

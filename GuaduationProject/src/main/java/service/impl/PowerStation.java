@@ -163,10 +163,12 @@ public class PowerStation extends Building implements Ground{
 		double ni = n;
 		// i:方案计数
 		int i = 0;
-		double R = new Vertical().straightverticals(p, p1, H, br, l, h, s, n);
+		new Vertical();
+		double R = Vertical.straightverticals(p, p1, H, br, l, h, s, n);
 		double Ra = 0;
+		new Impulseconversion();
 		// Ri:冲击接地电阻
-		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le, R);
+		double Ri = Impulseconversion.convert(getpa(p, p1, H, h, l), (d / 2 + l) / le, R);
 		// l最大不能超过地网等效直径或者40米
 		for (; (l = l == 3.5 ? 3d : l) < (le = getle(p, p1, H, l) < 40d ? getle(p, p1, H, l) : 40d); l++) {
 			// s的最大值需满足在有效长度之内
@@ -174,9 +176,11 @@ public class PowerStation extends Building implements Ground{
 				// d最大不能超过地网等效直径或者有效长度
 				for (d = s; d <= ((le - l) * 2 < dr ? (le - l) * 2 : dr); d++) {
 					i++;
+					new Impulseconversion();
+					new Vertical();
 					// 遍历所有可行方案，选择Ri达标且垂直接地体数量小于15个的方案
-					if (Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (d / 2 + l) / le,
-							R = new Vertical().straightverticals(p, p1, H, br, l, h, s, n = getni(d, s))))) {
+					if (Ri > (Ra = Impulseconversion.convert(getpa(p, p1, H, h, l), (d / 2 + l) / le,
+							R = Vertical.straightverticals(p, p1, H, br, l, h, s, n = getni(d, s))))) {
 						if(needRi) {
 							if (Ri >= 10 && n <= 15) {
 								Ri = Ra;
@@ -193,7 +197,8 @@ public class PowerStation extends Building implements Ground{
 								ni = n;
 							}
 						} else {
-							if(R > (Ra = new Vertical().straightverticals(p, p1, H, br, l, h, s, n = getni(d, s)))) {
+							new Vertical();
+							if(R > (Ra = Vertical.straightverticals(p, p1, H, br, l, h, s, n = getni(d, s)))) {
 								R = Ra;
 								li = l;
 								si = s;
@@ -242,9 +247,11 @@ public class PowerStation extends Building implements Ground{
 		double ni = n;
 		double Ra;
 		int i = 0;
-		double R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n);
+		new Vertical();
+		double R = Vertical.linkverticals(p, p1, H, bc, l, h, s, n);
+		new Impulseconversion();
 		// Ri:冲击接地电阻
-		double Ri = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le, R);
+		double Ri = Impulseconversion.convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le, R);
 		//l取2.5及大于2.5的正整数，小于接地体有效长度或40米
 		for (; (l = l == 3.5 ? 3d : l) < (getle(p, p1, H, l) < 40d ? getle(p, p1, H, l) : 40d); l++) {
 			//s需大于l的两倍，小于当n为3个时，s可达到最大值，s最大值构成的圆半径
@@ -253,8 +260,10 @@ public class PowerStation extends Building implements Ground{
 				for (n = 3; getr(s, n) <=  (Math.sqrt(S / pi) < le - l? Math.sqrt(S / pi) : le - l) && n <= 50d; n++) {
 					i++;
 					if(needRi) {
-						if (Ri > (Ra = new Impulseconversion().convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le,
-								R = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n)))) {
+						new Impulseconversion();
+						new Vertical();
+						if (Ri > (Ra = Impulseconversion.convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le,
+								R = Vertical.linkverticals(p, p1, H, bc, l, h, s, n)))) {
 							//若没有小于10欧姆的，则选择Ri最小的方案
 							if (Ri >= 10d) {
 								Ri = Ra;
@@ -272,7 +281,7 @@ public class PowerStation extends Building implements Ground{
 							}
 						}
 					} else {
-						if(R > (Ra = new Vertical().linkverticals(p, p1, H, bc, l, h, s, n))) {
+						if(R > (Ra = Vertical.linkverticals(p, p1, H, bc, l, h, s, n))) {
 							R = Ra;
 							li = l;
 							si = s;

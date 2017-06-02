@@ -43,13 +43,16 @@
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
 
-	<!-- 设定刷新日志配置文件的时间间隔，这里设置为10s -->
+	<!-- 设定刷新日志配置文件的时间间隔，这里设置为30s 
     <context-param>
         <param-name>log4jRefreshInterval</param-name>
         <param-value>30000</param-value>
     </context-param>
+    
+ 	filewatchdog线程异常
+	-->
 
-    <!-- 为避免项目间冲突，定义唯一的 webAppRootKey 
+    <!-- 唯一 webAppRootKey 
     -->
     <context-param>
         <param-name>webAppRootKey</param-name>

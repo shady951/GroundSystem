@@ -7,9 +7,6 @@ package util.convert;
  */
 public class Totallengthofmat {
 
-	public Totallengthofmat() {
-	}
-	
 	/**
 	 * 计算地网总长度
 	 * @param a	地网等效边长
@@ -43,8 +40,4 @@ public class Totallengthofmat {
 		return n;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(Totallengthofmat.amount(25d));
-		System.out.println(Totallengthofmat.totallenth(30d));
-	}
 }

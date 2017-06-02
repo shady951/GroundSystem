@@ -24,7 +24,4 @@ public class GroundModule {
 		return  0.068 * (p / (0.4 * 0.6) - 2);
 	}
 	
-//	public static void main(String[] args) {
-//		System.out.println(getR(20d, 500d, getcount(500d, 20d, 10d)));
-//	}
 }
