@@ -49,7 +49,7 @@
         <param-value>30000</param-value>
     </context-param>
     
- 	filewatchdog线程异常
+ 	(filewatchdog)抛出线程异常
 	-->
 
     <!-- 唯一 webAppRootKey 

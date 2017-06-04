@@ -5,8 +5,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>防雷接地计算</title>
 	<script type="text/javascript" src="/GuaduationProject/jq/jquery-3.1.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/bootstrap/js/bootstrap.min.js"></script>
@@ -50,14 +51,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<li role="presentation"><a href="#third"  data-val="3">架空塔杆</a></li>
 	</ul>
 	<div id="first" class="active tab-container">
-		<div>
-			<img style="bac" src="">
-		</div>
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
 				<h1>防雷接地计算系统</h1>
 			</div>
 			<div class="container tmargin">
-			<div class="col-md-6 text-right">
+			<div class="col-xs-6 col-md-6 text-right">
 				<label>建筑防雷分类</label>
 				<select class="construct-select type">
 					<option value="1">一类</option>
@@ -65,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<option value="3">三类</option>
 				</select>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-6">
 				<label>建筑周围环境</label>
 				<select class="construct-select city">
 					<option value="true">严格</option>
@@ -74,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
   			<div class="container">
-  			<div class="col-md-6 text-right " style="margin-top:6px">
+  			<div class="col-md-6 text-right col-xs-6" style="margin-top:6px">
   				<label >土壤分层情况</label>
 				<select class="floor" style="width:85px;">
 					<option value="1">均匀土壤</option>
@@ -82,24 +80,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</select>
   			</div>
 				<form class="form-inline">
-				  <div class="form-group floorp col-md-6 ">
+				  <div class="form-group floorp col-md-6 col-xs-6">
 				    <label for="1p">土壤电阻率</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p" id="1p">
 				    <label for="1p">欧姆</label>
 				    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">查询</button>
 				  </div>
-				  <div class="form-group floorp0 col-md-6 ">
+				  <div class="form-group floorp0 col-md-6 col-xs-6">
 				    <label for="1p0">上层土壤电阻率</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p0" id="1p0">
 				    <label for="1p0">欧姆</label>
 				    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">查询</button>
 				  </div>
-					  <div class="form-group floorH col-md-6 text-right">
+					  <div class="form-group floorH col-md-6 text-right col-xs-6">
 					    <label for="1H">上层土壤厚度</label>
 					    <input type="text" onkeyup="value=value.replace(/[^\d.]/g,'')" class="form-control small-input H" id="1H">
 					    <label for="1H">米</label>
 					  </div>
-						  <div class="form-group floorp1 col-md-6">
+						  <div class="form-group floorp1 col-md-6 col-xs-6">
 					    <label for="1p1">下层土壤电阻率</label>
 					    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p1" id="1p1">
 					    <label for="1p1">欧姆</label>
@@ -108,12 +106,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		</div>
 		<div class="container tmargin">
 				<form class="form-inline">
-				  <div class="form-group col-md-6 text-right">
+				  <div class="form-group col-md-6 text-right col-xs-6">
 				    <label for="S">建筑占地面积</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input S" style="width:70px">
 				     <label for="S">平方米</label>
 				  </div>
-				  <div class="form-group col-md-6">
+				  <div class="form-group col-md-6 col-xs-6">
 				    <label for="Rk">工频接地电阻要求值</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d.]/g,'')" class="form-control small-input Rk">
 				    <label for="Rk">欧姆</label>
@@ -122,14 +120,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 	<div id="second" class="tab-container">
-  		<div>
-			<img style="bac" src="">
-		</div>
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
 				<h1>防雷接地计算系统</h1>
 			</div>
 			<div class="container tmargin">
-			<div class="col-md-6 text-right">
+			<div class="col-md-6 text-right col-xs-6">
 				<label>电压等级</label>
 				<select class="construct-select type" style="width:70px">
 					<option value="35">35KV</option>
@@ -140,7 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<option value="500">500KV</option>
 				</select>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-6">
 				<label>建筑周围环境</label>
 				<select class="construct-select city">
 					<option value="true">严格</option>
@@ -149,7 +144,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
   			<div class="container">
-  			<div class="col-md-6 text-right " style="margin-top:6px">
+  			<div class="col-md-6 text-right col-xs-6" style="margin-top:6px">
   				<label >土壤分层情况</label>
 				<select class="floor" style="width:85px;">
 					<option value="1">均匀土壤</option>
@@ -157,24 +152,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</select>
   			</div>
 				<form class="form-inline">
-				  <div class="form-group floorp col-md-6 ">
+				  <div class="form-group floorp col-md-6 col-xs-6">
 				    <label for="1p">土壤电阻率</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p" id="1p">
 				    <label for="1p">欧姆</label>
 				    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">查询</button>
 				  </div>
-				  <div class="form-group floorp0 col-md-6 ">
+				  <div class="form-group floorp0 col-md-6 col-xs-6">
 				    <label for="1p0">上层土壤电阻率</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p0" id="1p0">
 				    <label for="1p0">欧姆</label>
 				    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">查询</button>
 				  </div>
-					  <div class="form-group floorH col-md-6 text-right">
+					  <div class="form-group floorH col-md-6 text-right col-xs-6">
 					    <label for="1H">上层土壤厚度</label>
 					    <input type="text" onkeyup="value=value.replace(/[^\d.]/g,'')" class="form-control small-input H" id="1H">
 					    <label for="1H">米</label>
 					  </div>
-						  <div class="form-group floorp1 col-md-6">
+						  <div class="form-group floorp1 col-md-6 col-xs-6">
 					    <label for="1p1">下层土壤电阻率</label>
 					    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p1" id="1p1">
 					    <label for="1p1">欧姆</label>
@@ -189,12 +184,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		</div>
 		<div class="container tmargin">
 				<form class="form-inline">
-				  <div class="form-group col-md-6 text-right">
+				  <div class="form-group col-md-6 text-right col-xs-6">
 				    <label for="S">建筑占地面积</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input S" style="width:70px">
 				     <label for="S">平方米</label>
 				  </div>
-				  <div class="form-group col-md-6">
+				  <div class="form-group col-md-6 col-xs-6">
 				    <label for="Rk">工频接地电阻要求值</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d.]/g,'')" class="form-control small-input Rk">
 				    <label for="Rk">欧姆</label>
@@ -210,14 +205,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1>防雷接地计算系统</h1>
 			</div>
 			<div class="container tmargin">
-			<div class="col-md-6 text-right">
+			<div class="col-md-6 text-right col-xs-6">
 				<label>杆塔类型</label>
 				<select id="towertype" class="construct-select type" style="width:65px">
 					<option value="1">铁塔型</option>
 					<option value="2">混凝土杆型</option>
 				</select>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-6">
 				<label>建筑周围环境</label>
 				<select class="construct-select city">
 					<option value="true">严格</option>
@@ -226,7 +221,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
   			<div class="container">
-  			<div class="col-md-6 text-right " style="margin-top:6px">
+  			<div class="col-md-6 text-right col-xs-6" style="margin-top:6px">
   				<label >土壤分层情况</label>
 				<select class="floor" style="width:85px;">
 					<option value="1">均匀土壤</option>
@@ -234,24 +229,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</select>
   			</div>
 				<form class="form-inline">
-				  <div class="form-group floorp col-md-6 ">
+				  <div class="form-group floorp col-md-6 col-xs-6">
 				    <label for="1p">土壤电阻率</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p" id="1p">
 				    <label for="1p">欧姆</label>
 				    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">查询</button>
 				  </div>
-				  <div class="form-group floorp0 col-md-6 ">
+				  <div class="form-group floorp0 col-md-6 col-xs-6">
 				    <label for="1p0">上层土壤电阻率</label>
 				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p0" id="1p0">
 				    <label for="1p0">欧姆</label>
 				    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">查询</button>
 				  </div>
-					  <div class="form-group floorH col-md-6 text-right">
+					  <div class="form-group floorH col-md-6 text-right col-xs-6">
 					    <label for="1H">上层土壤厚度</label>
 					    <input type="text" onkeyup="value=value.replace(/[^\d.]/g,'')" class="form-control small-input H" id="1H">
 					    <label for="1H">米</label>
 					  </div>
-						  <div class="form-group floorp1 col-md-6">
+						  <div class="form-group floorp1 col-md-6 col-xs-6">
 					    <label for="1p1">下层土壤电阻率</label>
 					    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input p1" id="1p1">
 					    <label for="1p1">欧姆</label>
@@ -323,7 +318,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		switch(style) {
 			case 1: $('#Layer').attr('src', '<%=path %>/img/building.png');
 			break;
-			case 2: $('#Layer').attr('src', '<%=path %>/img/powerstation1.png');
+			case 2: $('#Layer').attr('src', '<%=path %>/img/powerstation.png');
 			break;
 			case 3: $('#Layer').attr('src', '<%=path %>/img/tower.png');
 			break;
