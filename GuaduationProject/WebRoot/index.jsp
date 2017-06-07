@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</ul>
 	<div id="first" class="active tab-container">
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
-				<h1>防雷接地计算系统</h1>
+				<h1>防雷接地冲击接地电阻计算系统</h1>
 			</div>
 			<div class="container tmargin">
 			<div class="col-xs-6 col-md-6 text-right">
@@ -121,7 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<div id="second" class="tab-container">
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
-				<h1>防雷接地计算系统</h1>
+				<h1>防雷接地冲击接地电阻计算系统</h1>
 			</div>
 			<div class="container tmargin">
 			<div class="col-md-6 text-right col-xs-6">
@@ -202,7 +202,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<img style="bac" src="">
 		</div>
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
-				<h1>防雷接地计算系统</h1>
+				<h1>防雷接地冲击接地电阻计算系统</h1>
 			</div>
 			<div class="container tmargin">
 			<div class="col-md-6 text-right col-xs-6">

@@ -1,13 +1,13 @@
 package util.charge;
 
-import util.convert.Totallengthofmat;
+import util.convert.Totallengthformat;
 import util.manual.Tower;
 import dto.Countresult;
 import dto.Data;
 import dto.Result;
 
 /**
- * 价格计算、字符串拼接模块
+ * 接地体耗费计算和字符串条件拼接
  * @author tc
  *
  */
@@ -21,6 +21,12 @@ public class Charge {
 	//400mmX600mmX60mm方形接地模块(元/个)
 	private static final double mdmoney = 70d;
 	
+	/**
+	 * 主方法
+	 * @param cs	略
+	 * @param dt	略
+	 * @return Result
+	 */
 	public static Result getResult(Countresult cs, Data dt) {
 		String plan = null;
 		//地网面积取整
@@ -40,8 +46,8 @@ public class Charge {
 	}
 
 	/**
-	 * 水平地网以扁钢计算，其余以圆钢计算
-	 * @return 耗材预算(元)
+	 * 接地体耗费计算(水平地网以扁钢计算，其余以圆钢计算)
+	 * @return money 耗材预算(米、元)
 	 */
 	private static String getmoney(Countresult cs, Data dt) {
 		StringBuilder sb = new StringBuilder();
@@ -51,7 +57,7 @@ public class Charge {
 		double money = 0d;
 		//计算扁钢耗材
 		if(dt.getstyle() != 3) {
-			Lbc = Totallengthofmat.totallenth(Math.sqrt(cs.getS())) - (Totallengthofmat.totallenth(Math.sqrt(dt.getS())) - Math.sqrt(dt.getS()) * 4);
+			Lbc = Totallengthformat.totallenth(Math.sqrt(cs.getS())) - (Totallengthformat.totallenth(Math.sqrt(dt.getS())) - Math.sqrt(dt.getS()) * 4);
 		} else if(cs.getkind() == 4){
 			Lbc = cs.getr() * 2 * (pi + 2);
 		}
@@ -98,9 +104,9 @@ public class Charge {
 				+ "欧姆。需采用100*5热镀锌扁钢，围绕建筑外" + 
 				cs.getm() +
 				"米铺设环形接地体，埋深0.8米。与建筑地基内钢筋进行可靠焊接，形成网格面积为" +
-				Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS()))) + 
+				Math.ceil(Totallengthformat.singlelength(Math.sqrt(cs.getS()))) + 
 				"X" + 
-				Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS()))) +
+				Math.ceil(Totallengthformat.singlelength(Math.sqrt(cs.getS()))) +
 				"米，地网面积为"
 				+ cs.getS()
 				+ "平方米的水平地网，");
@@ -168,9 +174,9 @@ public class Charge {
 		sb.append("需采用100*5热镀锌扁钢，围绕建筑外" + 
 				cs.getm() +
 				"米铺设环形接地体，埋深0.8米。与建筑地基内钢筋进行可靠焊接，形成网格面积为" +
-				Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS()))) + 
+				Math.ceil(Totallengthformat.singlelength(Math.sqrt(cs.getS()))) + 
 				"X" + 
-				Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS()))) +
+				Math.ceil(Totallengthformat.singlelength(Math.sqrt(cs.getS()))) +
 				"米，地网面积为"
 				+ cs.getS()
 				+ "平方米的水平地网，");
@@ -273,9 +279,9 @@ public class Charge {
 					+ "平方米的"
 					+ (cs.getflag() == 0 ? "水平" : "复合")
 					+ "地网，网格面积为"
-					+ Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS())))  
+					+ Math.ceil(Totallengthformat.singlelength(Math.sqrt(cs.getS())))  
 					+ "X"
-					+ Math.ceil(Totallengthofmat.singlelength(Math.sqrt(cs.getS())))
+					+ Math.ceil(Totallengthformat.singlelength(Math.sqrt(cs.getS())))
 					+ "米，");
 			if(cs.getflag() != 0) {
 				sb.append("垂直接地体为"
@@ -294,8 +300,5 @@ public class Charge {
 		sb.append("即可满足要求。");
 		return sb.toString();
 	}
-	
-//	public static void main(String[] args) {
-//	}
 	
 }

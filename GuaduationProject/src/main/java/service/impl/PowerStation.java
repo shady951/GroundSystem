@@ -28,7 +28,7 @@ public class PowerStation extends Building implements Ground{
 	 * @param Rk		工频电阻要求值
 	 * @param type	配电电压规模(500kv;220kv;110kv;66kv;35kv;20kv)(1:一类防雷建筑)
 	 * @param city	土地资源是否受限
-	 * @return
+	 * @return Countresult
 	 */
 	@Override
 	public Countresult design(Double p, Double H, Double p1, Double S, Double Rk, Integer type, boolean city) {
@@ -42,7 +42,7 @@ public class PowerStation extends Building implements Ground{
 		double R = cs.getR();
 		double modulecount = 0;
 		double K = 1d;
-		// R没达标，补加接地模块
+		// R没达到要求，则补加接地模块
 		if (R > Rk) {
 			double Rt = R;
 			modulecount = GroundModule.getcount(p, Rt, Rk);
@@ -57,8 +57,7 @@ public class PowerStation extends Building implements Ground{
 			// 优先补加直线型集中接地装置，因为占地少
 			Ri = straightscheme(p, p1, H, S, cs, true);
 			// 当Ri位于10—12之间，补加接地模块比替换成环形接地装置更优
-			if (Ri > 12d)
-				Ri = linkscheme(p, p1, H, S, cs, true);
+			if (Ri > 12d) Ri = linkscheme(p, p1, H, S, cs, true);
 			if (cs.getindependent() == 1) {
 				System.out.println("加装直线型等距垂直接地");
 			} else {
@@ -71,13 +70,13 @@ public class PowerStation extends Building implements Ground{
 			System.out.println("////////////////////////////////////////");
 			// Ri大于10，为集中接地装置补加接地模块
 			if (Ri > 10d) {
-				System.out.println("-----------为集中接地装置加装接地模块-------------------:");
 				double Rit = Ri;
 				double modulecounti = GroundModule.getcount(p, Rit, 10d);
 				double Ki = GroundModule.getR(p, Rit, modulecounti) / Rit;
 				Ri = Ri * Ki;
 				cs.setmodulecounti(modulecounti);
 				cs.setRi(Ri);
+				System.out.println("-----------为集中接地装置加装接地模块-------------------:");
 				System.out.println("接地模块数量modulecounti:" + modulecounti);
 				System.out.println("接地模块降阻率:" + Ki);
 				System.out.println("集中接地装置冲击接地电阻Ri:" + Ri);
@@ -113,7 +112,7 @@ public class PowerStation extends Building implements Ground{
 	/**
 	 * (DL/T 620-1997 7.16-7.17)
 	 * 
-	 * @return 是否设置独立防雷接地装置
+	 * @return 是否设置独立的集中防雷接地装置
 	 */
 	private boolean isindependent(Double p, Integer Rk) {
 		if (Rk <= 66d)
@@ -151,7 +150,7 @@ public class PowerStation extends Building implements Ground{
 		double l = 2.5d;
 		// s:接地体间距
 		double s = l;
-		// d:接地体布设距离
+		// d:接地体排列长度
 		double d = s;
 		// n:接地体数量
 		double n = getni(d, s);
@@ -163,10 +162,8 @@ public class PowerStation extends Building implements Ground{
 		double ni = n;
 		// i:方案计数
 		int i = 0;
-		new Vertical();
 		double R = Vertical.straightverticals(p, p1, H, br, l, h, s, n);
 		double Ra = 0;
-		new Impulseconversion();
 		// Ri:冲击接地电阻
 		double Ri = Impulseconversion.convert(getpa(p, p1, H, h, l), (d / 2 + l) / le, R);
 		// l最大不能超过地网等效直径或者40米
@@ -176,8 +173,6 @@ public class PowerStation extends Building implements Ground{
 				// d最大不能超过地网等效直径或者有效长度
 				for (d = s; d <= ((le - l) * 2 < dr ? (le - l) * 2 : dr); d++) {
 					i++;
-					new Impulseconversion();
-					new Vertical();
 					// 遍历所有可行方案，选择Ri达标且垂直接地体数量小于15个的方案
 					if (Ri > (Ra = Impulseconversion.convert(getpa(p, p1, H, h, l), (d / 2 + l) / le,
 							R = Vertical.straightverticals(p, p1, H, br, l, h, s, n = getni(d, s))))) {
@@ -197,7 +192,6 @@ public class PowerStation extends Building implements Ground{
 								ni = n;
 							}
 						} else {
-							new Vertical();
 							if(R > (Ra = Vertical.straightverticals(p, p1, H, br, l, h, s, n = getni(d, s)))) {
 								R = Ra;
 								li = l;
@@ -214,7 +208,7 @@ public class PowerStation extends Building implements Ground{
 		System.out.println("直线排列的有效方案一共i:" + i + "个");
 		System.out.println("接地体最大排列长度dr:" + dr);
 		System.out.println("接地体有效长度le:" + getle(p, p1, H, li));
-		System.out.println("接地体实际最大长度:" + di);
+		System.out.println("接地体实际排列长度:" + di);
 		System.out.println("l:" + li);
 		System.out.println("s:" + si);
 		System.out.println("n:" + ni);
@@ -247,7 +241,6 @@ public class PowerStation extends Building implements Ground{
 		double ni = n;
 		double Ra;
 		int i = 0;
-		new Vertical();
 		double R = Vertical.linkverticals(p, p1, H, bc, l, h, s, n);
 		new Impulseconversion();
 		// Ri:冲击接地电阻
@@ -260,8 +253,6 @@ public class PowerStation extends Building implements Ground{
 				for (n = 3; getr(s, n) <=  (Math.sqrt(S / pi) < le - l? Math.sqrt(S / pi) : le - l) && n <= 50d; n++) {
 					i++;
 					if(needRi) {
-						new Impulseconversion();
-						new Vertical();
 						if (Ri > (Ra = Impulseconversion.convert(getpa(p, p1, H, h, l), (getr(s, n) + l) / le,
 								R = Vertical.linkverticals(p, p1, H, bc, l, h, s, n)))) {
 							//若没有小于10欧姆的，则选择Ri最小的方案

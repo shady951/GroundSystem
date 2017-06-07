@@ -3,6 +3,12 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * 数据传输实体类
+ * 用于向前端接收
+ * @author tc
+ *
+ */
 public class Data {
 
 	private int style;		//建筑类型
@@ -14,8 +20,8 @@ public class Data {
 	private double S;		//占地面积
 	@JsonProperty
 	private double Rk;	//工频电阻要求值
-	private int type;			//防雷建筑分类
-	private boolean city;//土地资源是否受限
+	private int type;			//建筑结构的种类
+	private boolean city;//周围环境
 	
 	public Data() {
 	}

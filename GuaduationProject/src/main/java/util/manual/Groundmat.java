@@ -13,7 +13,7 @@ public class Groundmat {
 	private static final double pi = Math.PI;
 	
 	/**
-	 * 计算水平接地电阻
+	 * 计算单根接地体水平接地电阻
 	 * @param p	土壤电阻率
 	 * @param d	接地体等效直径
 	 * @param l	接地体总长度
@@ -116,63 +116,6 @@ public class Groundmat {
 		return B;
 	}
 	
-	
-	
-//	/**
-//	 * @return R1 接地网中的水平接地电阻
-//	 */
-//	private static double getR1(Double p, Double Lc, Double bc, Double S, Double h, Double L0) {
-//		Double R1 = null;
-//		Double K1 = getK1(S, L0);
-//		Double K2 = getK2(S, L0);
-//		Double a1 = Math.sqrt(bc * h);
-//		if(h == 0) a1 = bc / 2;
-//		R1 = (Math.log(2 * Lc / a1) + (K1 * Lc / Math.sqrt(S)) - K2) * p / (pi * Lc);
-//		return R1;
-//	}
-//	
-//	/**
-//	 * @return R2 接地网中的垂直接地电阻
-//	 */
-//	private static double getR2(Double p, Double Lr, Double br, Double n, Double S, Double L0) {
-//		Double R2 = null;
-//		Double K1 = getK1(S, L0);
-//		Double K = Math.pow(Math.sqrt(n) - 1, 2) / Math.sqrt(S);
-//		R2 = (Math.log(8 * Lr / br) - 1 + 2 * K1 * Lr * K) * p / (2 * pi * n * Lr);
-//		return R2;
-//	}
-//	
-//	/**
-//	 * @return Rm 接地网中的互电阻系数
-//	 */
-//	private static double getRm(Double p, Double Lc, Double Lr, Double S, Double L0){
-//		Double Rm = null;
-//		Double K1 = getK1(S, L0);
-//		Double K2 = getK2(S, L0);
-//		Rm = (Math.log(2 * Lc / Lr) + K1 * Lc / Math.sqrt(S) - K2 + 1) * p / (pi * Lc);
-//		return Rm;
-//	}
-//	
-//	/**
-//	 * @return K1	系数
-//	 */
-//	private static double getK1(Double S, Double L0){
-//		Double K1 = null;
-//		Double X = getX(S, L0);
-//		K1 = -0.04 * X + 1.41;
-//		return K1;
-//	}
-//	
-//	/**
-//	 * @return K2 系数
-//	 */
-//	private static double getK2(Double S, Double L0){
-//		Double K2 = null;
-//		Double X = getX(S, L0);
-//		K2 = 0.15 * X + 5.5;
-//		return K2;
-//	}
-//	
 //	/**
 //	 * @return	X	长宽比值，返回值-1：表示面积相对周长过大，或周长相对面积过小
 //	 */
@@ -184,28 +127,6 @@ public class Groundmat {
 //		Double b = (L0 / 2 - Math.sqrt(K)) / 2;
 //		X = a / b;
 //		return X;
-//	}
-	
-	
-//	public static void main(String[] args) {
-//		System.out.println(new Groundmat().verticalmat(250d, 3040d, 50d, 640d, 25600d, 0.6, 0.01, 0.025, 1d));
-//		System.out.println(new Groundmat().verticalmat(800d, 1500d, 2.5d, 280d, 4800d, 0.8, 0.02, 0.05, 62d));
-//		System.out.println(new Groundmat().gorizontalmat(1300d,144d, 0d, 72d, 324d, 0.8d, 0.05, 0d));
-//		System.out.println(new Groundmat().generalmat(1300d, 324d));
-//		System.out.println(new Groundmat().gorizontalmat(1300d,600d, 0d, 200d, 2500d, 0.8d, 0.05, 0d));
-//		System.out.println(new Groundmat().generalmat(1300d, 2500d));
-//		System.out.println("//////////////////////////");
-//		System.out.println(new Groundmat().generalmat(1000d, 400d));
-//		System.out.println(new Groundmat().gorizontal(1000d, 0.05, 20d, 0.5, 1));
-//		System.out.println(new Groundmat().emissivitygorizontal(1000d, 20d, 80d, 22.0, 72.24318203));
-//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 2d));
-//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 20d, 80d, 400d, 0.5, 0.05, 0.05, 2d));
-//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 0d, 80d, 400d, 0.5, 0.05, 0d, 0d));
-//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 2d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
-//		System.out.println(new Groundmat().verticalmat(1000d, 120d, 3d, 80d, 400d, 0.5, 0.05, 0.05, 20d));
-//		System.out.println(new Groundmat().generalmat(1000d, 750d));
-//		double a = Math.sqrt(2728d);
-//		System.out.println(new Groundmat().gorizontalmat(320d, Totallengthofmat.totallenth(a), 0d, 4 * a, 2728d, 0.5, 0.05, 0d));
 //	}
 	
 }

@@ -25,7 +25,7 @@ public class Iprecord {
 				logger.info("ip: 本机访问\r\n");
 			} else if(!set.contains(ip)){
 				if(ipcheck(request, ip)){
-					logger.info("ip:"+ip+"四川电信 访问\r\n");
+					logger.info("ip:"+ip+" 四川电信访问\r\n");
 				} else {
 					logger.info("ip:"+IpQuery.queryIP(ip)+" 访问\r\n");
 				}
@@ -53,6 +53,7 @@ public class Iprecord {
 		ArrayList<String> al2 = new ArrayList<String>();
 		ArrayList<String> alip = new ArrayList<String>();
 		for(int index = 1; index < list.size(); index += 2) {
+			if(ip.equals(list.get(index)) || ip.equals(list.get(index+1))) return true;
 			for(String S : list.get(index).split("\\."))	al1.add(S);
 			for(String S : list.get(index+1).split("\\."))	 al2.add(S);
 			for(String S : ip.split("\\.")) alip.add(S);
@@ -61,7 +62,14 @@ public class Iprecord {
 				int al1num = Integer.parseInt(al1.get(j));
 				int al2num = Integer.parseInt(al2.get(j));
 				int alipnum = Integer.parseInt(alip.get(j));
-				if((al1num <= alipnum && alipnum <= al2num) || (al2num <= alipnum && alipnum <= al1num)) return true;
+				if((al1num <= alipnum && alipnum <= al2num) || (al2num <= alipnum && alipnum <= al1num)){
+					return true;
+				} else {
+					al1.clear();
+					al2.clear();
+					alip.clear();
+					break;
+				}
 			}
 		}
 		return false;
@@ -89,4 +97,5 @@ public class Iprecord {
 //		System.out.println("getip5:"+request.getRemoteAddr());
 		return request.getRemoteAddr();
 	}
+	
 }

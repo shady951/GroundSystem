@@ -3,6 +3,12 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * 数据传输实体类
+ * 用于返回至前端
+ * @author tc
+ *
+ */
 public class Result {
 
 	private String plan;		//接地设计
@@ -17,10 +23,10 @@ public class Result {
 
 	/**
 	 * 
-	 * @param plan		接地设计
-	 * @param R			工频接地电阻
-	 * @param Ri			冲击接地电阻
-	 * @param money消耗材料预算(元)
+	 * @param plan		
+	 * @param R			
+	 * @param Ri			
+	 * @param money
 	 */
 	public Result(String plan, double R, double Ri, String money) {
 		this.plan = plan;

@@ -26,8 +26,6 @@ public class Listener implements ServletContextListener {
 //		System.out.println("ipinit---------------");
 		String ippath = arg0.getServletContext().getRealPath("/WEB-INF/logs/watch/ipcontainer.txt");
 		String iplist = arg0.getServletContext().getRealPath("/WEB-INF/iptxt/iplist.txt");
-//		System.out.println("getrealpath:"+arg0.getServletContext().getRealPath("/WEB-INF/logs/watch/ipcontainer.txt"));
-//		System.out.println("getrealpath:"+arg0.getServletContext().getRealPath("WEB-INF/logs/watch/ipcontainer.txt"));
 //		System.out.println("webrootkey:"+System.getProperty("GP"));
 		File file = new File(ippath);
 		InputStreamReader reader;

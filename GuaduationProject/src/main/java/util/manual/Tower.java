@@ -44,11 +44,12 @@ public class Tower {
 	}
 
 	/**
+	 * 杆塔工频电阻要求值
 	 * @param p 土壤电阻率
-	 * @return R 杆塔工频电阻要求值
+	 * @return R 
 	 */
 	public static Double getR(Double p) {
-		if(p <= 100) return 10d;
+		if(p <= 100d) return 10d;
 		if(p >= 2000d) return 30d;
 		return 0.01 * p + 10d;
 	}

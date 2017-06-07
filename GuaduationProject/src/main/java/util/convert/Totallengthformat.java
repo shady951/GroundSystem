@@ -5,7 +5,7 @@ package util.convert;
  * @author tc
  *
  */
-public class Totallengthofmat {
+public class Totallengthformat {
 
 	/**
 	 * 计算地网总长度

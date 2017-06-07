@@ -39,10 +39,10 @@ public class Towers extends PowerStation implements Ground {
 		System.out.println("视在土壤电阻率"+Sp+"欧姆下的最大工频电阻允许值Rk:" + Rk);
 		double lt = Tower.Getlt(Sp);
 		System.out.println("规范要求单根放射形接地体最大长度lt:" + lt);
-		//(L/T621-1997 6.3)
-		//当Sp小于30时，需考虑自然接地体，若自然接地体满足要求，可不另设人工接地体
+		//当土壤电阻率小于300时，需考虑自然接地体，若自然接地体满足要求，可不另设人工接地体
 		if (p < 300d) {
-			double a = 0.4;	//混凝土电杆自然接地体的冲击系数
+			//混凝土电杆自然接地体的冲击系数
+			double a = 0.4;	
 			System.out.println("土壤视在电阻率小于300，按规范考虑自然接地体");
 			R = (type == 1? 0.44 * p / Math.sqrt(S) :  0.1 * Sp);
 			System.out.println("自然接地体工频接地电阻R:"+R);
@@ -58,7 +58,8 @@ public class Towers extends PowerStation implements Ground {
 			System.out.println("自然接地体不符合要求，增设人工接地体");
 		}
 		if (type == 1d) {
-			double l0 = 1; //水平接地体长度
+			//水平接地体长度
+			double l0 = 1; 
 			for(; (R = Tower.gorizontal(Sp, l0 , Math.sqrt(S), h, bc, 1)) > Rk && l0 <= lt; l0++);
 			System.out.println("增设4根水平放射接地体"+l0+"米");
 			System.out.println("工频接地电阻R:"+R);
@@ -67,7 +68,8 @@ public class Towers extends PowerStation implements Ground {
 			Ri = getRi(p, H, p1, S, l0 * 4, 0d, 1, R, 0d);
 			cs = new Countresult(3, R, Ri, S, 1, l0, 2);
 		} else {
-			if(city) { //采用环形接地装置或接地网
+			//采用环形接地装置或接地网
+			if(city) { 
 				cs = new Countresult();
 				cs.setkind(4);
 				double l1 = 1d;

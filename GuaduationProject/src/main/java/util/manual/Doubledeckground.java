@@ -11,22 +11,6 @@ public  class Doubledeckground {
 	
 	private static final double pi = Math.PI;
 	
-//	/**
-//	 * 计算垂直双层土壤的接地网接地电阻
-//	 * 参考文献：曹晓斌,等. 一类垂直双层土壤中地网接地电阻的简易计算公式. 中国电机工程学报,2009(1),29(1)
-//	 * @param p1		土壤电阻率
-//	 * @param p2		土壤电阻率
-//	 * @param A1	p1土壤面积
-//	 * @param S		接地网面积		
-//	 * @return R		任意形状边缘闭合的接地电阻
-//	 */
-//	public double verticalDoubledeckMat(Double p1, Double p2, Double A1, Double S) {
-//		Double R = null;
-//		Double K = 2 * Math.sqrt(S) - Math.sqrt(2 * A1);
-//		R = 0.5 * p1 * p2 * Math.sqrt(pi) / (K * p1 + Math.sqrt(2 * A1) * p2);
-//		return R;
-//	}
-	
 	/**
 	 * 计算水平双层土壤的接地网接地电阻
 	 * 参考文献：王洪泽. 双层土壤中复合地网接地电阻的新解析公式. 广东电力,2005(8),18(8)
@@ -335,32 +319,5 @@ public  class Doubledeckground {
 //		double k = getk(p1, p2);
 //		return (l1/l) * Math.log(1/(1-k));
 //	}
-	
-	/*
-	public static void main(String[] args) {
-		System.out.println(new Doubledeckground().gorizontalDoubledeckMat(100d, 5.26d, 400d, 5d, 0.5d, 120d, 80d, 10d, 9d, 0.02, 0.02));
-		//0.1606321783264501, k=-0.9
-		System.out.println(new Doubledeckground().gorizontalDoubledeckMat(100d, 33.33d, 400d, 5d, 0.5d, 120d, 80d, 10d, 9d, 0.02, 0.02));
-		//0.8291683044406233,k=-0.5
-		System.out.println(new Doubledeckground().gorizontalDoubledeckMat(100d, 100d, 400d, 5d, 0.5d, 120d, 80d, 10d, 9d, 0.02, 0.02));
-		//1.8184978920959776,k=0
-		System.out.println(new Doubledeckground().gorizontalDoubledeckMat(100d, 300d, 400d, 5d, 0.5d, 120d, 80d, 10d, 9d, 0.02, 0.02));
-		//3.411582393087603,k=0.5
-		System.out.println(new Doubledeckground().gorizontalDoubledeckMat(100d, 1900d, 400d, 5d, 0.5d, 120d, 80d, 10d, 9d, 0.02, 0.02));
-		//7.954519587628304,k=0.9
-		//结果准确
-		System.out.println(new Doubledeckground().verticalsDoubledeck(100d, 5.26d, 400d, 5d, 0.05, 80d, 10d, 9d, 0.02));
-		//0.17005240340905908, k=-0.9
-		System.out.println(new Doubledeckground().verticalsDoubledeck(100d, 33.33d, 400d, 5d, 0.05, 80d, 10d, 9d, 0.02));
-		//0.9465312040595742,k=-0.5
-		System.out.println(new Doubledeckground().verticalsDoubledeck(100d, 100d, 400d, 5d, 0.05, 80d, 10d, 9d, 0.02));
-		//2.221485801870099,k=0
-		System.out.println(new Doubledeckground().verticalsDoubledeck(100d, 300d, 400d, 5d, 0.05, 80d, 10d, 9d, 0.02));
-		//4.413924291607431,k=0.5
-		System.out.println(new Doubledeckground().verticalsDoubledeck(100d, 1900d, 400d, 5d, 0.05, 80d, 10d, 9d, 0.02));
-		//8.758316145453467,k=0.9
-		//结果准确
-	}
-	 */
 	
 }

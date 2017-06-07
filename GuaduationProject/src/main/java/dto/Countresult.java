@@ -1,7 +1,8 @@
 package dto;
 
 /**
- * 数据传输bean类
+ * 数据传输实体类
+ * 用于在service包下各类以及与util.charge.Charge.java传递
  * @author tc
  *
  */
@@ -23,7 +24,7 @@ public class Countresult {
 	private double s;		//集中接地装置接地体之间的间距
 	private double ni;		//集中接地装置的接地体数量
 	private double r;		//电杆环形接地装置的半径
-	private int kind;//杆塔接地形式(1:自然接地 2:铁塔放射形 3:电杆放射形 4:电杆环形 5:电杆复合地网)
+	private int kind;//杆塔接地形式(1:自然接地 2:铁塔放射形 3:电杆放射形 4:电杆环形 5:电杆地网)
 	
 	public Countresult() {
 	}
