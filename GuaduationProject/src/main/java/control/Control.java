@@ -38,6 +38,11 @@ public class Control {
 		if((set = Iprecord.iplog(request, false)) != null) request.getServletContext().setAttribute("ipset", set);
 		return "index";
 	}
+	
+	@RequestMapping(value = "/indexme", method = RequestMethod.GET)
+	public String indexme() {
+		return "index";
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/design", method = RequestMethod.POST, produces = { "application/json; charset=utf-8" })

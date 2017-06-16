@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="zh-CN">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>防雷接地计算</title>
+	<title>毕业设计</title>
 	<script type="text/javascript" src="/GuaduationProject/jq/jquery-3.1.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="<%=path%>/bootstrap/css/bootstrap.min.css">
@@ -19,6 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		.form-group .small-input{
 			width: 60px;
+			display:inline;
 		}
 		.second-row{
 			margin-top: 10px;
@@ -52,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</ul>
 	<div id="first" class="active tab-container">
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
-				<h1>防雷接地冲击接地电阻计算系统</h1>
+				<h1>接地计算系统</h1>
 			</div>
 			<div class="container tmargin">
 			<div class="col-xs-6 col-md-6 text-right">
@@ -108,7 +109,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<form class="form-inline">
 				  <div class="form-group col-md-6 text-right col-xs-6">
 				    <label for="S">建筑占地面积</label>
-				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input S" style="width:70px">
+				    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control small-input S" style="width:70px;">
 				     <label for="S">平方米</label>
 				  </div>
 				  <div class="form-group col-md-6 col-xs-6">
@@ -121,7 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<div id="second" class="tab-container">
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
-				<h1>防雷接地冲击接地电阻计算系统</h1>
+				<h1>接地计算系统</h1>
 			</div>
 			<div class="container tmargin">
 			<div class="col-md-6 text-right col-xs-6">
@@ -175,12 +176,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					    <label for="1p1">欧姆</label>
 				  </div>
 				</form>
-			<!--  
-			<div class="col-md-4">
-				<label>土壤电阻率参考值</label>
-				<button class="btn btn-default" data-toggle="modal" data-target="#myModal">查看</button>
-			</div>
-			-->
   		</div>
 		<div class="container tmargin">
 				<form class="form-inline">
@@ -202,7 +197,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<img style="bac" src="">
 		</div>
 			<div style="text-align:center; margin-bottom:50px; margin-top:30px">
-				<h1>防雷接地冲击接地电阻计算系统</h1>
+				<h1>接地计算系统</h1>
 			</div>
 			<div class="container tmargin">
 			<div class="col-md-6 text-right col-xs-6">
@@ -381,6 +376,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	$('#query').click(function(e) {
 		var style = $('.active').find('a').data('val'); 
+		//判断是否有未填参数
 		if((!$('.active .Rk').val() && style != 3) || 
 		((!$('.active .S').val() && style != 3) ||  (!$('.active .S').val() && style == 3 && $('#towertype').val() == 1))|| 
 		(!$('.active .p').val() && $('.active .floor').val() == 1) || 

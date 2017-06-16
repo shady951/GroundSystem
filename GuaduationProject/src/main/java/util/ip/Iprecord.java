@@ -1,7 +1,5 @@
 package util.ip;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +12,12 @@ public class Iprecord {
 
 	private static final Logger logger = LoggerFactory.getLogger("watch");
 	
+	/**
+	 * 查询记录ip地址
+	 * @param request
+	 * @param use			true:使用,false:访问
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public static Set<String> iplog(HttpServletRequest request, boolean use) {
 		Set<String> set;
@@ -21,14 +25,12 @@ public class Iprecord {
 //		System.out.println("iplog ip:"ip);
 		if(!use) {
 			set = (Set<String>) request.getServletContext().getAttribute("ipset");
-			if(ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
-				logger.info("ip: 本机访问\r\n");
-			} else if(!set.contains(ip)){
-				if(ipcheck(request, ip)){
-					logger.info("ip:"+ip+" 四川电信访问\r\n");
-				} else {
+			if(!set.contains(ip)){
+//				if(ipcheck(request, ip)){
+//					logger.info("ip:"+ip+" 四川电信访问\r\n");
+//				} else {
 					logger.info("ip:"+IpQuery.queryIP(ip)+" 访问\r\n");
-				}
+//				}
 				set.add(ip);
 				return set;
 			} else {
@@ -45,7 +47,6 @@ public class Iprecord {
 	 * @param request
 	 * @param ip
 	 * @return
-	 */
 	private static boolean ipcheck(HttpServletRequest request, String ip) {
 		@SuppressWarnings("unchecked")
 		List<String> list = (ArrayList<String>)request.getServletContext().getAttribute("iplist");
@@ -74,27 +75,22 @@ public class Iprecord {
 		}
 		return false;
 	}
+	 */
 
 	private static String getip(HttpServletRequest request) {
 		String ip = request.getHeader("X-Forwarded-For");
-//		System.out.println("getip:"ip);
 		if (!StringUtils.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-//			System.out.println("getip1:"+ip);
 			int index = ip.indexOf(",");
 			if (index != -1) {
-//				System.out.println("getip2:"+ip);
 				return ip.substring(0, index);
 			} else {
-//				System.out.println("getip3:"+ip);
 				return ip;
 			}
 		}
 		ip = request.getHeader("X-Real-IP");
 		if (!StringUtils.isEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)) {
-//			System.out.println("getip4:"+ip);
 			return ip;
 		}
-//		System.out.println("getip5:"+request.getRemoteAddr());
 		return request.getRemoteAddr();
 	}
 	

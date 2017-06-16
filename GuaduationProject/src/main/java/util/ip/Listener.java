@@ -7,10 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletContextEvent;
@@ -25,13 +23,13 @@ public class Listener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 //		System.out.println("ipinit---------------");
 		String ippath = arg0.getServletContext().getRealPath("/WEB-INF/logs/watch/ipcontainer.txt");
-		String iplist = arg0.getServletContext().getRealPath("/WEB-INF/iptxt/iplist.txt");
+//		String iplist = arg0.getServletContext().getRealPath("/WEB-INF/iptxt/iplist.txt");
 //		System.out.println("webrootkey:"+System.getProperty("GP"));
 		File file = new File(ippath);
 		InputStreamReader reader;
 		BufferedReader br;
 		Set<String> set = new HashSet<String>();
-		List<String> list = new ArrayList<String>();
+//		List<String> list = new ArrayList<String>();
 		try {
 			if (!file.exists()) {
 				file.createNewFile();
@@ -47,14 +45,14 @@ public class Listener implements ServletContextListener {
 				set.add(line);
 			}
 			//读取四川电信ip
-			reader = new InputStreamReader(new FileInputStream(iplist));
-			br = new BufferedReader(reader);
-			for(line = br.readLine(); line != null; line = br.readLine()){
-				list.add(line);
-			}
+//			reader = new InputStreamReader(new FileInputStream(iplist));
+//			br = new BufferedReader(reader);
+//			for(line = br.readLine(); line != null; line = br.readLine()){
+//				list.add(line);
+//			}
 			br.close();
 			reader.close();
-			arg0.getServletContext().setAttribute("iplist", list);
+//			arg0.getServletContext().setAttribute("iplist", list);
 			arg0.getServletContext().setAttribute("ipset", set);
 		} catch (IOException e) {
 			e.printStackTrace();
