@@ -9,9 +9,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>毕业设计</title>
+	<!-- 
 	<script type="text/javascript" src="/GuaduationProject/jq/jquery-3.1.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="<%=path%>/bootstrap/css/bootstrap.min.css">
+	 -->
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<style type="text/css">
 		.tab-container{
 			margin-top: 20px;

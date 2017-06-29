@@ -154,7 +154,7 @@ public class Charge {
 					cs.getmodulecount() +
 					"个规格为400mmX600mmX60mm的方形接地模块，"); 
 		}
-		sb.append("即可满足要求。");
+		sb.append("即可满足要求。(数据均通过算法而得)");
 		return sb.toString();
 	}
 
@@ -241,9 +241,10 @@ public class Charge {
 				}
 				sb.append("最后使集中接地装置与主接地网的地中距离大于3米，");
 		}
-		sb.append("即可满足要求。");
+		sb.append("即可满足要求。(数据均通过算法而得)");
 		return sb.toString();
 	}
+	
 	private static String towers(Countresult cs, Data dt) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("根据《交流电气装置的接地》，该"
@@ -297,7 +298,7 @@ public class Charge {
 					cs.getmodulecount() +
 					"个规格为400mmX600mmX60mm的方形接地模块，"); 
 		}
-		sb.append("即可满足要求。");
+		sb.append("即可满足要求。(数据均通过算法而得)");
 		return sb.toString();
 	}
 	
